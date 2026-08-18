@@ -1,0 +1,3 @@
+# 參考範例檔（Claude 寫的「先看它跑」示範版），不要 push 到 GitHub
+# 只有你自己手打/憑印象重打的版本才會被 git 追蹤
+*-reference.py
