@@ -1,5 +1,14 @@
 # Lesson 1 語法筆記：這一課學到的 Python 新東西
 
+## Learning Objectives 打勾清單（回頭核對，2026-08-19補上）
+
+- [x] Implement vector and matrix operations (addition, dot product, matrix multiply) from scratch in Python — Vector 的 add/sub/mul/dot 跟 Matrix 的矩陣乘向量都手打+驗證過，這項真的做到了
+- [ ] Explain geometrically what the dot product, projection, and Gram-Schmidt process do — dot product 的幾何意義（同方向/垂直/反方向）有講清楚，但 projection（投影）跟 Gram-Schmidt 只有帶著跑過計算結果，沒有真的講到「幾何上在幹嘛」（投影是影子、Gram-Schmidt 是不斷扣掉重疊方向），這塊沒做到
+- [ ] Determine linear independence, rank, and basis of a set of vectors using row reduction — linear independence 概念懂了（測驗第1題），但 rank 沒教好（測驗第2題答錯），basis 完全沒提過，row reduction（列運算/高斯消去法）只講過用途沒帶著手算
+- [ ] Connect linear algebra concepts to their AI applications: embeddings, attention scores, and LoRA — embeddings 這塊講得最扎實（cosine similarity 貫穿整堂課），attention scores 只在最一開始的 Connections 表格提過名詞，沒解釋內積怎麼變成注意力分數；LoRA 是測驗答錯後才補講解釋，不是教學過程中主動教的
+
+⚠️ 尚未完成：projection/Gram-Schmidt的幾何解釋、rank與basis與row reduction、attention scores的實際連結、LoRA主動教學（而非測驗事後補救）
+
 ## 今天花的時間
 
 今天總共專注 6:35:45，其中最長一段連續 4:25:17。這是完全零基礎第一課，環境設定（VS Code、GitHub、Copilot）占掉不少時間，但那些是一次性成本，之後不用重來。
