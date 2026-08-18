@@ -16,3 +16,7 @@ Things Claude simplified/skipped during teaching, logged so I can come back and 
 - **Matrix 乘矩陣**（matrix @ matrix，3層迴圈版本）— 完整版本在 `01-math-foundations/01-linear-algebra-intuition/reference.py`，只追蹤過邏輯沒手打進 practice.py。關聯度中高：多層神經網路運算會用到，比矩陣乘向量進階一階，之後有餘力應該補手打。
 - **Julia 版本** — 完全沒做，刻意跳過。關聯度低：不同程式語言，跟主力學 Python 打造 AI 產品的路線不直接相關。
 - **PyTorch 版本、QR 分解、Ship It、官方 Exercises** — 完全沒做。PyTorch 關聯度高（之後深度學習會大量用到，只是這一課只是入門展示，之後課程會有專門的 PyTorch 內容）；QR 分解關聯度中低（進階數值方法）；Ship It 是寫文字說明文件不是寫程式碼，關聯度低；官方 Exercises 內容跟已經練過的方法重疊度高，關聯度低。
+
+## 已放棄
+
+Phase 回頭日那天做不完、正式決定不補的項目會移到這裡，目前還沒有（Phase 1 還沒做完，還沒到回頭日）。
