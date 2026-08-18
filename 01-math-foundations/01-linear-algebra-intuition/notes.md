@@ -108,6 +108,23 @@ if 條件:
 - 方法/函式執行到 `return X`，會**立刻結束**，把 `X` 交回給呼叫的地方
 - 沒有 `return`，函式執行完會回傳 `None`（空值）
 
+## NumPy 語法
+
+```python
+import numpy as np              # 載入 numpy 函式庫，as np 是取簡稱，之後打 np. 就好
+a = np.array([1,2,3], dtype=float)   # 把 list 轉成 numpy 的陣列型態，dtype=float 指定用小數存
+np.dot(a, b)                     # 內積，等同自己寫的 dot
+np.linalg.norm(a)                # 算長度，等同自己寫的 magnitude
+```
+
+- `import ... as ...`：載入函式庫並取簡稱，不用每次打完整名字
+- numpy 的陣列跟自己寫的 Vector 做的事一樣，只是別人已經寫好、速度更快
+
+## 格式化補充
+
+- `{x:10.4f}`：10 是總寬度（不夠補空白，內容比10長就不會被砍掉），4 是小數位數，兩個可以一起用也可以只用一個
+- 只寫 `{x:10}` 不加 `f` 的話，數字太長不會被截斷，寬度只是「最小值」不是上限
+
 ## Python vs C++ 這課學到的差異
 
 | 差異 | C++ | Python |
