@@ -1,3 +1,7 @@
 # 參考範例檔，不要 push 到 GitHub，只有自己手打的版本才會被 git 追蹤
 reference.py
 *-reference.py
+
+# 個人進度追蹤檔案，不放公開 repo
+LEARNING.md
+review-queue.md
