@@ -9,6 +9,71 @@
 
 ⚠️ 尚未完成：projection/Gram-Schmidt的幾何解釋、rank與basis與row reduction、attention scores的實際連結、LoRA主動教學（而非測驗事後補救）
 
+## 核心重點整理(這堂課在教什麼)
+
+vector(向量):一串數字,同時代表一個方向跟長度,可以想成空間裡一個從原點出發的箭頭。
+
+加法/減法:兩個向量相加,是把第二個向量的箭頭接在第一個向量箭頭的尾端,新箭頭的終點就是相加後的向量(頭尾相接法)。減法反過來,代表「從一個點走到另一個點」需要的方向跟距離。
+
+純量乘法(scalar multiply):向量乘上一個數字,只改變長度不改變方向;數字是負的話方向會反過來。
+
+dot product(內積):兩個向量對應位置的數字相乘再全部加總。幾何意義是「這兩個向量指向同一個方向的程度」——完全同方向內積最大、垂直的話內積是 0、完全反方向內積是負的最大值。
+
+magnitude(長度):向量自己跟自己做內積再開根號,等於畢氏定理的推廣(各維度平方和開根號)。
+
+cosine similarity(餘弦相似度):dot product 除以兩個向量長度的乘積,把「長度」的影響拿掉,只留下「方向像不像」,範圍固定在 -1 到 1。1 代表完全同方向、0 代表垂直(無關)、-1 代表完全反方向。這是這堂課最常回來用的概念,之後 AI 領域判斷兩個東西(文字、圖片)像不像,骨子裡常常就是在算這個。
+
+matrix(矩陣):可以想成很多個向量疊在一起,一列就是一個向量。矩陣乘向量,是拿矩陣的每一列分別跟輸入向量做一次內積,把結果收集成新向量——輸出向量的維度等於矩陣有幾列。
+
+這堂課刻意沒教到、留在 review queue 的:projection(投影)、Gram-Schmidt(正交化)、rank(矩陣的秩)、basis(基底)、row reduction(列運算/高斯消去法)、attention scores 跟內積的關係、LoRA。這些之後遇到再回頭補,不是這堂課的核心。
+
+## 我自己手打的部分
+
+這堂課用的是舊的手刻流程(還沒切換成 Top-Down),`practice.py` 整份都是自己手打並驗證過的:
+
+```python
+class Vector:
+    def __init__(self, components):
+        self.components = list(components)
+        self.dim = len(components)
+
+    def __add__(self, other):
+        return Vector([a + b for a, b in zip(self.components, other.components)])
+
+    def __sub__(self, other):
+        return Vector([a - b for a, b in zip(self.components, other.components)])
+
+    def __mul__(self, scalar):
+        return Vector([x * scalar for x in self.components])
+
+    def dot(self, other):
+        return sum(a * b for a, b in zip(self.components, other.components))
+
+    def magnitude(self):
+        return sum(x**2 for x in self.components) ** 0.5
+
+    def cosine_similarity(self, other):
+        return self.dot(other) / (self.magnitude() * other.magnitude())
+
+    def __repr__(self):
+        return f"Vector({self.components})"
+
+
+class Matrix:
+    def __init__(self, rows):
+        self.rows = [list(row) for row in rows]
+        self.shape = (len(self.rows), len(rows[0]))
+
+    def __matmul__(self, other):
+        if isinstance(other, Vector):
+            return Vector([sum(self.rows[i][j] * other.components[j] for j in range(self.shape[1])) for i in range(self.shape[0])])
+
+    def __repr__(self):
+        return f"Matrix({self.rows})"
+```
+
+加上主程式的驗證區塊(算 a+b、a-b、a*3、dot、magnitude、cosine_similarity、weights@input_vec 並印出結果)。`numpy_version.py` 也整份是自己打的,用 numpy 重做一次同樣的加法/內積/長度/cosine similarity,拿來對照手刻版本的結果是不是一致(兩邊都算出 0.9746,確認邏輯正確)。
+
 ## 今天花的時間
 
 今天總共專注 6:35:45，其中最長一段連續 4:25:17。這是完全零基礎第一課，環境設定（VS Code、GitHub、Copilot）占掉不少時間，但那些是一次性成本，之後不用重來。

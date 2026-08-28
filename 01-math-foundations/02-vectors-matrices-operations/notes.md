@@ -9,6 +9,34 @@
 
 ⚠️ 尚未完成:Matrix class 完整手刻(matmul/transpose/determinant/inverse),依新的 Top-Down 策略是刻意不做,不是忘記教。
 
+## 核心重點整理(這堂課在教什麼)
+
+矩陣是什麼:一個 m×n 的矩陣可以想成一台機器,吃一個 n 維向量,吐出一個 m 維向量。m 是輸出維度、n 是輸入維度,矩陣裡的每一列(row)對應輸出的其中一個數字,是「輸入向量」跟「這一列」做內積算出來的。
+
+element-wise multiply(逐項相乘) vs matrix multiply(矩陣乘法):兩個形狀完全一樣的東西同位置相乘、結果形狀不變,是 element-wise,numpy 用 `*`。matrix multiply 不是同位置相乘,是一列跟一行做內積,結果形狀通常會變,numpy 用 `@`。形狀規則:(m,n) @ (n,p) = (m,p),中間的 n 一定要對上,對不上就不能乘。這兩個是完全不同的運算,不能搞混。
+
+transpose(轉置):把矩陣的行跟列互換,(m,n) 轉置後變成 (n,m),原本 [i][j] 位置的數字轉置後出現在 [j][i]。
+
+determinant(行列式):只有正方形矩陣才有。可以想成這個矩陣把空間放大/縮小了幾倍——determinant 是 2,代表面積/體積放大兩倍;determinant 是 0,代表這個矩陣把空間壓扁了(至少一個維度被壓成一條線甚至一個點),資訊在這個方向上永久遺失,沒辦法逆推回原本的樣子。
+
+inverse(逆矩陣):「反著做」的矩陣,如果 A 把某個向量從 X 點搬到 Y 點,A 的逆矩陣就能把 Y 點搬回 X 點。只有 determinant 不等於 0 的矩陣才有逆矩陣,因為 determinant 是 0 代表資訊已經被壓扁遺失,沒有回頭路。
+
+identity matrix(單位矩陣):對角線是 1、其餘都是 0,乘上任何向量或矩陣都不改變它,是矩陣世界的「1」。A 乘上自己的逆矩陣,結果就是 identity matrix。
+
+神經網路一層的樣子:`output = relu(W @ x + b)`,是整個深度學習裡最常重複出現的一行公式。W(weights)決定每個輸入怎麼組合、b(bias)是每個輸出自帶的偏移量、relu 是把負數砍成 0 的簡單函數。輸出是幾維由 W 的形狀(輸出維度, 輸入維度)決定。
+
+broadcasting:兩個形狀不完全一樣的陣列做運算時,numpy 會嘗試把「size 是 1 的那個維度」自動延伸複製去對齊另一邊,對不齊才報錯。最常見情境是一次丟一整批(batch)資料進去算,`weights @ inputs` 結果變成 (輸出維度, batch數量),但 bias 還是 (輸出維度, 1),numpy 自動把 bias 複製 batch 次再相加。
+
+## 我自己手打的部分
+
+這堂課依 Top-Down 策略,大部分程式碼是看過、逐段講解、口頭能解釋邏輯,不是手打驗證的。真正自己手打並驗證過的,只有 `numpy_version.py` 裡這一行核心邏輯:
+
+```python
+output = np.maximum(0, weights @ inputs + bias)
+```
+
+其餘的 import、inputs/weights/bias 的建立、print 陳述式,是先幫忙寫好的樣板碼。`practice.py` 這堂課是空的(刻意的,矩陣類別完整版沒有手刻,原因寫在上面 Learning Objectives 那一項)。
+
 ## 這堂課用的新教學策略
 
 從這堂課開始,Phase 1(純數學章節)改成 **Top-Down 模式**:核心直覺、幾何意義、shape 規則要懂,但不用每個 method 都手刻;真正的模型架構本體章節(Autograd、Neural Network、Transformer、Attention)才會回到全部手刻。這堂課手打的只有一行核心邏輯(`output = np.maximum(0, weights @ inputs + bias)`),其他 Matrix class 的程式碼都是「看過、講過邏輯、能解釋」的方式教完。
