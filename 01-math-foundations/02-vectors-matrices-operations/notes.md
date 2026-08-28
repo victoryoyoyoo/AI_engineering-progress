@@ -41,6 +41,10 @@ output = np.maximum(0, weights @ inputs + bias)
 
 從這堂課開始,Phase 1(純數學章節)改成 **Top-Down 模式**:核心直覺、幾何意義、shape 規則要懂,但不用每個 method 都手刻;真正的模型架構本體章節(Autograd、Neural Network、Transformer、Attention)才會回到全部手刻。這堂課手打的只有一行核心邏輯(`output = np.maximum(0, weights @ inputs + bias)`),其他 Matrix class 的程式碼都是「看過、講過邏輯、能解釋」的方式教完。
 
+## 今天花的時間
+
+這堂課總共專注 2:16:30,其中 AI 相關部分就是這 2:16:30(整段都算)。比 Lesson 1 的 6:35:45 快非常多,主要是 Top-Down 策略省下大量手刻時間,加上環境設定的一次性成本這堂課不用再付。
+
 ## 今天評分
 
 理解程度:8/10,矩陣乘法、shape 規則、element-wise vs matrix multiply、determinant/inverse 的直覺都是真的懂,不是背的
