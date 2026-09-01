@@ -1,5 +1,42 @@
 # Lesson 5 筆記:鏈鎖法則與自動微分(Chain Rule & Automatic Differentiation)
 
+## Learning Objectives 打勾清單
+
+- [x] Build a minimal autograd engine (Value class) that records operations and computes gradients via reverse-mode autodiff — `__init__`/`__add__`/`__mul__`/`relu`/`backward` 親手打完並驗證(x1=2,x2=3例子,dy/dx1=3.0,dy/dx2=2.0跟手推一致)
+- [x] Implement forward and backward passes through a computation graph using topological sort — 拓撲排序概念確認懂,語法還在熟悉中(見review-queue)
+- [x] Construct and train a multi-layer perceptron on XOR using only the from-scratch autograd engine — Neuron/Layer/MLP看邏輯+具體數字追蹤過,XOR訓練loss從4.15降到0.29,親眼驗證過
+- [x] Verify autodiff correctness using gradient checking against numerical finite differences — 誤差3.66e-10,親眼驗證過
+
+## 這堂課的名詞總表(核心重點整理)
+
+| 名詞(英文) | 一句話定義 |
+|---|---|
+| 鏈鎖法則(Chain Rule) | 合成函數的導數,等於每一層局部導數連乘 |
+| 計算圖(Computational Graph) | 把運算拆成節點畫成圖,正向算值、反向算梯度 |
+| 局部導數(Local Derivative) | 只看單一運算自己的導數,不管前後文 |
+| 上游梯度(Upstream Gradient) | 從輸出那邊已經傳過來的梯度值 |
+| 正向模式(Forward Mode) | 種子放輸入,往前推導數,適合輸入少輸出多 |
+| 反向模式(Reverse Mode) | 種子放輸出,往回拉梯度,適合輸入多輸出少(神經網路用這個) |
+| 對偶數(Dual Numbers) | 把值跟導數包成一組(值,導數),正向模式的一種實作 |
+| 自動微分(Automatic Differentiation) | 記錄運算、自動算出精確梯度的系統 |
+| 拓撲排序(Topological Sort) | 排順序規則:小孩一定排在爸媽前面 |
+| 閉包(Closure) | 內層函式能記住並使用外層函式的變數,即使外層已結束 |
+| 梯度累加(Gradient Accumulation) | 同一變數被用在多處時,梯度要加總不能覆蓋 |
+| 動態圖(Dynamic Graph) | 每次正向傳播都重新蓋一次計算圖(PyTorch風格) |
+| 梯度檢查(Gradient Checking) | 拿數值法梯度比對autodiff梯度,驗證正確性 |
+| 隱藏層(Hidden Layer) | 輸入層跟輸出層中間的層,外面看不到它的數值 |
+| 神經元(Neuron) | 加權總和+偏差,再套激活函數 |
+| 層(Layer) | 好幾個神經元並排,同時處理同一組輸入 |
+| 多層感知器(MLP) | 好幾層疊起來的網路 |
+| tanh(雙曲正切函數) | 把任何數字壓縮成-1到1之間的S形曲線,激活函數之一 |
+| XOR(互斥或) | 兩個輸入不一樣時輸出1,一樣時輸出0 |
+| 損失(Loss) | 一個數字,代表模型現在預測得多爛 |
+| 參數(Parameters) | 模型裡所有可以被調整學習的數字(w、b) |
+
+---
+
+以下是完整教學過程的詳細記錄(公式推導、程式碼拆解、具體數字追蹤),複習時上面兩個表格夠用就不用往下看,想重新弄懂某個細節再往下找。
+
 ## 鏈鎖法則(Chain Rule)
 
 `y = f(g(x))` 時,`dy/dx = f'(g(x)) · g'(x)`——每多一層合成函數,就多乘一個這一層的局部導數。
@@ -188,6 +225,17 @@ def backward(self):
 
 ## Step5:Neuron(神經元)→ Layer(層)→ MLP(多層感知器)—— 看邏輯+具體追蹤
 
+**隱藏層(Hidden Layer):** 神經網路裡,輸入層跟輸出層「中間」的那些層,外面看不到它的數值,只看得到最終輸出。
+
+**具體對照(`MLP([2, 4, 1])`):**
+```
+輸入層(Input Layer):  2個數字(x1, x2)——直接給的資料,看得到
+隱藏層(Hidden Layer): 4個神經元——算出的中間數值,平常看不到、不直接關心它的意義
+輸出層(Output Layer): 1個數字——最終預測結果,看得到
+```
+
+**為什麼XOR一定要有隱藏層:** XOR線性不可分(沒辦法用一條直線分開),隱藏層的作用是「把原本的資料轉換到另一個空間,轉換後可能就變得能用直線分開了」——隱藏層在做「把資料重新整理、扭曲成更好分類的形狀」這件事,過程看不到細節才叫隱藏層。
+
 **Neuron(神經元):** 最小的計算單位,把輸入加權加總、加偏差,再套一個激活函數(activation function)。公式:`輸出 = tanh(w1*x1 + w2*x2 + ... + b)`
 
 **Layer(層):** 好幾個Neuron(神經元)「並排」放在一起,同時處理同一組輸入,輸出收集成一個新的list。
@@ -210,7 +258,9 @@ Layer2輸出: tanh(0.4621+(-0.4621)) = tanh(0.0) = 0.0
 
 ## Step5:XOR(互斥或)訓練,具體追蹤
 
-**XOR規則:** `[0,0]→-1`, `[0,1]→1`, `[1,0]→1`, `[1,1]→-1`——沒辦法用一條直線分開的分類問題。
+**XOR(互斥或,Exclusive OR):兩個輸入不一樣時輸出1(或true),一樣時輸出0(或false)。**
+
+**XOR規則(今天用-1/1編碼):** `[0,0]→-1`, `[0,1]→1`, `[1,0]→1`, `[1,1]→-1`——沒辦法用一條直線分開的分類問題(線性不可分),這也是為什麼一定要有隱藏層(hidden layer)+非線性函數才能學會。
 
 **Loss(損失):** 一個數字,代表模型現在預測得多爛,數字越小越好。這裡用 `sum((p-y)**2 for p,y in zip(preds,ys))`,是MSE(均方誤差)的變形。
 
@@ -239,37 +289,6 @@ Difference: 3.66e-10   (遠小於1e-5,證明引擎寫對了)
 ```
 
 **什麼時候用:** 新增運算到autograd引擎時、訓練不收斂懷疑梯度算錯時——是「驗證程式碼正確性」的工具,不是訓練時的防護機制(跟「梯度裁剪Gradient Clipping」防止梯度爆炸是完全不同的東西,測驗時搞混過一次)。
-
-## 這堂課的名詞總表
-
-| 名詞(英文) | 一句話定義 |
-|---|---|
-| 鏈鎖法則(Chain Rule) | 合成函數的導數,等於每一層局部導數連乘 |
-| 計算圖(Computational Graph) | 把運算拆成節點畫成圖,正向算值、反向算梯度 |
-| 局部導數(Local Derivative) | 只看單一運算自己的導數,不管前後文 |
-| 上游梯度(Upstream Gradient) | 從輸出那邊已經傳過來的梯度值 |
-| 正向模式(Forward Mode) | 種子放輸入,往前推導數,適合輸入少輸出多 |
-| 反向模式(Reverse Mode) | 種子放輸出,往回拉梯度,適合輸入多輸出少(神經網路用這個) |
-| 對偶數(Dual Numbers) | 把值跟導數包成一組(值,導數),正向模式的一種實作 |
-| 自動微分(Automatic Differentiation) | 記錄運算、自動算出精確梯度的系統 |
-| 拓撲排序(Topological Sort) | 排順序規則:小孩一定排在爸媽前面 |
-| 閉包(Closure) | 內層函式能記住並使用外層函式的變數,即使外層已結束 |
-| 梯度累加(Gradient Accumulation) | 同一變數被用在多處時,梯度要加總不能覆蓋 |
-| 動態圖(Dynamic Graph) | 每次正向傳播都重新蓋一次計算圖(PyTorch風格) |
-| 梯度檢查(Gradient Checking) | 拿數值法梯度比對autodiff梯度,驗證正確性 |
-| 神經元(Neuron) | 加權總和+偏差,再套激活函數 |
-| 層(Layer) | 好幾個神經元並排,同時處理同一組輸入 |
-| 多層感知器(MLP) | 好幾層疊起來的網路 |
-| tanh(雙曲正切函數) | 把任何數字壓縮成-1到1之間的S形曲線,激活函數之一 |
-| 損失(Loss) | 一個數字,代表模型現在預測得多爛 |
-| 參數(Parameters) | 模型裡所有可以被調整學習的數字(w、b) |
-
-## Learning Objectives 打勾清單
-
-- [x] Build a minimal autograd engine (Value class) that records operations and computes gradients via reverse-mode autodiff — `__init__`/`__add__`/`__mul__`/`relu`/`backward` 親手打完並驗證(x1=2,x2=3例子,dy/dx1=3.0,dy/dx2=2.0跟手推一致)
-- [x] Implement forward and backward passes through a computation graph using topological sort — 拓撲排序概念確認懂,語法還在熟悉中(見review-queue)
-- [x] Construct and train a multi-layer perceptron on XOR using only the from-scratch autograd engine — Neuron/Layer/MLP看邏輯+具體數字追蹤過,XOR訓練loss從4.15降到0.29,親眼驗證過
-- [x] Verify autodiff correctness using gradient checking against numerical finite differences — 誤差3.66e-10,親眼驗證過
 
 ## 這堂課的總結
 
