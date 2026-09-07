@@ -1,11 +1,3 @@
-"""
-Lesson 5 練習:親手打自動微分引擎(Value class)
-
-親手打的部分:__init__、__repr__、__add__、__mul__、relu、backward(核心)
-沒有逐行手打的部分:__neg__/__sub__/__pow__/__truediv__/exp/log/tanh
-(這幾個是同一套模式重複套用,看懂邏輯就好)
-"""
-
 class Value:
     def __init__(self, data, children=(), op=''):
         self.data = data
@@ -60,9 +52,6 @@ class Value:
         self.grad = 1.0
         for v in reversed(topo):
             v._backward()
-
-    # 以下這些補齊運算,都是「加法/乘法/relu」同一套模式重複套用,只是換公式
-    # (看邏輯就好,課堂上沒有逐行手打,完整說明在notes.md)
 
     def __neg__(self):
         return self * -1
