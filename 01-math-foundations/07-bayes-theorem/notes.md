@@ -2,7 +2,7 @@
 
 ## Learning Objectives 打勾清單
 - [x] 從先驗、似然、證據算出後驗機率(貝氏定理本身)
-- [x] 從零實作Naive Bayes文字分類器,含Laplace平滑跟log機率 ⚠️(照新的加快節奏,核心程式碼由我直接寫進practice.py+逐行講解+跑demo驗證,不是逐段手打)
+- [x] 從零實作Naive Bayes文字分類器,含Laplace平滑跟log機率 ⚠️(照新的加快節奏,`NaiveBayes` class由我寫進`reference.py`+demo驗證過,但沒有真的帶你逐行看過,只有跑過的輸出結果;所以`practice.py`裡沒有放這個class,只留`bayes()`——你真的對照過公式讀過的部分)
 - [x] 比較MLE跟MAP估計,並理解MAP為什麼等於L2正則化
 - [x] 用Beta-Binomial共軛先驗做序列貝氏更新
 
