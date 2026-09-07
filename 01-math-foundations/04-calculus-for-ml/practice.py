@@ -6,14 +6,10 @@ for step in range(20):
     print(f"step {step:2d}  x={x:8.4f}  f(x)={x**2:10.6f}")
 
 
-# ---------- 2D梯度下降 + 線性迴歸,用數值梯度(numerical_gradient)實作 ----------
-
 import random
 
 
 def numerical_gradient(f, point, h=1e-7):
-    # 梯度=把每個變數各自的偏導數收集成一個向量。
-    # 偏導數算法:只動第i個變數一點點,其他固定不動,看輸出變化多少除以動的量。
     gradient = []
     for i in range(len(point)):
         point_plus = list(point)
@@ -36,7 +32,6 @@ def gradient_descent_2d():
     lr = 0.1
     for step in range(30):
         grad = numerical_gradient(f_2d, point)
-        # 每個維度各自減掉「學習率 * 對應的梯度分量」
         point = [p - lr * g for p, g in zip(point, grad)]
         loss = f_2d(point)
         if step % 5 == 0 or step == 29:
@@ -44,12 +39,6 @@ def gradient_descent_2d():
 
 
 def linear_regression():
-    # predict -> compute loss -> compute gradient -> update weight,重複很多次
-    # loss用MSE(均方誤差):error^2的平均
-    # dw、db是loss對w、對b的偏導數(手推公式,不是數值法):
-    #   loss = mean((wx+b-y)^2)
-    #   dw = mean(2*error*x)
-    #   db = mean(2*error)
     print("\n=== 梯度下降訓練線性迴歸 y=wx+b ===")
     random.seed(42)
     w = random.gauss(0, 1)
@@ -57,7 +46,7 @@ def linear_regression():
     lr = 0.01
 
     xs = [1.0, 2.0, 3.0, 4.0, 5.0]
-    ys = [3.0, 5.0, 7.0, 9.0, 11.0]  # 真實關係是 y = 2x + 1
+    ys = [3.0, 5.0, 7.0, 9.0, 11.0]
 
     for epoch in range(200):
         total_loss = 0
