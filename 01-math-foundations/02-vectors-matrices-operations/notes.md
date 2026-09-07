@@ -31,7 +31,9 @@
 output = np.maximum(0, weights @ inputs + bias)
 ```
 
-其餘的 import、inputs/weights/bias 的建立、print 陳述式,是先幫忙寫好的樣板碼。`practice.py` 這堂課是空的(刻意的,矩陣類別完整版沒有手刻,原因寫在上面 Learning Objectives 那一項)。
+其餘的 import、inputs/weights/bias 的建立、print 陳述式,是先幫忙寫好的樣板碼。
+
+**回頭補記(2026-09-07):** `matmul` 這個方法當時有真的逐行對照 C++ 三層迴圈拆解過(從最內層 `for k` 的內積累加,到中層 `for j`、外層 `for i`,順序完全對應),是真的看懂逐行邏輯,不只是「口頭能解釋」的層級,所以事後補進了 `practice.py`(連同讓它能跑的最小 `Matrix.__init__`)。`transpose`/`determinant`/`inverse` 這三個維持原判斷,只有整體邏輯講解過、沒有逐行拆解,所以不補,完整版留在 `reference.py`。
 
 ## 這堂課用的新教學策略
 
