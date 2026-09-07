@@ -67,7 +67,9 @@ for step in range(20):
     print(f"step {step:2d}  x={x:8.4f}  f(x)={x**2:10.6f}")
 ```
 
-其中 `for step int range(20)` 有個筆誤(`int` 應該是 `in`),自己抓出來後改對,跑出來確認 x 從 5 收斂到接近 0。print 那行格式化語法是我幫忙補的。2D 梯度下降跟線性迴歸那兩段,是看懂完整邏輯、逐行拆解過(包括 `zip`、list comprehension、`numerical_gradient`函式怎麼對應中央差分公式),但沒有另外手打進 `practice.py`,完整程式碼在 `reference.py`。
+其中 `for step int range(20)` 有個筆誤(`int` 應該是 `in`),自己抓出來後改對,跑出來確認 x 從 5 收斂到接近 0。print 那行格式化語法是我幫忙補的。2D 梯度下降跟線性迴歸那兩段,是看懂完整邏輯、逐行拆解過(包括 `zip`、list comprehension、`numerical_gradient`函式怎麼對應中央差分公式)。
+
+**回頭補記(2026-09-07):** 這兩段(`numerical_gradient`、2D梯度下降、線性迴歸)當時確實逐行拆解過,不只是「看懂邏輯」層級,所以事後補進了 `practice.py`,補完後跑過確認輸出跟 `reference.py` 一致(2D點收斂到接近原點、線性迴歸學出 y≈2x+1)。
 
 ## 今天花的時間
 
