@@ -77,6 +77,8 @@ w = w - lr * m_hat / (sqrt(v_hat) + epsilon)
 
 **Adam跟momentum比,多做了什麼**:momentum只解決「方向」的問題;Adam在這基礎上多做一件事——依照每個權重梯度的大小,自動調整它專屬的步伐大小。方向+步伐一起做。
 
+![梯度下降在窄山谷裡左右震盪(之字形),Momentum走得比較平滑](images/gd_vs_momentum_path.png)
+
 demo跑出來的驗證(Rosenbrock函數,最小值在x=1, y=1, loss=0):
 ```
 GD     -> loss=0.04083385
@@ -94,6 +96,8 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 
 **鞍點**:想像馬鞍形狀——中間那個點,前後方向看是往下凹的(像山谷),左右方向看反而是往上凸的(像山頂)。站在正中間,測出來的梯度是0(看起來像到底了),但其實往另一個方向走還能更低,只是當下這個點感覺不出來。
 
+![鞍點的3D示意圖:某個方向看是山谷,另一個方向看是山頂](images/saddle_point_3d.png)
+
 **為什麼鞍點更常見更麻煩**:局部最小值要求「所有方向都是山谷」,維度很多(神經網路動輒上萬個參數)時,這種「每個方向都剛好是谷底」的機率很低。相反地,「一部分方向是谷、一部分方向是山頂」(鞍點)在高維度空間裡反而超級常見。訓練神經網路時,卡住變慢最常見的原因不是局部最小值,而是鞍點——梯度在鞍點附近會變得很小很小,導致訓練停滯不前。Momentum跟mini-batch的雜訊都有助於衝出鞍點。
 
 ### 學習率排程(Learning Rate Schedule)
@@ -106,6 +110,8 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 | Exponential decay | 平滑地按指數遞減 |
 | Cosine annealing | 沿著cos曲線平滑遞減,前面大步後面小步,Transformer訓練常用 |
 | Warmup + decay | 先線性拉升,再遞減,大模型防止一開始訓練不穩定 |
+
+![三種學習率排程曲線:Step decay、Cosine annealing、Warmup+decay](images/lr_schedules.png)
 
 ## PyTorch對應
 
