@@ -173,3 +173,4 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 理解程度:6個核心概念都逐一講解+確認過,post測驗3題用問答方式都答對(中間有補強one-hot、perplexity vs accuracy的差別、Pearson vs Poisson的混淆)。整體理解紮實,沒有像Lesson 8那樣退步
 效率:延續「每教完一個概念就停下確認」的節奏,這次retention明顯比Lesson 8好,沒有出現連續好幾個「不知道」的狀況
 完成度:4個Learning Objectives都完成,MI的完整特徵排序demo跳過記review-queue;新增了配圖(entropy/cross-entropy/概念串連圖/互資訊Venn圖),也把Lesson 1-8的舊筆記回頭補了圖並推上GitHub
+花費時間:56分4秒
