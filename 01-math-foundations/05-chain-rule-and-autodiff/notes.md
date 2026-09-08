@@ -41,6 +41,8 @@
 
 `y = f(g(x))` 時,`dy/dx = f'(g(x)) · g'(x)`——每多一層合成函數,就多乘一個這一層的局部導數。
 
+![計算圖:正向傳播算值、反向傳播算梯度(上游梯度×局部導數)](images/computational_graph_forward_backward.png)
+
 ## 為什麼計算圖(Computational Graph)要拆成一步一步寫
 
 `y = relu(x1*x2 + 1)` 這種一行寫完的公式,拆成三個小步驟寫:
