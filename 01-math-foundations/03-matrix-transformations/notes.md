@@ -27,6 +27,8 @@
 
 ![複合變換順序影響結果:先轉再縮放 vs 先縮放再轉,同一個點走到不同地方](images/composition_order_matters.png)
 
+![singular matrix(奇異矩陣):det=0,空間被壓扁成一條線,面積歸零](images/singular_matrix.png)
+
 ### Eigenvalue 完整推導(用文字講,少符號版)
 
 1. 要找的東西滿足:「矩陣乘上這個向量」等於「這個向量直接乘上一個數字」,寫成 `Av = λv`。
@@ -38,6 +40,8 @@
 7. 套用國高中的一元二次方程式公式解:`λ = (trace ± √(trace²-4·det)) / 2`。
 
 算出兩個 λ 之後,各自代回 `(A-λI)v=0` 就能解出對應的 eigenvector v。
+
+![characteristic equation:det(A-λI)=0的根就是eigenvalue](images/characteristic_equation.png)
 
 ![Eigenvector 方向不變、只被拉伸,對照一個隨機向量方向會改變](images/eigenvector_direction_preserved.png)
 
@@ -63,9 +67,13 @@
 
 答案：RNN 會把同一個權重矩陣反覆套用很多次(每一個時間步都乘一次),這跟 eigendecomposition(`A = V @ D @ V⁻¹`)的概念直接相關——如果沿著 eigenvector 的方向去看,矩陣反覆相乘的效果,等同於把 eigenvalue 反覆相乘。如果某個 eigenvalue 的絕對值大於1,重複乘上自己 t 次(對應 t 個時間步)會讓數值指數成長,沿著這個方向的梯度會越滾越大,最終爆炸到數值溢位,這就是梯度爆炸(exploding gradient)。反過來,如果 eigenvalue 絕對值小於1,重複相乘會讓數值指數縮小,越乘越接近0,沿著這個方向傳遞的梯度會消失不見,模型學不到「久遠之前」的資訊,這就是梯度消失(vanishing gradient)。只有 eigenvalue 絕對值剛好等於或接近1,重複相乘的結果才會保持穩定,不爆炸也不消失,這也是為什麼 LSTM/GRU 等設計會特別去控制這個機制。
 
+![RNN梯度穩定性:eigenvalue絕對值決定爆炸/消失/穩定](images/rnn_stability.png)
+
 **Q3：PCA(主成分分析,Principal Component Analysis)裡,為什麼協方差矩陣最大的 eigenvalue 對應的 eigenvector,就是資料變異量(variance)最大的方向?**
 
 答案：PCA 要找的是「資料點分布最開、資訊量最豐富」的方向——把高維資料投影到這個方向上時,資料點彼此之間的差異保留得最多。協方差矩陣(covariance matrix)描述的正是資料在各個方向上如何一起變動(包含每個維度自己的變異數,以及維度之間的共變異數)。eigenvector 的定義是「矩陣作用在它身上時,方向不會被扭轉,只會被拉伸」——套用在協方差矩陣上,eigenvector 就是資料「自然分散」的那幾個特殊方向(不會因為套用協方差結構而被轉向其他方向),而對應的 eigenvalue,量的正是資料沿著這個方向的變異量有多大(eigenvalue 越大,代表資料沿著這個方向散得越開)。因此把所有 eigenvalue 由大到小排序,最大的那個對應的 eigenvector,就是「資料變異量最大的方向」,也就是 PCA 選出的第一個主成分(principal component);把資料投影到前幾個最大 eigenvalue 對應的 eigenvector 上,就能用更少的維度保留住資料裡大部分的資訊量。
+
+![PCA:協方差矩陣的eigenvector就是主成分方向,最大eigenvalue對應變異量最大的方向](images/pca_direction.png)
 
 ## 今天評分
 
