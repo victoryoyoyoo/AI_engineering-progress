@@ -155,8 +155,6 @@ if __name__ == "__main__":
     diff = np.abs(np.abs(X_reduced) - np.abs(X_sklearn))
     print(f"Max absolute difference: {diff.max():.10f}")
 
-    # ---------- 之後有空再補:t-SNE / UMAP demo,課程3個Exercises尚未做 ----------
-
     # ---------- Kernel PCA demo:同心圓(標準PCA分不開,kernel PCA可以) ----------
     from sklearn.datasets import make_circles
 
@@ -170,3 +168,5 @@ if __name__ == "__main__":
     X_linear = linear_pca.fit_transform(X_circles)
     print(f"Standard PCA explained variance on circles: {linear_pca.explained_variance_ratio_}")
     # 標準PCA對同心圓幾乎沒用(兩個方向變異量差不多,因為圓形資料沒有明顯的線性主軸)
+
+    # ---------- 之後有空再補:t-SNE / UMAP demo,課程3個Exercises尚未做 ----------
