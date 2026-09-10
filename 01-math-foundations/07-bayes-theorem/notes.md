@@ -43,7 +43,11 @@ P(A且B) = P(A|B)·P(B) = P(B|A)·P(A)
 P(A|B) = P(B|A) · P(A) / P(B)
 ```
 
-這就是貝氏定理。四個量各自的意義:
+這就是貝氏定理。
+
+![貝氏定理:Prior × Likelihood ÷ Evidence = Posterior](images/bayes_theorem_flow.png)
+
+四個量各自的意義:
 
 | 符號 | 名稱 | 意思 |
 |---|---|---|
@@ -101,6 +105,8 @@ P(詞|類別) = (count(詞,類別) + smoothing) / (total_words_in_類別 + smoot
 ```
 
 `smoothing`通常設1(所以也叫add-one smoothing),保證任何詞的機率都不會是0,但當這個詞出現次數夠多時,平滑的影響會被稀釋到可以忽略。
+
+![Laplace smoothing:未出現詞的機率從0變成一個很小的非零值](images/laplace_smoothing.png)
 
 ## MLE vs MAP
 
