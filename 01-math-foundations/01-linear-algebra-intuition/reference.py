@@ -5,6 +5,7 @@
 import math
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
 class Vector:
     def __init__(self, components):
         self.components = list(components)
@@ -30,6 +31,7 @@ class Vector:
         # 向量長度：sqrt(x1^2 + x2^2 + ...)
         return sum(x**2 for x in self.components) ** 0.5
 
+    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
     def normalize(self):
         # 正規化：縮放成長度為 1 的向量，方向不變
         mag = self.magnitude()
@@ -39,6 +41,7 @@ class Vector:
         # 餘弦相似度：內積除以兩個長度相乘，AI 領域超常用的相似度指標
         return self.dot(other) / (self.magnitude() * other.magnitude())
 
+    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
     def angle_between(self, other):
         # 算兩個向量的夾角（度數）。cosine_similarity 算出來的是 cos(角度)，
         # 這裡用 acos（反餘弦）把 cos 值換算回實際角度，degrees 再把弧度轉成度數。
@@ -47,6 +50,7 @@ class Vector:
         cos_theta = max(-1.0, min(1.0, cos_theta))  # 防止浮點數誤差超出 [-1,1] 範圍
         return math.degrees(math.acos(cos_theta))
 
+    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
     def project_onto(self, other):
         # 把 self 投影到 other 方向上：想成 self 在太陽正上方照下來，落在 other
         # 這條線上的影子有多長、指向哪。scalar 算的是「影子佔 other 長度的比例」，
@@ -59,6 +63,7 @@ class Vector:
         return f"Vector({self.components})"
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 def is_independent(vectors):
     # 判斷一組向量是否「線性獨立」:沒有任何一個向量可以用其他向量加加減減、
     # 乘個倍數湊出來(例如 [2,1,0] = 2*[1,0,0] + [0,1,0]，這樣就不獨立)。
@@ -90,6 +95,7 @@ def is_independent(vectors):
     return rank == n
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 def gram_schmidt(vectors):
     # 把一組線性獨立的向量，轉換成「正交歸一基底」:每個向量互相垂直(正交)、
     # 長度都是1(歸一)。做法是一個一個處理，每個新向量都先扣掉它在前面
@@ -108,6 +114,7 @@ def gram_schmidt(vectors):
     return orthonormal
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
 class Matrix:
     def __init__(self, rows):
         self.rows = [list(row) for row in rows]
@@ -133,6 +140,7 @@ class Matrix:
             rows.append(row)
         return Matrix(rows)
 
+    # === 之後有空再補:transpose(矩陣轉置),Matrix class簡化時整個拿掉,完全沒教 ===
     def transpose(self):
         # 轉置：行列互換
         return Matrix([
@@ -140,6 +148,7 @@ class Matrix:
             for i in range(self.shape[1])
         ])
 
+    # === 之後有空再補:rank(矩陣的秩),只提過名詞、測驗答錯,LoRA會用到,優先度不低 ===
     def rank(self):
         # 矩陣的秩(rank):矩陣裡「真正獨立」的列數量，也就是把每一列當向量，
         # 有幾個是線性獨立的(邏輯跟上面的 is_independent 一樣，用列運算算)。
@@ -171,6 +180,7 @@ class Matrix:
         return f"Matrix({self.rows})"
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # --- 底下是測試，直接跑這個檔案就會看到結果 ---
 if __name__ == "__main__":
     print("=== Vector 基本運算 ===")
