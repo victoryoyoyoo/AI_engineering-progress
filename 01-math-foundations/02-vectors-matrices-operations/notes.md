@@ -100,9 +100,11 @@ output = np.maximum(0, weights @ inputs + bias)
 
 ## 今天評分
 
-理解程度:8/10,矩陣乘法、shape 規則、element-wise vs matrix multiply、determinant/inverse 的直覺都是真的懂,不是背的
-效率:明顯比 Lesson 1 快很多,Top-Down 流程省下大量手刻時間
-完成度:核心 4 個 Learning Objectives 裡 3 個做到、1 個依新流程刻意跳過(非疏漏)
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | 8/10,矩陣乘法、shape 規則、element-wise vs matrix multiply、determinant/inverse 的直覺都是真的懂,不是背的 |
+| 效率 | 明顯比 Lesson 1 快很多,Top-Down 流程省下大量手刻時間 |
+| 完成度 | 核心 4 個 Learning Objectives 裡 3 個做到、1 個依新流程刻意跳過(非疏漏) |
 
 ## 這堂課的總結
 
@@ -157,9 +159,12 @@ for (int i = 0; i < rows; i++) {
 ```
 
 讀 list comprehension 的訣竅是**從最裡面往外讀**:
-1. 最內層 `self.data[i][k] * other.data[k][j] for k in range(self.cols)` = C++ 的 `for(k...) sum += A[i][k]*B[k][j];`,外面包 `sum(...)` 就是把這輪迴圈的加總結果收集起來
-2. 中間層 `for j in range(other.cols)` = C++ 的 `for(j...)`,對每個 j 重複算一次上面那個內積
-3. 最外層 `for i in range(self.rows)` = C++ 的 `for(i...)`,對每個 i 重複算一次
+
+| 層 | list comprehension 部分 | C++ 對應 | 說明 |
+|---|---|---|---|
+| 最內層 | `self.data[i][k] * other.data[k][j] for k in range(self.cols)` | `for(k...) sum += A[i][k]*B[k][j];` | 外面包 `sum(...)` 就是把這輪迴圈的加總結果收集起來 |
+| 中間層 | `for j in range(other.cols)` | `for(j...)` | 對每個 j 重複算一次上面那個內積 |
+| 最外層 | `for i in range(self.rows)` | `for(i...)` | 對每個 i 重複算一次 |
 
 三層迴圈,三層 for,順序完全對應,只是 Python 把「宣告空陣列 + append」濃縮成用中括號包起來自動收集結果。
 
