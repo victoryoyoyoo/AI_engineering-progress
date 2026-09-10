@@ -76,6 +76,8 @@ exp(z_i - c) / Σ_j exp(z_j - c)
 
 `loss = -log(模型對正確答案給的機率)`。機率越接近1,loss越接近0;機率越接近0,loss趨近無窮大。loss值域是 `[0, +∞)`,理論最小值0代表模型100%確定且答對。這個設計讓訓練時的梯度會一直推著模型「提高正確答案的機率」。
 
+![Cross-entropy loss曲線:機率越接近1 loss越接近0,越接近0 loss飆高](images/cross_entropy_loss_curve.png)
+
 ### 為什麼要用log機率而不是原始機率
 
 原始機率連乘(例如一句話裡每個詞的機率相乘),乘到幾十項後會因為浮點數下溢(underflow)直接變成0,而且不是「後面的詞被忽略」,是全部貢獻都塌陷成0一起消失。取log後乘法變加法,100個負數相加不會有這種指數級縮小到浮點數極限外的問題,而且保留了每個詞各自攜帶的資訊。
@@ -83,6 +85,8 @@ exp(z_i - c) / Σ_j exp(z_j - c)
 ### Joint / Marginal 分布
 
 Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal distribution 是把其中一個變數加總消掉:`P(X=x) = Σ_y P(X=x, Y=y)`,對應到聯合機率表格裡「每一列/每一欄的加總」。
+
+![Joint distribution跟Marginal distribution的關係:表格內是joint,每列/每欄加總是marginal](images/joint_marginal_distribution.png)
 
 ## 這堂課的總結
 
