@@ -18,6 +18,8 @@
 ![導數就是某一點切線的斜率](images/tangent_line_slope.png)
 | 偏導數 Partial Derivative | 只動一個變數,其他變數固定不動,算出的變化率 | 神經網路裡每個權重各自的偏導數,分開算才知道各自該怎麼調 |
 | 梯度 Gradient | 把每個變數的偏導數收集成一個向量 | 指向「往上爬最快」的方向;要下降就走它的反方向 |
+
+![2D梯度方向:垂直於等高線,指向數值增加最快的方向,梯度下降走反方向](images/gradient_direction_2d.png)
 | 梯度下降 Gradient Descent | 更新規則:新值=舊值−學習率×梯度 | 只需要一階導數,重複很多次就能逼近函數最低點 |
 
 ![梯度下降在1D曲線上,一步一步逼近最低點的路徑](images/gradient_descent_1d_path.png)
@@ -26,8 +28,12 @@
 | 解析法 Analytical | 手推公式,精確算出導數 | 快、準,但要先會推導這個函數的公式 |
 | Hessian 矩陣 | 二階偏導數湊成的矩陣,告訴你「地形彎的程度」 | eigenvalue全正=真的最低點;全負=最高點;有正有負=鞍點(假的最低點) |
 | 鞍點 Saddle Point | 梯度=0但不是真正最低點的地方 | 前後平、左右也平,但其實旁邊還有更深的地方,靠Hessian的eigenvalue戳破 |
+
+![真正最低點 vs 鞍點:Hessian的eigenvalue全正 vs 有正有負](images/saddle_point_vs_minimum.png)
 | 牛頓法 Newton's Method | 用梯度+Hessian一起算更新方向 | 理論上一步跳到谷底,但Hessian太大(N²),深度學習用不起 |
 | 泰勒展開 Taylor Series | 用多項式局部逼近任何函數 | 一階近似=梯度下降在做的事;二階近似=牛頓法在做的事 |
+
+![泰勒展開:x0附近近似很準,離越遠誤差越大,一階vs二階近似對照](images/taylor_series_approximation.png)
 | 線性迴歸 Linear Regression | y=wx+b,用梯度下降訓練w、b | predict→算loss→算梯度→更新,是所有神經網路訓練迴圈的縮影 |
 
 ## 這堂課的總結
