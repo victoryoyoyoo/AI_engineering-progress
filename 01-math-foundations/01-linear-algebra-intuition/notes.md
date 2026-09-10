@@ -56,6 +56,12 @@
 
 ![magnitude(向量長度):畢氏定理的推廣](images/magnitude.png)
 
+#### 常見地雷
+
+> 容易誤會成:內積(dot product)本身數值越大,就代表兩個向量越像。
+>
+> 實際上:內積同時被「方向像不像」跟「向量各自的長度」影響,只要其中一個向量長度變大,內積就會跟著放大,即使方向完全沒有變得更像。真正只反映方向的是餘弦相似度(內積除以兩個長度的乘積),比較兩個embedding像不像,要看cosine similarity而不是原始內積。
+
 這堂課刻意沒教到、留在 review queue 的:projection(投影)、Gram-Schmidt(正交化)、rank(矩陣的秩)、basis(基底)、row reduction(列運算/高斯消去法)、attention scores 跟內積的關係、LoRA。這些之後遇到再回頭補,不是這堂課的核心。
 
 ## 我自己手打的部分
