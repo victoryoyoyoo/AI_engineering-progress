@@ -59,6 +59,8 @@ w = w - lr * v
 
 **雜訊為什麼是好事,不是缺點**:mini-batch帶來的隨機震動,能把optimizer「推出」淺的局部最小值或鞍點,不會乖乖卡在那裡出不來。
 
+![Batch GD vs Mini-batch SGD:雜訊換來跳出平坦區/淺谷的機會](images/sgd_noise.png)
+
 ### Adam——momentum + 自適應學習率
 
 Adam = momentum(記住過去方向)+ 每個權重自己專屬的學習率(根據這個權重梯度通常多大來調整步伐)。
@@ -76,6 +78,8 @@ w = w - lr * m_hat / (sqrt(v_hat) + epsilon)
 除以`sqrt(v_hat)`是關鍵:梯度常常很大的權重,除以一個大數字,實際步伐變小(避免暴衝);梯度很小的權重,除以一個小數字,實際步伐變大(不會卡住不動)。每個權重因此有了自己專屬的學習率。`m_hat`/`v_hat`的偏差修正是因為`m`、`v`一開始都是0,訓練剛開始的前幾步會偏小,除以`(1-beta^t)`補回來,`t`是目前第幾步。
 
 **Adam跟momentum比,多做了什麼**:momentum只解決「方向」的問題;Adam在這基礎上多做一件事——依照每個權重梯度的大小,自動調整它專屬的步伐大小。方向+步伐一起做。
+
+![Adam的Bias Correction:修正m、v在訓練初期的低估](images/bias_correction.png)
 
 ![梯度下降在窄山谷裡左右震盪(之字形),Momentum走得比較平滑](images/gd_vs_momentum_path.png)
 
