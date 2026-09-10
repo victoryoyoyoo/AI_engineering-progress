@@ -202,7 +202,9 @@ t-SNE / UMAP的內部演算法細節、課程的3個Exercises,沒有實際帶過
 
 ## 今天評分
 
-理解程度:PCA的`fit`5步驟(核心層)逐步拆解、反覆用小數字例子確認過,`axis`、矩陣形狀、`argsort`重排這幾個一開始卡住的地方後來都釐清;`transform`/`inverse_transform`/`reconstruction_error`/Kernel PCA(理解層)講邏輯+demo驗證過;curse of dimensionality用實際跑出來的距離比例數字帶過,3題理解確認題都答對(第1題判斷邏輯有小修正,第3題提示後自己想到大數法則的連結)
-效率:過程中反覆用「拆更小的具體數字例子」處理卡住的地方(np.mean的axis、共變異數矩陣形狀判斷、eigenvectors重排語法),比起直接看程式碼更有效
-完成度:4個Learning Objectives裡,PCA從零實作、explained variance ratio/elbow method、Kernel PCA分離非線性資料 這3個做到;t-SNE/UMAP的MNIST視覺化比較沒有實際帶過,記進review-queue。另外這堂課也順手把Lesson 1-9的`reference.py`補上3層優先度標記並依標記重新排版、`practice.py`同步workflow標準化、`reference.py`分層排序標準化,都存成往後每堂課固定會做的習慣
-花費時間:1小時31分鐘(課程建議時間:約90分鐘,幾乎完全對上)
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | PCA的`fit`5步驟(核心層)逐步拆解、反覆用小數字例子確認過,`axis`、矩陣形狀、`argsort`重排這幾個一開始卡住的地方後來都釐清;`transform`/`inverse_transform`/`reconstruction_error`/Kernel PCA(理解層)講邏輯+demo驗證過;curse of dimensionality用實際跑出來的距離比例數字帶過,3題理解確認題都答對(第1題判斷邏輯有小修正,第3題提示後自己想到大數法則的連結) |
+| 效率 | 過程中反覆用「拆更小的具體數字例子」處理卡住的地方(np.mean的axis、共變異數矩陣形狀判斷、eigenvectors重排語法),比起直接看程式碼更有效 |
+| 完成度 | 4個Learning Objectives裡,PCA從零實作、explained variance ratio/elbow method、Kernel PCA分離非線性資料 這3個做到;t-SNE/UMAP的MNIST視覺化比較沒有實際帶過,記進review-queue。另外這堂課也順手把Lesson 1-9的`reference.py`補上3層優先度標記並依標記重新排版、`practice.py`同步workflow標準化、`reference.py`分層排序標準化,都存成往後每堂課固定會做的習慣 |
+| 花費時間 | 1小時31分鐘(課程建議時間:約90分鐘,幾乎完全對上) |
