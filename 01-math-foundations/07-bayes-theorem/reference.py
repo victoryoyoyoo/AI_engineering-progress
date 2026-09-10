@@ -12,7 +12,7 @@ import math
 from collections import defaultdict
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 # ---------- Step 1: 貝氏定理本體 ----------
 
 def bayes(prior, likelihood, false_positive_rate):
@@ -27,7 +27,7 @@ def bayes(prior, likelihood, false_positive_rate):
     return posterior
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 # ---------- Step 2: Naive Bayes 文字分類器 ----------
 
 class NaiveBayes:

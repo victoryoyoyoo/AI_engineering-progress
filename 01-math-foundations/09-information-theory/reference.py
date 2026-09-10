@@ -6,7 +6,7 @@ import math
 import random
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 def information_content(p, base=2):
     """單一事件的資訊量(驚訝程度): I(x) = -log(p(x))
     機率越低越驚訝,機率為1(必然發生)資訊量為0。
@@ -84,7 +84,7 @@ def cross_entropy_loss(true_class, logits):
     return -math.log(probs[true_class])
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 def perplexity(avg_cross_entropy, base="e"):
     """困惑度 = e^(交叉熵) 或 2^(交叉熵)
     語言模型困惑度50,代表平均起來像是要從50個選項裡均勻亂猜一樣困惑。
@@ -94,7 +94,7 @@ def perplexity(avg_cross_entropy, base="e"):
     return 2 ** avg_cross_entropy
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 def negative_log_likelihood(labels, all_logits):
     """負對數概似(NLL)——跟cross_entropy_loss取平均後數學上完全相同"""
     return sum(
@@ -103,7 +103,7 @@ def negative_log_likelihood(labels, all_logits):
     ) / len(labels)
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 def conditional_entropy(joint_probs, base=2):
     """條件熵 H(Y|X):已知X之後,Y還剩下多少不確定性"""
     rows = len(joint_probs)
