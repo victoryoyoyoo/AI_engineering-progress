@@ -171,6 +171,12 @@ broadcasting觸發:    某個維度是1(或缺少),numpy自動複製延伸去對
 
 這堂課開始正式套用 Top-Down 策略:大部分程式碼看懂邏輯就過關,不用每個都手刻,速度比 Lesson 1 快很多,理解深度沒有打折。
 
+## 面試向問題
+
+- 生產環境跑出來的模型輸出全部一樣或出現NaN,你懷疑是不是把matrix multiply跟element-wise multiply搞混了,要怎麼從程式碼快速排查?(對應「element-wise multiply vs matrix multiply 對照」那段)
+- 為什麼神經網路一層要寫成`relu(W@x+b)`而不是只留`W@x`?拿掉relu會發生什麼事?(對應「`relu(W @ x + b)`」那段)
+- 訓練時一次丟一整個batch的資料進網路,bias是怎麼自動套用到整批資料上的,不用手動複製成batch大小?(對應「Broadcasting 實際運作的時機」那段)
+
 ---
 
 (下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
