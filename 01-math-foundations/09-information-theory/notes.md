@@ -38,6 +38,8 @@ I(x) = -log(p(x))
 | 千分之一的事件 | 0.001 | 9.97 |
 | 必然發生的事 | 1.0 | 0.0 |
 
+![Information content長條圖:機率越低,驚訝程度越大](images/information_content_bars.png)
+
 ### Entropy(熵)——整個分布的平均驚訝程度
 
 ```
@@ -99,6 +101,8 @@ KL(true || good) = 1.1896 - 1.1568 = 0.0328 bits   ← 猜得準,浪費很少
 
 **KL散度不對稱**:`D_KL(P||Q) != D_KL(Q||P)`,驗證過(P=[0.9,0.1], Q=[0.5,0.5]時,KL(P‖Q)=0.531,KL(Q‖P)=0.737,兩個方向不一樣),所以KL不是真正的距離度量。
 
+![KL Divergence:H(P)是理論下限,H(P,Q)是實際成本,兩者的差就是KL divergence](images/kl_divergence_gap.png)
+
 **訓練時的意義**:H(P)在訓練過程中是常數(標籤資料不變)。想成「總成本 = 固定成本 + 變動成本」——固定成本(H(P))不變,想壓低總成本(H(P,Q))就只能壓變動成本(KL)。所以「最小化交叉熵」跟「最小化KL散度」是同一個優化問題,本質上是把模型的Q推向真實的P。
 
 ### 六個概念怎麼串起來(整堂課最關鍵的一張圖)
@@ -159,6 +163,8 @@ perplexity=50代表模型平均起來的猶豫程度,像是要從**50個選項�
 **跟accuracy的差別**:accuracy是非黑即白(對/錯);perplexity量的是「機率分布有多集中」,同樣答對的兩個模型,一個給正確答案0.9的機率(很篤定),一個只給0.34(矇對的),accuracy一樣但perplexity差很多。perplexity比accuracy更嚴格,能捕捉模型對整個機率分布的掌握程度。
 
 demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比50還高,代表**比隨機亂猜還爛**——驗證了「perplexity < vocab size才代表比隨機好」這個判準)。
+
+![Perplexity對照:未訓練模型比隨機亂猜還爛,訓練好的模型才會遠低於vocab_size](images/perplexity_comparison.png)
 
 ## 這堂課的總結
 
