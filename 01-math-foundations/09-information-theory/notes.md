@@ -212,7 +212,9 @@ Cross-entropy的完整定義是 `H(P,Q) = -sum(p(x)*log(q(x)))`,對所有可能�
 
 ## 今天評分
 
-理解程度:6個核心概念都逐一講解+確認過,post測驗3題用問答方式都答對(中間有補強one-hot、perplexity vs accuracy的差別、Pearson vs Poisson的混淆)。整體理解紮實,沒有像Lesson 8那樣退步
-效率:延續「每教完一個概念就停下確認」的節奏,這次retention明顯比Lesson 8好,沒有出現連續好幾個「不知道」的狀況
-完成度:4個Learning Objectives都完成,MI的完整特徵排序demo跳過記review-queue;新增了配圖(entropy/cross-entropy/概念串連圖/互資訊Venn圖),也把Lesson 1-8的舊筆記回頭補了圖並推上GitHub
-花費時間:56分4秒(課程建議時間:約60分鐘,幾乎完全對上)
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | 6個核心概念都逐一講解+確認過,post測驗3題用問答方式都答對(中間有補強one-hot、perplexity vs accuracy的差別、Pearson vs Poisson的混淆)。整體理解紮實,沒有像Lesson 8那樣退步 |
+| 效率 | 延續「每教完一個概念就停下確認」的節奏,這次retention明顯比Lesson 8好,沒有出現連續好幾個「不知道」的狀況 |
+| 完成度 | 4個Learning Objectives都完成,MI的完整特徵排序demo跳過記review-queue;新增了配圖(entropy/cross-entropy/概念串連圖/互資訊Venn圖),也把Lesson 1-8的舊筆記回頭補了圖並推上GitHub |
+| 花費時間 | 56分4秒(課程建議時間:約60分鐘,幾乎完全對上) |
