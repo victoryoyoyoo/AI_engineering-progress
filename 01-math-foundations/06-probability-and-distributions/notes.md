@@ -132,6 +132,12 @@ Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal d
 
 **PyTorch對應:** `torch.softmax`、`torch.log_softmax`、`nn.CrossEntropyLoss` 都是這堂課手刻函式的現成版本,而且 `nn.CrossEntropyLoss` 內部就是直接呼叫 log_softmax + 取負號,跟今天手刻的邏輯完全一致。
 
+## 面試向問題
+
+- 訓練語言模型算一整句話的機率時,為什麼要用「log機率相加」而不是把每個詞的機率直接連乘?(對應「為什麼要用log機率而不是原始機率」那段)
+- 模型某次forward pass的softmax輸出出現NaN,可能的原因跟修法是什麼?(對應「Softmax 數值穩定的原理」那段)
+- 訓練途中cross-entropy loss突然變成`inf`,可能是哪個環節出了問題?(對應「Log-softmax 為什麼不能分開算」那段)
+
 ## 我自己手打的部分
 
 `expected_value`、`variance` 兩個函式自己手打並驗證過(骰子範例,E[X]=3.5, Var(X)=2.9167)。`softmax`、`log_softmax`、`cross_entropy_loss` 這三個函式因為當下要求直接寫,由我代打進 `practice.py`,但每一行都逐行拆解過,並用實際數字驗證過結果(跟scipy版本完全一致)。PMF/PDF(bernoulli/categorical/poisson/normal)、抽樣函式(sample_bernoulli/sample_categorical/sample_normal_box_muller)、CLT demo,都是理解型分類,看`reference.py`程式碼邏輯+跑demo驗證概念,沒有手打,完整版在`reference.py`。
