@@ -57,6 +57,18 @@
 
 ![relu:引入非線性,負數砍0、正數不變](images/relu.png)
 
+### element-wise multiply vs matrix multiply 對照
+
+這兩個是這堂課最容易搞混的一對,名字都有「multiply」,numpy裡差一個符號,但邏輯完全不同,放在一起對照:
+
+| | element-wise multiply | matrix multiply |
+|---|---|---|
+| 怎麼算 | 同位置的數字互相乘 | 一列跟一行做內積(對應位置相乘再加總) |
+| numpy運算子 | `*` | `@` |
+| 形狀要求 | 兩邊形狀要完全一樣(或能broadcast) | 左邊的行數要等於右邊的列數 |
+| 結果形狀 | 跟原本一樣 | `(m,n) @ (n,p) = (m,p)` |
+| 什麼時候用 | 兩個同形狀的東西要逐項對應處理,例如套用mask、element-wise的激活函數輸出 | 把資料從一個空間映射到另一個空間,例如`W @ x`算神經網路一層的輸出 |
+
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
 ### Broadcasting 一開始不知道實際會用在哪裡
