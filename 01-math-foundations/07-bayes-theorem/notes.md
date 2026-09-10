@@ -204,10 +204,12 @@ Day 3 後驗: Beta(13,9),均值=0.5909       ← 再觀察5正5反,被拉回中�
 
 ## 今天評分
 
-理解程度:貝氏定理推導、醫療檢測的base rate fallacy(用具體人數算過)、Naive Bayes的log機率+Laplace smoothing、MAP等於L2正則化這幾個核心概念都講透了;共軛先驗/序列更新是理解型帶過,概念清楚但沒有深入到能自己推導Beta分布的積分證明
-效率:這堂課照新的加快節奏上,核心程式碼(bayes函式、NaiveBayes類別)由Claude直接寫進practice.py+跑demo驗證,不是逐段手打,省下大量時間
-完成度:4個Learning Objectives全部完成,Tier 2(MAP、共軛先驗、序列更新)理解型完成,Tier 3(A/B testing的Monte Carlo模擬、Exercise 2-4)記進review-queue.md,這次沒做
-花費時間:1小時30分鐘(課程建議時間:約75分鐘,比建議時間長一些)
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | 貝氏定理推導、醫療檢測的base rate fallacy(用具體人數算過)、Naive Bayes的log機率+Laplace smoothing、MAP等於L2正則化這幾個核心概念都講透了;共軛先驗/序列更新是理解型帶過,概念清楚但沒有深入到能自己推導Beta分布的積分證明 |
+| 效率 | 這堂課照新的加快節奏上,核心程式碼(bayes函式、NaiveBayes類別)由Claude直接寫進practice.py+跑demo驗證,不是逐段手打,省下大量時間 |
+| 完成度 | 4個Learning Objectives全部完成,Tier 2(MAP、共軛先驗、序列更新)理解型完成,Tier 3(A/B testing的Monte Carlo模擬、Exercise 2-4)記進review-queue.md,這次沒做 |
+| 花費時間 | 1小時30分鐘(課程建議時間:約75分鐘,比建議時間長一些) |
 
 ---
 
