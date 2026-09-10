@@ -20,6 +20,8 @@
 | Variance | 變異數 | 結果離期望值有多分散 |
 | Normal distribution | 常態分布(高斯分布) | 鐘形曲線,由平均值跟變異數決定形狀 |
 | Central Limit Theorem (CLT) | 中央極限定理 | 很多獨立隨機變數的平均值,最後都會趨近常態分布 |
+| Joint distribution | 聯合分布 | P(X,Y),描述X和Y每一種組合一起發生的機率 |
+| Marginal distribution | 邊際分布 | P(X)=Σ_y P(X,Y),把另一個變數加總消掉,還原出單一變數的分布 |
 | Log probability | 對數機率 | 取log後的機率,把連乘變連加,避免數值下溢 |
 | Softmax | — | 把模型的原始分數(logits)轉成合法的機率分布 |
 | Logits | — | 模型softmax之前吐出來的原始分數 |
