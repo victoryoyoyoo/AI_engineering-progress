@@ -113,6 +113,18 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 
 ![GD vs SGD+Momentum vs Adam:同一個Rosenbrock地形,3000步後的真實軌跡對照(Adam幾乎走完全程,GD/SGD還卡在半路)](images/optimizer_comparison_rosenbrock.png)
 
+### 三種optimizer對照:梯度下降 vs Momentum vs Adam
+
+| | 梯度下降 GD | Momentum | Adam |
+|---|---|---|---|
+| 核心邏輯 | 只看現在的梯度 | 記住過去累積的方向(速度) | Momentum再加上每個權重自己的步伐大小 |
+| 更新規則 | `w = w - lr * gradient` | `v = beta*v + gradient`<br>`w = w - lr*v` | `w = w - lr * m_hat / (sqrt(v_hat) + epsilon)` |
+| 解決什麼問題 | 沒有,最陽春的版本 | 窄山谷裡左右震盪、原地打轉 | 不同權重需要不同大小的學習率 |
+| 優點 | 邏輯最簡單、最好理解 | 遇到小凹凸不會停,收斂比GD快也比較平滑 | 每個權重自適應步伐,大多數問題不太用調參就堪用 |
+| 缺點 | 窄山谷裡容易之字形震盪,慢 | 只解決方向問題,沒解決步伐大小 | 參數比較多、要存的狀態(m、v)也比較多 |
+| Rosenbrock demo結果 | loss=0.04083385 | loss=0.00355685 | loss=0.00000000(幾乎完全收斂) |
+| 什麼時候用 | 教學/理解原理用,實務很少單獨用 | 想要比GD快、又不想上Adam的複雜度時 | 預設優先試這個,Transformer類模型常用它的變形AdamW |
+
 ### 凸(Convex) vs 非凸(Non-convex)
 
 凸函數只有一個最小值,梯度下降一定找得到,像`f(x)=x²`。神經網路的loss是非凸的,有很多局部最小值、鞍點、平坦區域。實務上高維度神經網路的局部最小值,loss通常都跟全域最小值差不多低,不是大問題。
