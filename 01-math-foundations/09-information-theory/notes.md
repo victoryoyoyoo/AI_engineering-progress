@@ -6,6 +6,28 @@
 - [x] 算出特徵與目標之間的mutual information,用來排序特徵重要性 ⚠️(核心MI公式對過+跑過demo,`feature_selection_mi_demo`那個完整排序範例沒有實際帶過,記review-queue)
 - [x] 解釋perplexity是「模型實際上在幾個選項裡猶豫」
 
+## 30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)
+
+- Information content量單一事件的驚訝程度(`-log(p)`,機率越低越驚訝),entropy是整個分布的平均驚訝程度,是不確定性的下限
+- Cross-entropy是用模型猜的Q去描述真實分布P,平均要花多少bit,分類問題P是one-hot時簡化成`-log(q(true_class))`,就是每天在用的loss function
+- KL divergence = cross-entropy − entropy,是「用不完美的Q多浪費的成本」,不對稱不是真正的距離
+- 因為H(P)訓練時是常數,最小化cross-entropy = 最小化KL散度 = 最大化log-likelihood,三件事是同一個優化問題
+- Mutual information量兩個變數共享多少資訊,能抓到非線性關係,比只能抓線性關係的Pearson相關係數更全面
+- Perplexity是cross-entropy取指數,代表模型實際上像在幾個選項間猶豫,比accuracy更能反映模型對整個機率分布的掌握程度
+
+## 公式速查表
+
+| 用途 | 公式 |
+|---|---|
+| Information content | `I(x) = -log(p(x))` |
+| Entropy | `H(P) = -sum( p(x) * log(p(x)) )` |
+| Cross-entropy | `H(P, Q) = -sum( p(x) * log(q(x)) )` |
+| Cross-entropy(P是one-hot時) | `H(P, Q) = -log(q(true_class))` |
+| KL divergence | `D_KL(P \|\| Q) = H(P, Q) - H(P)` |
+| Negative log-likelihood | `NLL = -sum( log(q(y_i)) )` |
+| Mutual information | `I(X;Y) = H(X) - H(X\|Y)` |
+| Perplexity | `e^(交叉熵)`(nats)或`2^(交叉熵)`(bits) |
+
 ## 這堂課的名詞總表
 
 | 英文 | 中文 | 一句話定義 |
@@ -172,19 +194,28 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 
 資訊理論的六個概念,其實是同一套邏輯的不同切面:Information content量單一事件的驚訝程度,Entropy把它平均成整個分布的不確定性下限,Cross-entropy是「用不完美的模型去猜」實際要付出的成本(=loss function),KL divergence是這中間多浪費的部分,Perplexity把交叉熵換算成更直覺的「困惑選項數」。因為標籤的熵H(P)訓練時是常數,最小化交叉熵、最小化KL散度、最大化log-likelihood,三件事在數學上是同一個優化問題。Mutual information是獨立的一支,量兩個變數共享了多少資訊,在特徵選擇上比Pearson相關係數更全面(抓得到非線性關係)。
 
-## 課程結尾理解確認題
+## 課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)
 
-**Q1：entropy(熵)、cross-entropy(交叉熵)、KL divergence(KL散度)三者之間是什麼關係?請用「理論下限」跟「實際花費」來解釋。**
+<details>
+<summary><b>Q1：entropy(熵)、cross-entropy(交叉熵)、KL divergence(KL散度)三者之間是什麼關係?請用「理論下限」跟「實際花費」來解釋。</b></summary>
 
 答案：entropy `H(P)` 是一個分布本身「理論上」最低要花的成本——用分布 P 自己去描述 P 自己,平均驚訝程度的下限,是壓不掉的極限值,分布越集中(某個結果幾乎壟斷)entropy 越低,分布越平均(每個結果機率接近)entropy 越高。cross-entropy `H(P,Q)` 描述的是「實際上」花的成本:如果不是用真實分布 P 自己去編碼,而是用一個不完美的猜測分布 Q(比如模型輸出的預測分布)去描述真實發生的 P,平均要付出多少成本——因為 Q 不完美,這個實際成本一定大於或等於理論下限 `H(P)`,兩者只有在 Q 跟 P 完全一樣時才相等。KL divergence `D_KL(P||Q) = H(P,Q) - H(P)` 量的正是這兩者的差:也就是「因為用不完美的 Q 去猜,多浪費掉的那一部分成本」。可以想成:H(P) 是固定成本(不管模型多好都省不掉),H(P,Q) 是總成本,KL 是浪費掉的變動成本——模型猜得越準,Q 越接近 P,KL 越小,浪費得越少;模型完全猜對,KL 變成0,總成本就等於理論下限。
 
-**Q2：為什麼「最小化cross-entropy loss」等價於「最大化log-likelihood」?**
+</details>
+
+<details>
+<summary><b>Q2：為什麼「最小化cross-entropy loss」等價於「最大化log-likelihood」?</b></summary>
 
 答案：對 N 筆訓練樣本(各自的真實類別是 y_i),假設樣本之間互相獨立,整批資料的 likelihood(概似,模型認為這整批真實答案發生的機率)是每一筆機率的連乘:`Likelihood = Π q(y_i)`。取 log 之後,連乘變成連加,得到 log-likelihood:`Σ log(q(y_i))`。如果在前面加上負號、把所有樣本的值加總,就得到 negative log-likelihood(NLL):`NLL = -Σ log(q(y_i))`。而 `-log(q(y_i))` 這一項,剛好就是 cross-entropy loss 在每一筆樣本上算出來的值(P是one-hot時,`H(P,Q) = -log(q(true_class))`)——所以把 NLL 對所有樣本加總(或取平均),數值上就等於整批資料的 cross-entropy loss。既然「最小化 NLL」等於「最小化NLL前面那個負號拿掉、變成最大化 log-likelihood」,三件事就是同一個優化問題的不同講法:最小化cross-entropy = 最小化NLL = 最大化訓練資料的log-likelihood,只是切入的角度(資訊理論的成本 vs. 統計的概似)不同。
 
-**Q3：perplexity(困惑度)要怎麼解讀?為什麼它比單純的accuracy(準確率)更能反映模型對機率分布掌握的好壞?**
+</details>
+
+<details>
+<summary><b>Q3：perplexity(困惑度)要怎麼解讀?為什麼它比單純的accuracy(準確率)更能反映模型對機率分布掌握的好壞?</b></summary>
 
 答案：perplexity 的定義是把 cross-entropy 取指數(`e^(交叉熵)` 用nats、`2^(交叉熵)` 用bits),可以直接解讀成「模型平均起來,實際上像是在幾個選項之間猶豫不決」——例如 perplexity=50,代表模型的猶豫程度,大約就像是要從50個選項裡均勻亂猜一樣困惑;perplexity 越低,代表模型對答案越有把握、機率分布越集中在正確答案上。accuracy 是非黑即白的指標,只看「模型猜的最高機率選項,是不是剛好等於正確答案」,答對就是答對,不管模型當時給正確答案的機率是0.99還是只是勉強超過其他選項的0.34。但 perplexity 量的是整個機率分布有多「集中」——同樣是答對的兩個模型,一個給正確答案0.9的高機率(很篤定地答對),另一個只給0.34的低機率(矇對的,只是剛好比其他選項高一點點),兩者 accuracy 完全一樣,但 perplexity 差很多,後者的 perplexity 會明顯高於前者。這代表 perplexity 能捕捉到「模型對整個機率分布的掌握程度」,而不只是「有沒有猜中」,是比 accuracy 更嚴格、也更能反映模型真實信心程度的指標。
+
+</details>
 
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
