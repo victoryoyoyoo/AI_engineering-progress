@@ -5,7 +5,7 @@ import random
 # numpy_version.py 裡那一行核心邏輯。這份檔案不會被 git 追蹤、不會推上 GitHub。
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 class Matrix:
     def __init__(self, data):
         # data 是「一列一列」的資料(list of list),rows=幾列、cols=幾行
@@ -14,7 +14,7 @@ class Matrix:
         self.cols = len(self.data[0])
         self.shape = (self.rows, self.cols)
 
-    # === 核心(手刻層,逐行講解+手打練熟) ===
+    # === 🔴 ===
     def matmul(self, other):
         # 矩陣乘法(真正的matrix multiply,不是逐項相乘)
         # 形狀規則:(m,n) @ (n,p) = (m,p),中間的n要對上
@@ -37,7 +37,7 @@ class Matrix:
         # 讓 @ 這個運算子自動呼叫上面的 matmul,語法糖
         return self.matmul(other)
 
-    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
+    # === 🟡 ===
     def __repr__(self):
         # 純粹是印出來好看用的排版邏輯(對齊欄寬、加中括號),跟矩陣運算邏輯無關
         col_widths = []
@@ -172,7 +172,7 @@ class Matrix:
         ])
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 class Vector:
     def __init__(self, data):
         # data 是一串數字(list),size 記錄這個向量有幾維
@@ -209,7 +209,7 @@ class Vector:
         return Vector([x / mag for x in self.data])
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 def relu_matrix(m):
     # ReLU 激活函數:負數變0、正數維持原樣,逐元素進行。
     # 跟 numpy_version.py 裡手打的 np.maximum(0, x) 是同一件事,只是這裡是純Python版本

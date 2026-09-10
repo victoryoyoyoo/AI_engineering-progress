@@ -5,7 +5,7 @@ PCA / Kernel PCA 從零實作，t-SNE / UMAP 用套件跑demo對照
 import numpy as np
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 class PCA:
     """
     主成分分析(Principal Component Analysis)
@@ -46,7 +46,7 @@ class PCA:
 
         return self
 
-    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
+    # === 🟡 ===
     def transform(self, X):
         # 把資料投影到保留的k個主成分方向上:置中後乘上components的轉置
         # 注意用的是fit()存下的self.mean,不是這批X自己的mean,才能跟訓練資料座標系一致
@@ -62,7 +62,7 @@ class PCA:
         return X_reduced @ self.components + self.mean
 
 
-# === 理解層 ===
+# === 🟡 ===
 def reconstruction_error(X, X_reconstructed):
     """
     還原誤差(MSE):壓縮後又還原,跟原始資料差多少
@@ -70,7 +70,7 @@ def reconstruction_error(X, X_reconstructed):
     return np.mean((X - X_reconstructed) ** 2)
 
 
-# === 理解層(講kernel trick的邏輯+demo驗證同心圓效果,不逐行摳矩陣運算細節) ===
+# === 🟡 ===
 class KernelPCA:
     """
     核PCA(Kernel PCA):用RBF核函數,在「隱含的高維特徵空間」做PCA
