@@ -86,9 +86,13 @@ SGD+M  -> loss=0.00355685
 Adam   -> loss=0.00000000   ← 幾乎完全收斂
 ```
 
+![GD vs SGD+Momentum vs Adam:同一個Rosenbrock地形,3000步後的真實軌跡對照(Adam幾乎走完全程,GD/SGD還卡在半路)](images/optimizer_comparison_rosenbrock.png)
+
 ### 凸(Convex) vs 非凸(Non-convex)
 
 凸函數只有一個最小值,梯度下降一定找得到,像`f(x)=x²`。神經網路的loss是非凸的,有很多局部最小值、鞍點、平坦區域。實務上高維度神經網路的局部最小值,loss通常都跟全域最小值差不多低,不是大問題。
+
+![Convex vs Non-convex:凸函數只有一個最小值,非凸函數有局部最小值/鞍點/平坦區域](images/convex_vs_nonconvex.png)
 
 ### 鞍點(Saddle Point)——為什麼比局部最小值更麻煩
 
