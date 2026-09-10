@@ -1,5 +1,24 @@
 # Lesson 3 筆記:Matrix Transformations
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [核心重點整理(這堂課在教什麼)](#核心重點整理這堂課在教什麼)
+  - [Eigenvalue 完整推導(用文字講,少符號版)](#eigenvalue-完整推導用文字講少符號版)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天花的時間](#今天花的時間)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [解構賦值(unpacking)複習](#解構賦值unpacking複習)
+- [函式回傳多個值](#函式回傳多個值)
+- [complex():複數](#complex複數)
+- [np.diag()](#npdiag)
+- [np.linalg.eig() / np.linalg.inv()](#nplinalgeig-nplinalginv)
+
 ## Learning Objectives 打勾清單
 
 - [~] Construct rotation, scaling, shearing, and reflection matrices and apply them to 2D and 3D points — 2D 的旋轉/縮放/切斜/鏡射矩陣講得很清楚,每一種的直覺、判斷哪個位置放什麼數字都懂了。⚠️ 3D 的版本(繞x/y/z軸旋轉)這堂課完全沒教到,留到 review queue。
