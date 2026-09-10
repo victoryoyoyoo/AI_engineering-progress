@@ -227,6 +227,12 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 
 資訊理論的六個概念,其實是同一套邏輯的不同切面:Information content量單一事件的驚訝程度,Entropy把它平均成整個分布的不確定性下限,Cross-entropy是「用不完美的模型去猜」實際要付出的成本(=loss function),KL divergence是這中間多浪費的部分,Perplexity把交叉熵換算成更直覺的「困惑選項數」。因為標籤的熵H(P)訓練時是常數,最小化交叉熵、最小化KL散度、最大化log-likelihood,三件事在數學上是同一個優化問題。Mutual information是獨立的一支,量兩個變數共享了多少資訊,在特徵選擇上比Pearson相關係數更全面(抓得到非線性關係)。
 
+## 面試向問題
+
+- 為什麼分類模型訓練時,loss function常常直接寫成cross-entropy而不是KL divergence,即使兩者只差一個常數?(對應「訓練時的意義」那段)
+- 兩個模型在同一個測試集上accuracy一樣,你會用什麼指標分辨哪個模型對自己的預測比較有把握?(對應「Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」」那段)
+- 做特徵選擇時,發現某個特徵跟目標的Pearson相關係數接近0,能不能直接判斷這個特徵沒用、可以丟掉?(對應「Pearson相關係數 vs 互資訊 對照」那段)
+
 ## 課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)
 
 <details>
