@@ -5,32 +5,6 @@ import random
 # 這堂課是 Top-Down + JIT 策略,課程本身標記 Type: Learn(不是 Build 型的課)
 # 這份 reference.py 是完整程式碼 + 逐段中文解釋,practice.py 只記錄實際手打的部分
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-# ---------------------------------------------------------------------------
-# Step 1: 用「數值法」算導數(不用公式,直接逼近極限定義)
-# ---------------------------------------------------------------------------
-def numerical_derivative(f, x, h=1e-7):
-    """
-    導數定義:f'(x) = lim(h->0) [f(x+h) - f(x)] / h
-    這裡用「中央差分」版本:[f(x+h) - f(x-h)] / (2h)
-    比單邊差分更準,因為左右兩邊的誤差會互相抵消一部分。
-    h 取很小的數字(這裡 1e-7)當作極限的近似,不用真的算極限。
-    """
-    return (f(x + h) - f(x - h)) / (2 * h)
-
-
-def f(x):
-    return x ** 2
-
-
-def demo_numerical_derivative():
-    print("=== Step 1: 數值導數 vs 解析導數(手推公式) ===")
-    for x in [-2, -1, 0, 1, 2]:
-        numerical = numerical_derivative(f, x)
-        analytical = 2 * x  # f(x)=x^2 的導數公式是 f'(x)=2x,手推出來的
-        print(f"x={x:2d}  f'(x) numerical={numerical:.6f}  analytical={analytical:.1f}")
-
-
 # === 核心(手刻層,逐行講解+手打練熟) ===
 # ---------------------------------------------------------------------------
 # Step 2: 偏導數(partial derivative)跟梯度(gradient)
@@ -53,23 +27,6 @@ def numerical_gradient(f, point, h=1e-7):
     return gradient
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-def f_multi(point):
-    x, y = point
-    return x ** 2 + 3 * x * y + y ** 2
-    # 手推偏導數:
-    # df/dx = 2x + 3y (把y當常數)
-    # df/dy = 3x + 2y (把x當常數)
-
-
-def demo_gradient():
-    print("\n=== Step 2: 偏導數 / 梯度 ===")
-    grad = numerical_gradient(f_multi, [1.0, 2.0])
-    print(f"Numerical gradient at (1,2): {[f'{g:.4f}' for g in grad]}")
-    print(f"Analytical gradient at (1,2): [2*1+3*2, 3*1+2*2] = [{2*1+3*2}, {3*1+2*2}]")
-
-
-# === 核心(手刻層,逐行講解+手打練熟) ===
 # ---------------------------------------------------------------------------
 # Step 3: 梯度下降(Gradient Descent),1D,找 f(x)=x^2 的最小值
 # ---------------------------------------------------------------------------
@@ -110,7 +67,91 @@ def demo_gradient_descent_2d():
             print(f"step {step:2d}  point=({point[0]:7.4f}, {point[1]:7.4f})  f={loss:.6f}")
 
 
+# ---------------------------------------------------------------------------
+# Step 8: 完整示範——用梯度下降訓練一個最簡單的線性迴歸 y = wx + b
+# ---------------------------------------------------------------------------
+def demo_linear_regression():
+    """
+    這是神經網路訓練迴圈的縮小版:
+    predict -> compute loss -> compute gradient -> update weight,重複很多次。
+    loss用MSE(均方誤差):error^2的平均。
+    dw、db是loss對w、對b的偏導數(手推公式,不是數值法):
+      loss = mean((wx+b-y)^2)
+      dw = mean(2*error*x)
+      db = mean(2*error)
+    """
+    print("\n=== Step 8: 梯度下降訓練線性迴歸 y=wx+b ===")
+    random.seed(42)
+    w = random.gauss(0, 1)
+    b = random.gauss(0, 1)
+    lr = 0.01
+
+    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
+    ys = [3.0, 5.0, 7.0, 9.0, 11.0]  # 真實關係是 y = 2x + 1
+
+    for epoch in range(200):
+        total_loss = 0
+        dw = 0
+        db = 0
+        for x, y in zip(xs, ys):
+            pred = w * x + b
+            error = pred - y
+            total_loss += error ** 2
+            dw += 2 * error * x
+            db += 2 * error
+        dw /= len(xs)
+        db /= len(xs)
+        total_loss /= len(xs)
+        w -= lr * dw
+        b -= lr * db
+        if epoch % 40 == 0 or epoch == 199:
+            print(f"epoch {epoch:3d}  w={w:.4f}  b={b:.4f}  loss={total_loss:.6f}")
+
+    print(f"\nLearned: y = {w:.2f}x + {b:.2f}")
+    print(f"Actual:  y = 2x + 1")
+
+
 # === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# ---------------------------------------------------------------------------
+# Step 1: 用「數值法」算導數(不用公式,直接逼近極限定義)
+# ---------------------------------------------------------------------------
+def numerical_derivative(f, x, h=1e-7):
+    """
+    導數定義:f'(x) = lim(h->0) [f(x+h) - f(x)] / h
+    這裡用「中央差分」版本:[f(x+h) - f(x-h)] / (2h)
+    比單邊差分更準,因為左右兩邊的誤差會互相抵消一部分。
+    h 取很小的數字(這裡 1e-7)當作極限的近似,不用真的算極限。
+    """
+    return (f(x + h) - f(x - h)) / (2 * h)
+
+
+def f(x):
+    return x ** 2
+
+
+def demo_numerical_derivative():
+    print("=== Step 1: 數值導數 vs 解析導數(手推公式) ===")
+    for x in [-2, -1, 0, 1, 2]:
+        numerical = numerical_derivative(f, x)
+        analytical = 2 * x  # f(x)=x^2 的導數公式是 f'(x)=2x,手推出來的
+        print(f"x={x:2d}  f'(x) numerical={numerical:.6f}  analytical={analytical:.1f}")
+
+
+def f_multi(point):
+    x, y = point
+    return x ** 2 + 3 * x * y + y ** 2
+    # 手推偏導數:
+    # df/dx = 2x + 3y (把y當常數)
+    # df/dy = 3x + 2y (把x當常數)
+
+
+def demo_gradient():
+    print("\n=== Step 2: 偏導數 / 梯度 ===")
+    grad = numerical_gradient(f_multi, [1.0, 2.0])
+    print(f"Numerical gradient at (1,2): {[f'{g:.4f}' for g in grad]}")
+    print(f"Analytical gradient at (1,2): [2*1+3*2, 3*1+2*2] = [{2*1+3*2}, {3*1+2*2}]")
+
+
 # ---------------------------------------------------------------------------
 # Step 5: 比較數值導數 vs 解析導數,對多種函數
 # ---------------------------------------------------------------------------
@@ -196,51 +237,6 @@ def demo_taylor():
     # h越小,逼近越準;h越大(離x0越遠),逼近誤差越大。
     # 這就是為什麼梯度下降要用小步伐(小learning rate):
     # 每一步都在假設「局部線性逼近夠準」,踏太大步這個假設就會失效。
-
-
-# === 核心(手刻層,逐行講解+手打練熟) ===
-# ---------------------------------------------------------------------------
-# Step 8: 完整示範——用梯度下降訓練一個最簡單的線性迴歸 y = wx + b
-# ---------------------------------------------------------------------------
-def demo_linear_regression():
-    """
-    這是神經網路訓練迴圈的縮小版:
-    predict -> compute loss -> compute gradient -> update weight,重複很多次。
-    loss用MSE(均方誤差):error^2的平均。
-    dw、db是loss對w、對b的偏導數(手推公式,不是數值法):
-      loss = mean((wx+b-y)^2)
-      dw = mean(2*error*x)
-      db = mean(2*error)
-    """
-    print("\n=== Step 8: 梯度下降訓練線性迴歸 y=wx+b ===")
-    random.seed(42)
-    w = random.gauss(0, 1)
-    b = random.gauss(0, 1)
-    lr = 0.01
-
-    xs = [1.0, 2.0, 3.0, 4.0, 5.0]
-    ys = [3.0, 5.0, 7.0, 9.0, 11.0]  # 真實關係是 y = 2x + 1
-
-    for epoch in range(200):
-        total_loss = 0
-        dw = 0
-        db = 0
-        for x, y in zip(xs, ys):
-            pred = w * x + b
-            error = pred - y
-            total_loss += error ** 2
-            dw += 2 * error * x
-            db += 2 * error
-        dw /= len(xs)
-        db /= len(xs)
-        total_loss /= len(xs)
-        w -= lr * dw
-        b -= lr * db
-        if epoch % 40 == 0 or epoch == 199:
-            print(f"epoch {epoch:3d}  w={w:.4f}  b={b:.4f}  loss={total_loss:.6f}")
-
-    print(f"\nLearned: y = {w:.2f}x + {b:.2f}")
-    print(f"Actual:  y = 2x + 1")
 
 
 if __name__ == "__main__":

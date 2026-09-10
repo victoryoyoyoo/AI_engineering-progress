@@ -63,57 +63,6 @@ class Vector:
         return f"Vector({self.components})"
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-def is_independent(vectors):
-    # 判斷一組向量是否「線性獨立」:沒有任何一個向量可以用其他向量加加減減、
-    # 乘個倍數湊出來(例如 [2,1,0] = 2*[1,0,0] + [0,1,0]，這樣就不獨立)。
-    # 做法是列運算(高斯消去法):把向量當矩陣的列，一路消去，最後還剩幾個
-    # 「非零列」(rank，矩陣的秩)，如果 rank 等於向量的數量，就是線性獨立。
-    # ⚠️ 這堂課只提過名詞，沒有帶著手算過列運算的過程，測驗這題也答錯過。
-    n = len(vectors)
-    if n == 0:
-        return True
-    dim = vectors[0].dim
-    rows = [v.components[:] for v in vectors]
-    rank = 0
-    for col in range(dim):
-        pivot = None
-        for row in range(rank, len(rows)):
-            if abs(rows[row][col]) > 1e-10:
-                pivot = row
-                break
-        if pivot is None:
-            continue
-        rows[rank], rows[pivot] = rows[pivot], rows[rank]
-        scale = rows[rank][col]
-        rows[rank] = [x / scale for x in rows[rank]]
-        for row in range(len(rows)):
-            if row != rank and abs(rows[row][col]) > 1e-10:
-                factor = rows[row][col]
-                rows[row] = [rows[row][j] - factor * rows[rank][j] for j in range(dim)]
-        rank += 1
-    return rank == n
-
-
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-def gram_schmidt(vectors):
-    # 把一組線性獨立的向量，轉換成「正交歸一基底」:每個向量互相垂直(正交)、
-    # 長度都是1(歸一)。做法是一個一個處理，每個新向量都先扣掉它在前面
-    # 已處理好的向量方向上的投影(project_onto)，扣掉之後剩下的部分保證
-    # 跟前面的都垂直，再正規化(normalize)成長度1。
-    # ⚠️ 這堂課只理解邏輯、沒手打，用途是數值方法/QR分解，不是日常AI開發常直接手刻的東西。
-    orthonormal = []
-    for v in vectors:
-        w = v
-        for u in orthonormal:
-            proj = w.project_onto(u)
-            w = w - proj
-        if w.magnitude() < 1e-10:
-            continue
-        orthonormal.append(w.normalize())
-    return orthonormal
-
-
 # === 核心(手刻層,逐行講解+手打練熟) ===
 class Matrix:
     def __init__(self, rows):
@@ -178,6 +127,57 @@ class Matrix:
 
     def __repr__(self):
         return f"Matrix({self.rows})"
+
+
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+def is_independent(vectors):
+    # 判斷一組向量是否「線性獨立」:沒有任何一個向量可以用其他向量加加減減、
+    # 乘個倍數湊出來(例如 [2,1,0] = 2*[1,0,0] + [0,1,0]，這樣就不獨立)。
+    # 做法是列運算(高斯消去法):把向量當矩陣的列，一路消去，最後還剩幾個
+    # 「非零列」(rank，矩陣的秩)，如果 rank 等於向量的數量，就是線性獨立。
+    # ⚠️ 這堂課只提過名詞，沒有帶著手算過列運算的過程，測驗這題也答錯過。
+    n = len(vectors)
+    if n == 0:
+        return True
+    dim = vectors[0].dim
+    rows = [v.components[:] for v in vectors]
+    rank = 0
+    for col in range(dim):
+        pivot = None
+        for row in range(rank, len(rows)):
+            if abs(rows[row][col]) > 1e-10:
+                pivot = row
+                break
+        if pivot is None:
+            continue
+        rows[rank], rows[pivot] = rows[pivot], rows[rank]
+        scale = rows[rank][col]
+        rows[rank] = [x / scale for x in rows[rank]]
+        for row in range(len(rows)):
+            if row != rank and abs(rows[row][col]) > 1e-10:
+                factor = rows[row][col]
+                rows[row] = [rows[row][j] - factor * rows[rank][j] for j in range(dim)]
+        rank += 1
+    return rank == n
+
+
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+def gram_schmidt(vectors):
+    # 把一組線性獨立的向量，轉換成「正交歸一基底」:每個向量互相垂直(正交)、
+    # 長度都是1(歸一)。做法是一個一個處理，每個新向量都先扣掉它在前面
+    # 已處理好的向量方向上的投影(project_onto)，扣掉之後剩下的部分保證
+    # 跟前面的都垂直，再正規化(normalize)成長度1。
+    # ⚠️ 這堂課只理解邏輯、沒手打，用途是數值方法/QR分解，不是日常AI開發常直接手刻的東西。
+    orthonormal = []
+    for v in vectors:
+        w = v
+        for u in orthonormal:
+            proj = w.project_onto(u)
+            w = w - proj
+        if w.magnitude() < 1e-10:
+            continue
+        orthonormal.append(w.normalize())
+    return orthonormal
 
 
 # === 理解層(講邏輯+demo驗證,不逐行摳) ===

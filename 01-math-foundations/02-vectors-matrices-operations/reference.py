@@ -5,43 +5,6 @@ import random
 # numpy_version.py 裡那一行核心邏輯。這份檔案不會被 git 追蹤、不會推上 GitHub。
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-class Vector:
-    def __init__(self, data):
-        # data 是一串數字(list),size 記錄這個向量有幾維
-        self.data = list(data)
-        self.size = len(self.data)
-
-    def __repr__(self):
-        # 讓 print(向量) 印出好看的樣子,不加這個會印出記憶體位置那種亂碼
-        return f"Vector({self.data})"
-
-    def __add__(self, other):
-        # 對應位置相加(頭尾相接的幾何意義),zip 把兩邊同位置的數字配成一對
-        return Vector([a + b for a, b in zip(self.data, other.data)])
-
-    def __sub__(self, other):
-        # 對應位置相減
-        return Vector([a - b for a, b in zip(self.data, other.data)])
-
-    def __mul__(self, scalar):
-        # 純量乘法:每個元素都乘上同一個數字,只改變長度(方向不變,除非scalar是負的)
-        return Vector([x * scalar for x in self.data])
-
-    def dot(self, other):
-        # 內積:對應位置相乘再全部加總,衡量兩個向量指向同一方向的程度
-        return sum(a * b for a, b in zip(self.data, other.data))
-
-    def magnitude(self):
-        # 長度:自己跟自己內積再開根號,畢氏定理的推廣
-        return sum(x ** 2 for x in self.data) ** 0.5
-
-    def normalize(self):
-        # 正規化:除以自己的長度,變成長度=1、方向不變的向量(這課沒手打的項目)
-        mag = self.magnitude()
-        return Vector([x / mag for x in self.data])
-
-
 # === 核心(手刻層,逐行講解+手打練熟) ===
 class Matrix:
     def __init__(self, data):
@@ -50,6 +13,29 @@ class Matrix:
         self.rows = len(self.data)
         self.cols = len(self.data[0])
         self.shape = (self.rows, self.cols)
+
+    # === 核心(手刻層,逐行講解+手打練熟) ===
+    def matmul(self, other):
+        # 矩陣乘法(真正的matrix multiply,不是逐項相乘)
+        # 形狀規則:(m,n) @ (n,p) = (m,p),中間的n要對上
+        # 對照C++三層迴圈:i是外層列、j是中層行、k是內層做內積加總
+        # for(i) for(j) { sum=0; for(k) sum += A[i][k]*B[k][j]; result[i][j]=sum; }
+        if self.cols != other.rows:
+            raise ValueError(
+                f"Cannot multiply shapes {self.shape} and {other.shape}: "
+                f"inner dimensions {self.cols} != {other.rows}"
+            )
+        return Matrix([
+            [
+                sum(self.data[i][k] * other.data[k][j] for k in range(self.cols))
+                for j in range(other.cols)
+            ]
+            for i in range(self.rows)
+        ])
+
+    def __matmul__(self, other):
+        # 讓 @ 這個運算子自動呼叫上面的 matmul,語法糖
+        return self.matmul(other)
 
     # === 理解層(講邏輯+demo驗證,不逐行摳) ===
     def __repr__(self):
@@ -116,30 +102,6 @@ class Matrix:
             for i in range(self.rows)
         ])
 
-    # === 核心(手刻層,逐行講解+手打練熟) ===
-    def matmul(self, other):
-        # 矩陣乘法(真正的matrix multiply,不是逐項相乘)
-        # 形狀規則:(m,n) @ (n,p) = (m,p),中間的n要對上
-        # 對照C++三層迴圈:i是外層列、j是中層行、k是內層做內積加總
-        # for(i) for(j) { sum=0; for(k) sum += A[i][k]*B[k][j]; result[i][j]=sum; }
-        if self.cols != other.rows:
-            raise ValueError(
-                f"Cannot multiply shapes {self.shape} and {other.shape}: "
-                f"inner dimensions {self.cols} != {other.rows}"
-            )
-        return Matrix([
-            [
-                sum(self.data[i][k] * other.data[k][j] for k in range(self.cols))
-                for j in range(other.cols)
-            ]
-            for i in range(self.rows)
-        ])
-
-    def __matmul__(self, other):
-        # 讓 @ 這個運算子自動呼叫上面的 matmul,語法糖
-        return self.matmul(other)
-
-    # === 理解層(講邏輯+demo驗證,不逐行摳) ===
     def transpose(self):
         # 轉置:把行跟列互換,(m,n) 變成 (n,m),原本[i][j]的數字換到[j][i]
         return Matrix([
@@ -208,6 +170,43 @@ class Matrix:
             [random.uniform(low, high) for _ in range(cols)]
             for _ in range(rows)
         ])
+
+
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+class Vector:
+    def __init__(self, data):
+        # data 是一串數字(list),size 記錄這個向量有幾維
+        self.data = list(data)
+        self.size = len(self.data)
+
+    def __repr__(self):
+        # 讓 print(向量) 印出好看的樣子,不加這個會印出記憶體位置那種亂碼
+        return f"Vector({self.data})"
+
+    def __add__(self, other):
+        # 對應位置相加(頭尾相接的幾何意義),zip 把兩邊同位置的數字配成一對
+        return Vector([a + b for a, b in zip(self.data, other.data)])
+
+    def __sub__(self, other):
+        # 對應位置相減
+        return Vector([a - b for a, b in zip(self.data, other.data)])
+
+    def __mul__(self, scalar):
+        # 純量乘法:每個元素都乘上同一個數字,只改變長度(方向不變,除非scalar是負的)
+        return Vector([x * scalar for x in self.data])
+
+    def dot(self, other):
+        # 內積:對應位置相乘再全部加總,衡量兩個向量指向同一方向的程度
+        return sum(a * b for a, b in zip(self.data, other.data))
+
+    def magnitude(self):
+        # 長度:自己跟自己內積再開根號,畢氏定理的推廣
+        return sum(x ** 2 for x in self.data) ** 0.5
+
+    def normalize(self):
+        # 正規化:除以自己的長度,變成長度=1、方向不變的向量(這課沒手打的項目)
+        mag = self.magnitude()
+        return Vector([x / mag for x in self.data])
 
 
 # === 理解層(講邏輯+demo驗證,不逐行摳) ===
