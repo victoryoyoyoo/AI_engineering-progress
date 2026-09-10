@@ -1,5 +1,35 @@
 # Lesson 5 筆記:鏈鎖法則與自動微分(Chain Rule & Automatic Differentiation)
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+- [鏈鎖法則(Chain Rule)](#鏈鎖法則chain-rule)
+- [為什麼計算圖(Computational Graph)要拆成一步一步寫](#為什麼計算圖computational-graph要拆成一步一步寫)
+- [反向傳播(Backward Pass)在每個節點做的事,其實都是同一條公式](#反向傳播backward-pass在每個節點做的事其實都是同一條公式)
+- [局部導數(Local Derivative)是什麼 —— 具體算法](#局部導數local-derivative是什麼-具體算法)
+- [反向傳播公式(最終版)](#反向傳播公式最終版)
+- [反向傳播每一站的規則,永遠只有一種(容易搞混的地方)](#反向傳播每一站的規則永遠只有一種容易搞混的地方)
+- [Forward Mode vs Reverse Mode(正向模式 vs 反向模式)](#forward-mode-vs-reverse-mode正向模式-vs-反向模式)
+  - [Forward Mode vs Reverse Mode 對照](#forward-mode-vs-reverse-mode-對照)
+- [對偶數(Dual Numbers)—— 正向模式的一種實作方式](#對偶數dual-numbers-正向模式的一種實作方式)
+- [Value class 的 __add__/__mul__ —— 語法拆解](#value-class-的-__add____mul__-語法拆解)
+- [為什麼「反向」不是把正向運算「倒過來做」](#為什麼反向不是把正向運算倒過來做)
+- [backward() 本體 —— 拓撲排序(Topological Sort)](#backward-本體-拓撲排序topological-sort)
+- [Step4:補齊的運算(看邏輯,沒有逐行手打)](#step4補齊的運算看邏輯沒有逐行手打)
+- [Step5:Neuron(神經元)→ Layer(層)→ MLP(多層感知器)—— 看邏輯+具體追蹤](#step5neuron神經元-layer層-mlp多層感知器-看邏輯具體追蹤)
+- [Step5:XOR(互斥或)訓練,具體追蹤](#step5xor互斥或訓練具體追蹤)
+- [Step6:梯度檢查(Gradient Checking)](#step6梯度檢查gradient-checking)
+  - [Gradient Checking vs Gradient Clipping 對照](#gradient-checking-vs-gradient-clipping-對照)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天花的時間](#今天花的時間)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+
 ## Learning Objectives 打勾清單
 
 - [x] Build a minimal autograd engine (Value class) that records operations and computes gradients via reverse-mode autodiff — `__init__`/`__add__`/`__mul__`/`relu`/`backward` 親手打完並驗證(x1=2,x2=3例子,dy/dx1=3.0,dy/dx2=2.0跟手推一致)
@@ -30,7 +60,7 @@
 | 對偶數運算規則(正向模式) | `(a,a')+(b,b')=(a+b,a'+b')`;`(a,a')*(b,b')=(a*b,a'*b+a*b')`;`sin(a,a')=(sin(a),cos(a)*a')` |
 | 梯度檢查(數值法) | `(f(x+h)-f(x-h))/(2h)`,跟autodiff結果比較誤差 |
 
-## 這堂課的名詞總表(核心重點整理)
+## 這堂課的名詞總表
 
 | 英文 | 中文 | 一句話定義 |
 |---|---|---|
