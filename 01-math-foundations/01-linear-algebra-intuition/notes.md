@@ -23,7 +23,11 @@
 
 ![向量加法:頭尾相接法](images/vectors_as_arrows_addition.png)
 
+![純量乘法:只改變長度,負數會反轉方向](images/scalar_multiply.png)
+
 ![內積/餘弦相似度的幾何意義:同方向、垂直、反方向](images/dot_product_geometric_meaning.png)
+
+![矩陣乘向量:每一列各自跟輸入向量做內積](images/matrix_vector_multiply.png)
 
 這堂課刻意沒教到、留在 review queue 的:projection(投影)、Gram-Schmidt(正交化)、rank(矩陣的秩)、basis(基底)、row reduction(列運算/高斯消去法)、attention scores 跟內積的關係、LoRA。這些之後遇到再回頭補,不是這堂課的核心。
 
