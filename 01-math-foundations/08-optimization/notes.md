@@ -1,5 +1,26 @@
 # Lesson 8 - Optimization(最佳化)
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+  - [梯度下降(Gradient Descent)](#梯度下降gradient-descent)
+  - [Momentum(動量)——解決什麼問題](#momentum動量解決什麼問題)
+  - [SGD——解決什麼問題](#sgd解決什麼問題)
+  - [Adam——momentum + 自適應學習率](#adammomentum-自適應學習率)
+  - [三種optimizer對照:梯度下降 vs Momentum vs Adam](#三種optimizer對照梯度下降-vs-momentum-vs-adam)
+  - [凸(Convex) vs 非凸(Non-convex)](#凸convex-vs-非凸non-convex)
+  - [鞍點(Saddle Point)——為什麼比局部最小值更麻煩](#鞍點saddle-point為什麼比局部最小值更麻煩)
+  - [學習率排程(Learning Rate Schedule)](#學習率排程learning-rate-schedule)
+- [PyTorch對應](#pytorch對應)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天評分](#今天評分)
+
 ## Learning Objectives 打勾清單
 - [x] 從零實作梯度下降、SGD with momentum、Adam ⚠️(`GradientDescent`真的看過對照公式;`SGDMomentum`、`Adam`寫在reference.py+跑過demo,沒有實際逐行帶著看,記進review-queue)
 - [x] 比較三種optimizer在Rosenbrock函數上的收斂速度,解釋Adam為什麼能給每個權重自適應學習率
