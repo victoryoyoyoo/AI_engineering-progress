@@ -25,6 +25,8 @@
 
 ![旋轉/縮放/切斜/鏡射矩陣套用在一個正方形上的前後對照](images/transformations_before_after.png)
 
+![複合變換順序影響結果:先轉再縮放 vs 先縮放再轉,同一個點走到不同地方](images/composition_order_matters.png)
+
 ### Eigenvalue 完整推導(用文字講,少符號版)
 
 1. 要找的東西滿足:「矩陣乘上這個向量」等於「這個向量直接乘上一個數字」,寫成 `Av = λv`。
@@ -38,6 +40,8 @@
 算出兩個 λ 之後,各自代回 `(A-λI)v=0` 就能解出對應的 eigenvector v。
 
 ![Eigenvector 方向不變、只被拉伸,對照一個隨機向量方向會改變](images/eigenvector_direction_preserved.png)
+
+![Eigendecomposition流水線:A = V @ D @ V⁻¹](images/eigendecomposition_pipeline.png)
 
 **為什麼「非零向量被壓成零向量」等於「奇異矩陣」:** 如果矩陣可逆(det≠0),代表每個輸出都能唯一還原回輸入,只有零向量乘上它才會得到零向量(因為 `矩陣@0=0` 這條路已經被0佔用,可逆代表不會有第二個輸入走到同一個輸出)。所以只要存在非零向量也被壓成零,就代表這個矩陣不是「每個輸出唯一對應一個輸入」,也就是不可逆、奇異、det=0。
 
