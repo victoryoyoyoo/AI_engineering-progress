@@ -77,9 +77,11 @@
 
 ## 今天評分
 
-理解程度:8/10,eigenvalue/eigenvector 的核心直覺(特殊方向、方向不變只拉伸)、characteristic equation 的推導、複合變換順序規則,都是真的懂,能自己用一句話講出來
-效率:這堂課中間卡在 Python 語法細節(解構賦值、函式多重回傳值)卡了一段時間,後來決定跳過逐行拆語法、只看懂邏輯,效率就回升了
-完成度:核心 4 個 Learning Objectives 裡,2 個完全做到、2 個部分做到(3D 版本、PCA/spectral clustering 應用沒深入)
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | 8/10,eigenvalue/eigenvector 的核心直覺(特殊方向、方向不變只拉伸)、characteristic equation 的推導、複合變換順序規則,都是真的懂,能自己用一句話講出來 |
+| 效率 | 這堂課中間卡在 Python 語法細節(解構賦值、函式多重回傳值)卡了一段時間,後來決定跳過逐行拆語法、只看懂邏輯,效率就回升了 |
+| 完成度 | 核心 4 個 Learning Objectives 裡,2 個完全做到、2 個部分做到(3D 版本、PCA/spectral clustering 應用沒深入) |
 
 ## 這堂課的總結
 
