@@ -1,5 +1,29 @@
 # Lesson 2 語法筆記:Vectors, Matrices & Operations
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [核心重點整理(這堂課在教什麼)](#核心重點整理這堂課在教什麼)
+  - [element-wise multiply vs matrix multiply 對照](#element-wise-multiply-vs-matrix-multiply-對照)
+- [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
+  - [Broadcasting 一開始不知道實際會用在哪裡](#broadcasting-一開始不知道實際會用在哪裡)
+- [我自己手打的部分](#我自己手打的部分)
+- [這堂課用的新教學策略](#這堂課用的新教學策略)
+- [今天花的時間](#今天花的時間)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [List comprehension 複習:matmul 那段對照 C++ 三層迴圈](#list-comprehension-複習matmul-那段對照-c-三層迴圈)
+- [NumPy 是什麼、跟純 Python 的差別](#numpy-是什麼跟純-python-的差別)
+- [Broadcasting 實際運作的時機](#broadcasting-實際運作的時機)
+- [np.maximum(0, x)](#npmaximum0-x)
+- [raise:主動丟出錯誤](#raise主動丟出錯誤)
+- [Shape tuple (m, n) 的判讀方式複習](#shape-tuple-m-n-的判讀方式複習)
+- [f-string 複習](#f-string-複習)
+
 ## Learning Objectives 打勾清單
 
 - [ ] Build a Matrix class with element-wise operations, matrix multiplication, transpose, determinant, and inverse — ⚠️ 沒有手刻。這是這堂課開始套用新的 Top-Down 流程後第一個刻意跳過手刻的項目,不是教學疏漏:matmul/transpose/determinant/inverse 全部程式碼都看過、逐段講解過邏輯(matmul 那段還用 C++ 三層迴圈對照過),口頭能解釋每個方法在幹嘛,但沒有自己手打進 practice.py。完整程式碼在 `reference.py`。
