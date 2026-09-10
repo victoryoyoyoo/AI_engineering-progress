@@ -32,6 +32,8 @@
 
 ![常見分布的形狀:Bernoulli PMF、Poisson PMF、常態分布 PDF](images/distribution_shapes.png)
 
+![Sample space、事件、條件機率與獨立事件的文氏圖示意](images/conditional_independence.png)
+
 ### PDF 單一點的值不是機率
 
 連續變數的 `P(X = 剛好等於某個值) = 0`,永遠是0——因為對一個寬度是0的區間積分,面積一定是0。`f(x)` 這個函數量的是**密度(density)**,不是機率,密度可以大於1(合理,不是錯誤),之後一定要對一段區間積分才能得到真正的機率。類比:人口密度可以是每平方公里1萬人(數字很大沒問題),但不會說「這一個點住了1萬人」,要問「這一整塊區域有多少人」才有意義。
@@ -55,6 +57,10 @@ E[(X - mu)²]
 `practice.py` 裡的 `variance()` 用的是**定義版**(`E[(X-mu)²]`),不是展開版。原因:定義版邏輯直觀、照公式字面寫,不容易寫錯;展開版雖然步驟少,但要多寫一個「算X平方期望值」的函式,而且數值計算上有時候會因為兩個很接近的大數字相減產生精度誤差(細節留到Lesson 13數值穩定性再講)。
 
 兩者數學上完全相等,只是代數整理的兩種寫法,不是多算了東西。
+
+![Expected value與Variance:骰子範例,E[X]是機率加權平均、Var(X)是分散程度](images/expected_variance.png)
+
+![中央極限定理(CLT):原始均勻分布,樣本平均值的分布卻趨近常態分布](images/clt_demo.png)
 
 ![Softmax 把原始分數(logits)轉換成合法的機率分布](images/softmax_transformation.png)
 
