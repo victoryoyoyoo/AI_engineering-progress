@@ -130,6 +130,8 @@ Neg log-likelihood:      1.400910 nats
 Difference:               0.00e+00   ← 完全相同
 ```
 
+![Cross-entropy與Negative log-likelihood:兩條不同來源的公式算出完全相同的數字](images/ce_nll_equality.png)
+
 ### Mutual Information(互資訊)——知道X能讓你對Y少猜多少
 
 ```
@@ -201,6 +203,8 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 Cross-entropy的完整定義是 `H(P,Q) = -sum(p(x)*log(q(x)))`,對所有可能的類別x都要算一項再加總。但分類問題裡,程式碼跟公式常常直接寫成 `H(P,Q) = -log(q(true_class))`,只有一項,一開始不清楚這個簡化是怎麼跳出來的。
 
 **答案在於「真實分布P」在分類問題裡,本身就是one-hot向量(獨熱編碼)**——真實類別的位置機率是1,其他所有類別的位置機率都是0。把這個特性代回完整公式:`sum(p(x)*log(q(x)))` 這個加總裡,除了「真實類別」那一項的`p(x)=1`,其餘所有項的`p(x)`都是0,而0乘上任何數字(包括`log(q(x))`)都是0,那些項直接整個消失,加總裡只剩下真實類別那一項:`1 * log(q(true_class))`,前面補上負號就是 `-log(q(true_class))`。所以「分類問題的cross-entropy只需要看模型對正確答案給的機率」這個簡化,不是額外發明的捷徑公式,而是完整定義套用在「P是one-hot」這個特殊狀況下,數學上自動化簡出來的結果——換一個問題,如果真實分布P不是one-hot(比如label smoothing之後,正確類別是0.9、其他類別平分剩下0.1),就不能再套用這個簡化版,要老實地把完整的加總公式算完。
+
+![One-hot:真實類別=1其他=0,代回公式後只剩正確答案那一項](images/onehot_encoding.png)
 
 ## 我自己手打的部分
 
