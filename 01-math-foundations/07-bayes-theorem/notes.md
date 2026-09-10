@@ -1,5 +1,26 @@
 # Lesson 7 - Bayes' Theorem（貝氏定理）
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+- [貝氏定理怎麼推出來的](#貝氏定理怎麼推出來的)
+- [醫療檢測範例——反直覺結論的具體算法](#醫療檢測範例反直覺結論的具體算法)
+- [Naive Bayes分類器邏輯](#naive-bayes分類器邏輯)
+- [MLE vs MAP](#mle-vs-map)
+- [為什麼「L2正則化本質上是貝氏統計」——完整推導](#為什麼l2正則化本質上是貝氏統計完整推導)
+- [共軛先驗(Conjugate Prior)跟Beta分布](#共軛先驗conjugate-prior跟beta分布)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+  - [defaultdict 跟巢狀 defaultdict](#defaultdict-跟巢狀-defaultdict)
+  - [set() 集合,用來存不重複的詞彙表](#set-集合用來存不重複的詞彙表)
+  - [float("-inf") 負無窮大](#float-inf-負無窮大)
+  - [dict.get(key, 預設值)](#dictgetkey-預設值)
+
 ## Learning Objectives 打勾清單
 - [x] 從先驗、似然、證據算出後驗機率(貝氏定理本身)
 - [x] 從零實作Naive Bayes文字分類器,含Laplace平滑跟log機率 ⚠️(照新的加快節奏,`NaiveBayes` class由我寫進`reference.py`+demo驗證過,但沒有真的帶你逐行看過,只有跑過的輸出結果;所以`practice.py`裡沒有放這個class,只留`bayes()`——你真的對照過公式讀過的部分)
