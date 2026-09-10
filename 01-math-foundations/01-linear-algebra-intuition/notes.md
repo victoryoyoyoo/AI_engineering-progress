@@ -25,6 +25,12 @@
 - [return](#return)
 - [NumPy 語法](#numpy-語法)
 - [Python vs C++ 這課學到的差異](#python-vs-c-這課學到的差異)
+- [`__repr__`：物件被 print 時要顯示什麼](#__repr__物件被-print-時要顯示什麼)
+- [`if __name__ == "__main__":`](#if-__name__--__main__)
+- [`[:]` 切片複製一份，不是同一份資料](#-切片複製一份不是同一份資料)
+- [tuple 同時賦值：交換兩個變數不用暫存變數](#tuple-同時賦值交換兩個變數不用暫存變數)
+- [`enumerate()`：邊拿元素邊拿索引](#enumerate邊拿元素邊拿索引)
+- [`**` 次方運算子](#-次方運算子)
 
 ## Learning Objectives 打勾清單
 
@@ -349,3 +355,67 @@ numpy 的陣列跟自己手刻的 Vector 做的是一樣的事，只是別人已
 | 建構子名稱 | 跟 class 同名 | 固定叫 `__init__`，不管 class 叫什麼名字都一樣 |
 
 C++ 背景是演算法/競程，沒學過物件導向，所以 class、this、運算子重載這些概念本身（不只是語法）今天也是第一次接觸，不是只有 Python 語法陌生。
+
+## `__repr__`：物件被 print 時要顯示什麼
+
+```python
+def __repr__(self):
+    return f"Vector({self.components})"
+```
+
+`print(a)` 或在 f-string 裡塞一個物件（像 `f"a = {a}"`）時，Python 不知道要怎麼把一個自訂物件變成文字，會呼叫這個物件的 `__repr__` 方法拿到一段字串再印出來。沒有寫這個方法的話，`print(a)` 會印出類似 `<__main__.Vector object at 0x7f...>` 這種沒有意義的記憶體位址，完全看不出裡面裝了什麼。跟 `__add__`、`__matmul__` 一樣，是 Python 規定好名字的 dunder method，只是這次不是對應運算子，而是對應「怎麼把自己變成字串」這個動作。
+
+C++對照：類似幫自訂 class 多寫一個 `operator<<`（重載輸出運算子）讓 `std::cout << obj` 能印出有意義的內容，不然預設印出來的也只是位址或編譯不過。
+
+## `if __name__ == "__main__":`
+
+```python
+if __name__ == "__main__":
+    print("=== Vector 基本運算 ===")
+    ...
+```
+
+`__name__` 是 Python 自動幫每個檔案準備好的內建變數：直接執行這個檔案時（例如 `python reference.py`），`__name__` 會是字串 `"__main__"`；如果這個檔案是被別的檔案用 `import` 進去用的，`__name__` 會變成檔案本身的名字（例如 `"reference"`），不是 `"__main__"`。這行 `if` 的效果是：把「示範/測試用的程式碼」包起來，只有直接執行這個檔案才會跑，被別人 import 進去當工具用時不會自動跑一遍列印測試。
+
+C++對照：概念上有點像把測試用的 `main()` 邏輯跟真正要被別人呼叫的函式/class 分開放，只是 C++ 每個執行檔本身就只有一個 `main()`，不會有「這個檔案是被直接執行還是被別人引用」這種判斷需求，因為 C++ 的 `#include` 是複製貼上原始碼、不是像 Python `import` 這樣有一個「這支程式的進入點是不是我」的概念。
+
+## `[:]` 切片複製一份，不是同一份資料
+
+```python
+rows = [row[:] for row in self.rows]
+```
+
+`row[:]`（冒號兩邊都不寫數字）代表「從頭到尾整段切片」，效果等於把這個 list 的內容整份複製一份新的出來，跟原本的 `row` 是兩塊不同的記憶體，之後修改複製出來的那份不會影響原本的 `self.rows`。這裡故意這樣寫，是因為 `rank()` 跟 `is_independent()` 都要對資料做列運算(高斯消去法)一路修改，如果直接寫 `rows = self.rows`，`rows`只是幫原本那份資料多取一個名字（兩個名字指向同一塊記憶體），修改 `rows` 會連帶把 `self.rows` 也改壞掉，之後想再用原始矩陣就回不去了。
+
+C++對照：類似`std::vector<int> rows = original_rows;`這種「值傳遞」會自動深拷貝一份；但Python的list變數本質更接近指標／參照，`rows = self.rows`只是複製了指標本身，兩個名字指向同一塊記憶體，要真正複製內容需要像`[:]`這樣明確要求。
+
+## tuple 同時賦值：交換兩個變數不用暫存變數
+
+```python
+rows[r], rows[pivot] = rows[pivot], rows[r]
+```
+
+等號右邊`rows[pivot], rows[r]`會先被打包成一個tuple，等號左邊`rows[r], rows[pivot]`則是同時把這個tuple拆開、依照順序分別賦值回去，兩邊的賦值是「同時」發生的，不會出現右邊已經被改過、左邊拿到錯誤中間值的問題。效果就是把兩列資料整個對調，這是高斯消去法裡「把pivot那一列換到最上面」常用的寫法。
+
+C++對照：等同`std::swap(rows[r], rows[pivot]);`或手寫`auto tmp = rows[r]; rows[r] = rows[pivot]; rows[pivot] = tmp;`，Python直接靠tuple賦值省掉暫存變數這一步。
+
+## `enumerate()`：邊拿元素邊拿索引
+
+```python
+for i, u in enumerate(basis):
+    print(f"u{i+1} = {u}, |u{i+1}| = {u.magnitude():.6f}")
+```
+
+單純寫`for u in basis:`只能拿到每個元素本身，拿不到「這是第幾個」。`enumerate(basis)`會把list轉成一串`(索引, 元素)`的配對，`for i, u in ...`同時把這對數字拆開接到`i`（索引，從0開始）跟`u`（元素本身）兩個變數上，不用自己額外寫一個計數器變數手動`+1`。
+
+C++對照：類似`for (int i = 0; i < basis.size(); i++)`裡同時用得到`i`跟`basis[i]`，只是C++要手動維護索引變數，Python用`enumerate`把「拿索引」這個動作包裝起來,直接跟著迴圈變數一起給。
+
+## `**` 次方運算子
+
+```python
+sum(x**2 for x in self.components) ** 0.5
+```
+
+Python用`**`表示次方，`x**2`是x的平方，`** 0.5`是開根號(次方0.5等於平方根)。這整行是算magnitude(向量長度)的公式：先把每個分量平方後加總，再對結果開根號。
+
+C++對照：C++沒有次方運算子，`x**2`要寫成`x*x`或`std::pow(x,2)`，開根號要用`std::sqrt(x)`；Python的`**`一個符號就同時涵蓋兩種用法。
