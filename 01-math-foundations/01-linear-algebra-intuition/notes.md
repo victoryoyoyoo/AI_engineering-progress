@@ -1,6 +1,32 @@
 # Lesson 1 語法筆記：這一課學到的 Python 新東西
 
-## Learning Objectives 打勾清單（回頭核對，2026-08-19補上）
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [核心重點整理(這堂課在教什麼)](#核心重點整理這堂課在教什麼)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天花的時間](#今天花的時間)
+- [下次可以優化的地方](#下次可以優化的地方)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+- [今天完成度](#今天完成度)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [Class 是什麼、怎麼運作](#class-是什麼怎麼運作)
+- [運算子重載：讓 +, -, *, @ 可以用在自己的物件上](#運算子重載讓---可以用在自己的物件上)
+- [List comprehension（列表推導式）](#list-comprehension列表推導式)
+- [zip()](#zip)
+- [內建函式清單（這課用到的）](#內建函式清單這課用到的)
+- [f-string 字串格式化](#f-string-字串格式化)
+- [索引 [數字]](#索引-數字)
+- [if 條件判斷](#if-條件判斷)
+- [return](#return)
+- [NumPy 語法](#numpy-語法)
+- [Python vs C++ 這課學到的差異](#python-vs-c-這課學到的差異)
+
+## Learning Objectives 打勾清單
 
 - [x] Implement vector and matrix operations (addition, dot product, matrix multiply) from scratch in Python — Vector 的 add/sub/mul/dot 跟 Matrix 的矩陣乘向量都手打+驗證過，這項真的做到了
 - [ ] Explain geometrically what the dot product, projection, and Gram-Schmidt process do — dot product 的幾何意義（同方向/垂直/反方向）有講清楚，但 projection（投影）跟 Gram-Schmidt 只有帶著跑過計算結果，沒有真的講到「幾何上在幹嘛」（投影是影子、Gram-Schmidt 是不斷扣掉重疊方向），這塊沒做到
