@@ -1,5 +1,31 @@
 # Lesson 6 - Probability and Distributions（機率與分布）
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+  - [PDF 單一點的值不是機率](#pdf-單一點的值不是機率)
+  - [變異數兩種公式是同一個東西](#變異數兩種公式是同一個東西)
+  - [Softmax 數值穩定的原理](#softmax-數值穩定的原理)
+  - [Log-softmax 為什麼不能分開算](#log-softmax-為什麼不能分開算)
+  - [Cross-entropy loss 的直覺](#cross-entropy-loss-的直覺)
+  - [為什麼要用log機率而不是原始機率](#為什麼要用log機率而不是原始機率)
+  - [Joint / Marginal 分布](#joint-marginal-分布)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天花的時間](#今天花的時間)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [今天評分](#今天評分)
+  - [zip() 配對兩個 list](#zip-配對兩個-list)
+  - [Generator expression(生成器表達式)vs List comprehension(列表推導式)](#generator-expression生成器表達式vs-list-comprehension列表推導式)
+  - [math 模組](#math-模組)
+  - [List comprehension 拆步驟寫](#list-comprehension-拆步驟寫)
+  - [NumPy np.average 帶權重](#numpy-npaverage-帶權重)
+  - [SciPy scipy.special.softmax / log_softmax](#scipy-scipyspecialsoftmax-log_softmax)
+
 ## Learning Objectives 打勾清單
 - [x] 從零實作 Bernoulli、categorical、Poisson、uniform、normal 的 PMF/PDF ⚠️(這幾個PMF/PDF屬於理解型分類,是用讀reference.py程式碼+跑demo驗證來理解邏輯,不是自己手打實作的)
 - [x] 算期望值、變異數,並用中央極限定理(CLT)解釋為什麼常態分布無所不在
@@ -26,7 +52,7 @@
 | Cross-entropy loss | `loss = -log(模型對正確答案給的機率)` |
 | Marginal distribution | `P(X=x) = Σ_y P(X=x, Y=y)` |
 
-## 這堂課的名詞總表(核心重點整理)
+## 這堂課的名詞總表
 
 | 英文 | 中文 | 一句話定義 |
 |---|---|---|
