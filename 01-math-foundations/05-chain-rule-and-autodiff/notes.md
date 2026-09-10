@@ -127,6 +127,8 @@ dy/dx2 = dy/da × 乘法局部導數(x2)  = 1 × x1 = 1 × 2 = 2
 
 **為什麼神經網路一定用反向模式:** 神經網路有百萬個權重(輸入)、只有1個loss(輸出)。正向模式要「每個輸入各跑一次」,百萬個輸入=百萬次;反向模式「一次就拿到所有輸入的梯度」。輸入多、輸出少的情境,反向模式效率贏非常多。
 
+![Forward Mode vs Reverse Mode:種子放的位置跟傳播方向不同](images/forward_vs_reverse_mode.png)
+
 ## 對偶數(Dual Numbers)—— 正向模式的一種實作方式
 
 把「值」跟「導數」包成一組 `(值, 導數)` 配對在一起。運算規則本質上就是微積分規則(乘積法則、鏈鎖法則)包裝成自動運算的形式:
@@ -244,6 +246,8 @@ def backward(self):
 
 **MLP(多層感知器,Multi-Layer Perceptron):** 好幾個Layer(層)「疊起來」,前一層的輸出list直接變成下一層的輸入list。
 
+![MLP([2,4,1])架構:Neuron組成Layer,Layer疊起來變MLP](images/mlp_architecture.png)
+
 **具體例子(手動指定簡單權重,MLP([2,2,1])):**
 ```
 Layer1神經元A: w=[1,0], b=0 → tanh(x1)
@@ -278,6 +282,8 @@ for p in model.parameters():
 ```
 
 **跑100步的loss變化:** `4.1491 → 2.9166 → 1.4733 → 0.6011 → 0.2936`——loss一路下降,代表17個參數被逐步調整成更能正確預測XOR規則的樣子。
+
+![親手刻的autograd引擎訓練XOR:實際跑100步的loss曲線,持續下降](images/xor_training_loss.png)
 
 ## Step6:梯度檢查(Gradient Checking)
 
