@@ -8,6 +8,7 @@ Lesson 8: Optimization
 """
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
 # ---------- Step 1: 測試函數 ----------
 
 def rosenbrock(params):
@@ -38,6 +39,7 @@ class GradientDescent:
         return [p - self.lr * g for p, g in zip(params, grads)]
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 3: SGD + Momentum ----------
 
 class SGDMomentum:

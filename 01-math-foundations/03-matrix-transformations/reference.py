@@ -5,6 +5,7 @@ import math
 # 這份檔案會被 git 追蹤、推上 GitHub。
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # --- 變換矩陣(全部回傳 2x2 的 list of list) ---
 
 def rotation_2d(theta):
@@ -29,6 +30,7 @@ def reflection_y():
     return [[-1, 0], [0, 1]]
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # --- 上一課學過的矩陣運算,這堂課會重複用到 ---
 
 def mat_vec_mul(matrix, vector):
@@ -48,6 +50,7 @@ def mat_mul(a, b):
     ]
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # --- 特徵值 / 特徵向量(這堂課的核心) ---
 
 def eigenvalues_2x2(matrix):
@@ -89,6 +92,7 @@ def det_2x2(matrix):
     return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 def demo_transformations():
     # 示範四種基本變換分別對一個點做了什麼
     print("=" * 60)
