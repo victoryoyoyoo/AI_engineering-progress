@@ -1,5 +1,30 @@
 # Lesson 9 - Information Theory(資訊理論)
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+  - [Information Content(驚訝程度)](#information-content驚訝程度)
+  - [Entropy(熵)——整個分布的平均驚訝程度](#entropy熵整個分布的平均驚訝程度)
+  - [Cross-Entropy(交叉熵)——你每天在用的loss function](#cross-entropy交叉熵你每天在用的loss-function)
+  - [KL Divergence(KL散度)——多浪費了多少bit](#kl-divergencekl散度多浪費了多少bit)
+  - [六個概念怎麼串起來(整堂課最關鍵的一張圖)](#六個概念怎麼串起來整堂課最關鍵的一張圖)
+  - [Entropy vs Cross-Entropy vs KL Divergence 對照](#entropy-vs-cross-entropy-vs-kl-divergence-對照)
+  - [Cross-Entropy = Negative Log-Likelihood(MLE推導)](#cross-entropy-negative-log-likelihoodmle推導)
+  - [Mutual Information(互資訊)——知道X能讓你對Y少猜多少](#mutual-information互資訊知道x能讓你對y少猜多少)
+  - [Pearson相關係數 vs 互資訊 對照](#pearson相關係數-vs-互資訊-對照)
+  - [Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」](#perplexity困惑度模型實際上在幾個選項間猶豫)
+- [這堂課的總結](#這堂課的總結)
+- [面試向問題](#面試向問題)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
+  - [Pearson 跟 Poisson 搞混](#pearson-跟-poisson-搞混)
+  - [one-hot 在cross-entropy簡化公式裡的角色需要補強](#one-hot-在cross-entropy簡化公式裡的角色需要補強)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天評分](#今天評分)
+
 ## Learning Objectives 打勾清單
 - [x] 從零算出entropy、cross-entropy、KL divergence,解釋三者的關係
 - [x] 推導為什麼「最小化cross-entropy loss」等於「最大化log-likelihood」
