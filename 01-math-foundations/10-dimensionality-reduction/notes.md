@@ -22,6 +22,7 @@
 | Kernel PCA | 核PCA | 用kernel trick在隱含的高維空間做PCA,能處理非線性資料(如同心圓) |
 | t-SNE | — | 保留「鄰居關係」的非線性降維法,常用來畫圖視覺化,有perplexity參數(跟Lesson 9的困惑度只是同名,概念不同) |
 | UMAP | — | 類似t-SNE但更快、更保留全域結構,常用n_neighbors/min_dist |
+| Manifold | 流形 | 嵌在高維空間裡的低維曲面,例如一張紙揉皺後丟進3D空間,本質還是一個2D曲面 |
 
 ![PCA vs t-SNE vs UMAP對照](images/pca_tsne_umap_comparison.png)
 
