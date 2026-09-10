@@ -13,7 +13,7 @@ import math
 import random
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
+# === 🔴 ===
 # ---------- Step 3: 期望值 / 變異數 ----------
 
 def expected_value(values, probabilities):
@@ -57,7 +57,7 @@ def cross_entropy_loss(logits, target_index):
     return -log_probs[target_index]
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+# === 🟡 ===
 # ---------- Step 1: 機率基礎 ----------
 
 def factorial(n):
