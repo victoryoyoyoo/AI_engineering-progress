@@ -31,6 +31,12 @@
 
 ![broadcasting:bias自動延伸去對齊batch維度](images/broadcasting_bias.png)
 
+![transpose:行列互換,A[i][j]轉置後變成A.T[j][i]](images/transpose.png)
+
+![inverse與identity matrix:A搬過去,A逆矩陣搬回來,乘積是單位矩陣](images/inverse_identity.png)
+
+![relu:引入非線性,負數砍0、正數不變](images/relu.png)
+
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
 ### Broadcasting 一開始不知道實際會用在哪裡
