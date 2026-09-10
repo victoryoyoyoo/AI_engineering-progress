@@ -155,3 +155,4 @@ Optimization要解決的問題就是:給定loss函數(告訴你模型多爛)跟�
 理解程度:這堂課教得太快,一次教完GD+momentum+Adam才確認,結果post測驗5題裡3題完全沒印象(optimization定義、mini-batch雜訊、cosine annealing)。已經用更短的版本重新補教過,momentum解決震盪、SGD解決資料量太大、Adam=momentum+自適應步伐、鞍點比局部最小值更常見,這幾個核心點課堂上確認過真的懂了
 效率:內容偏多(3個optimizer+凸非凸+鞍點+排程),照加快節奏一次教完才檢查,反而retention不好。使用者確認之後**節奏不變,但每教完一個概念就要停下來確認,不要連續塞多個概念**(已寫進teaching-protocol記憶)
 完成度:4個Learning Objectives名義上都完成,但Adam/SGDMomentum屬於理解型(沒逐行看)、學習率排程只認識種類沒實作,損失地形視覺化跟全部Exercise都跳過記review-queue
+花費時間:20分鐘(課程建議時間:約75分鐘,遠低於建議時間——這跟上面「這堂課教得太快」的問題直接對應,3個optimizer+凸非凸+鞍點+排程塞進20分鐘教完,退步的post測驗結果不是意外)
