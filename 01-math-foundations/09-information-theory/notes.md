@@ -184,6 +184,24 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 
 答案：perplexity 的定義是把 cross-entropy 取指數(`e^(交叉熵)` 用nats、`2^(交叉熵)` 用bits),可以直接解讀成「模型平均起來,實際上像是在幾個選項之間猶豫不決」——例如 perplexity=50,代表模型的猶豫程度,大約就像是要從50個選項裡均勻亂猜一樣困惑;perplexity 越低,代表模型對答案越有把握、機率分布越集中在正確答案上。accuracy 是非黑即白的指標,只看「模型猜的最高機率選項,是不是剛好等於正確答案」,答對就是答對,不管模型當時給正確答案的機率是0.99還是只是勉強超過其他選項的0.34。但 perplexity 量的是整個機率分布有多「集中」——同樣是答對的兩個模型,一個給正確答案0.9的高機率(很篤定地答對),另一個只給0.34的低機率(矇對的,只是剛好比其他選項高一點點),兩者 accuracy 完全一樣,但 perplexity 差很多,後者的 perplexity 會明顯高於前者。這代表 perplexity 能捕捉到「模型對整個機率分布的掌握程度」,而不只是「有沒有猜中」,是比 accuracy 更嚴格、也更能反映模型真實信心程度的指標。
 
+## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
+
+### Pearson 跟 Poisson 搞混
+
+這兩個字長得很像(都是P開頭、音節數也接近),測驗時把「Pearson correlation coefficient(皮爾森相關係數)」跟「Poisson distribution(卜瓦松分布)」搞混了一次,但兩者是完全不相關的兩個概念,分屬機率論裡不同的類別:
+
+**Pearson correlation coefficient(皮爾森相關係數):** 這是這堂課「互資訊(Mutual Information)」小節裡拿來做對照的東西——一個介於 -1 到 1 之間的數字,量的是兩個變數之間**線性關係**的強弱跟方向(正相關/負相關/無關)。筆記裡明確寫過的重點是:Pearson 只抓得到「線性」的關係,遇到非線性關係(比如資料排列成U型曲線,兩個變數明顯有關聯,但不是「一個變大另一個就跟著等比例變大」這種直線關係)會誤判成「無關」,算出接近0的值,即使肉眼一看就知道兩者有很強的關聯。這是這堂課用互資訊(mutual information)跟Pearson做對比時,強調互資訊「不管線性非線性都算得出來」的那個對照組。
+
+**Poisson distribution(卜瓦松分布):** 這是**機率分布**的一種(跟Lesson 6學過的Bernoulli、常態分布是同一個類別的東西),描述「單位時間/單位空間內,某件事發生次數」的分布,像是「一小時內客服電話進來的次數」、「一頁書裡打字錯誤的個數」這種計數型隨機變數。跟「兩個變數之間關不關聯」完全是不同層次的問題——Poisson分布回答的是「這件事發生幾次的機率有多高」,Pearson相關係數回答的是「兩件事有沒有一起變動」,兩者除了名字裡都帶「P」開頭的音,數學上沒有任何直接關係。
+
+**怎麼避免以後又搞混:** 記法上可以把「-son結尾」跟「用途」綁在一起想——Pearson 的用途是「兩個變數的關係」(**關係型**),Poisson 的用途是「一個變數的次數分布」(**計數型**)。判斷題目在問哪一個,先問自己「這題在問的是『兩個東西有沒有關聯』,還是『一件事發生幾次的機率』」,問的是前者才是Pearson,問的是後者才是Poisson。
+
+### one-hot 在cross-entropy簡化公式裡的角色需要補強
+
+Cross-entropy的完整定義是 `H(P,Q) = -sum(p(x)*log(q(x)))`,對所有可能的類別x都要算一項再加總。但分類問題裡,程式碼跟公式常常直接寫成 `H(P,Q) = -log(q(true_class))`,只有一項,一開始不清楚這個簡化是怎麼跳出來的。
+
+**答案在於「真實分布P」在分類問題裡,本身就是one-hot向量(獨熱編碼)**——真實類別的位置機率是1,其他所有類別的位置機率都是0。把這個特性代回完整公式:`sum(p(x)*log(q(x)))` 這個加總裡,除了「真實類別」那一項的`p(x)=1`,其餘所有項的`p(x)`都是0,而0乘上任何數字(包括`log(q(x))`)都是0,那些項直接整個消失,加總裡只剩下真實類別那一項:`1 * log(q(true_class))`,前面補上負號就是 `-log(q(true_class))`。所以「分類問題的cross-entropy只需要看模型對正確答案給的機率」這個簡化,不是額外發明的捷徑公式,而是完整定義套用在「P是one-hot」這個特殊狀況下,數學上自動化簡出來的結果——換一個問題,如果真實分布P不是one-hot(比如label smoothing之後,正確類別是0.9、其他類別平分剩下0.1),就不能再套用這個簡化版,要老實地把完整的加總公式算完。
+
 ## 我自己手打的部分
 
 這堂課走Top-down策略(數學/理論課,不強制手打)。核心8個函式(`information_content`、`entropy`、`cross_entropy`、`kl_divergence`、`mutual_information`、`softmax`、`cross_entropy_loss`、`perplexity`)都對照公式讀過、跑過demo驗證數字一致,放進`practice.py`。`conditional_entropy`、`joint_entropy`、`label_smoothing_demo`、`feature_selection_mi_demo`這幾個屬於延伸內容(教學目標沒有明確要求),沒有實際帶過,記進review-queue。
@@ -193,4 +211,4 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 理解程度:6個核心概念都逐一講解+確認過,post測驗3題用問答方式都答對(中間有補強one-hot、perplexity vs accuracy的差別、Pearson vs Poisson的混淆)。整體理解紮實,沒有像Lesson 8那樣退步
 效率:延續「每教完一個概念就停下確認」的節奏,這次retention明顯比Lesson 8好,沒有出現連續好幾個「不知道」的狀況
 完成度:4個Learning Objectives都完成,MI的完整特徵排序demo跳過記review-queue;新增了配圖(entropy/cross-entropy/概念串連圖/互資訊Venn圖),也把Lesson 1-8的舊筆記回頭補了圖並推上GitHub
-花費時間:56分4秒
+花費時間:56分4秒(課程建議時間:約60分鐘,幾乎完全對上)
