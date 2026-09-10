@@ -25,6 +25,12 @@
 
 ![矩陣乘向量:把矩陣想成一台機器,每個輸出數字都是矩陣的某一列跟輸入向量做內積](images/matrix_as_machine.png)
 
+![element-wise vs matrix multiply對照:同樣的A、B結果完全不同](images/elementwise_vs_matmul.png)
+
+![determinant:單位正方形被放大/縮小/壓扁的比例,det=0代表資訊遺失](images/determinant_area_scaling.png)
+
+![broadcasting:bias自動延伸去對齊batch維度](images/broadcasting_bias.png)
+
 ## 我自己手打的部分
 
 這堂課依 Top-Down 策略,大部分程式碼是看過、逐段講解、口頭能解釋邏輯,不是手打驗證的。真正自己手打並驗證過的,只有 `numpy_version.py` 裡這一行核心邏輯:
