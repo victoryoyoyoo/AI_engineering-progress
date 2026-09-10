@@ -34,7 +34,11 @@
 | 泰勒展開 Taylor Series | 用多項式局部逼近任何函數 | 一階近似=梯度下降在做的事;二階近似=牛頓法在做的事 |
 
 ![泰勒展開:x0附近近似很準,離越遠誤差越大,一階vs二階近似對照](images/taylor_series_approximation.png)
+
+![牛頓法vs梯度下降:多用二階資訊(Hessian)收斂更快](images/newtons_method_vs_gd.png)
 | 線性迴歸 Linear Regression | y=wx+b,用梯度下降訓練w、b | predict→算loss→算梯度→更新,是所有神經網路訓練迴圈的縮影 |
+
+![線性迴歸訓練:擬合線逐漸逼近真實關係、loss逐步下降](images/linear_regression_training.png)
 
 ## 這堂課的總結
 
@@ -139,6 +143,8 @@ f'(x) = [(1+e^(-x)) - 1] / (1+e^(-x))^2
       = f(x)(1 - f(x))
 ```
 也就是說,`f'(x)` 本身可以完全用 `f(x)` 這一個值表示出來,不需要重新算一次 `e^(-x)`。這在工程實作上非常划算：神經網路做反向傳播時,正向傳播已經算出了 `f(x)`(也就是 sigmoid 的輸出值),反向傳播算梯度時直接拿這個已經算好的輸出值代入 `f(x)(1-f(x))`,就能得到導數,完全不用再重新計算一次指數函數,省下不少運算量,這也是很多常見的激活函數(包括 tanh)被設計成有這種「導數可以用自己的輸出值表示」性質的原因之一。
+
+![sigmoid與導數:f'(x)=f(x)(1-f(x)),x=0時導數最大](images/sigmoid_derivative.png)
 
 ## 今天評分
 
