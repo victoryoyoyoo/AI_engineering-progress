@@ -23,6 +23,7 @@
 | Convex function | 凸函數 | 只有一個最小值,梯度下降一定找得到 |
 | Saddle point | 鞍點 | 梯度是0,但某些方向是最小值、某些方向是最大值 |
 | Loss landscape | 損失地形 | 把loss函數畫成地形圖(高原、山谷、鞍點) |
+| Convergence | 收斂 | 最佳化器走到一個點,之後再更新也不太能再有效降低loss |
 
 ---
 
