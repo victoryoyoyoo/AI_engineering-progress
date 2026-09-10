@@ -130,9 +130,11 @@ Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal d
 
 ## 今天評分
 
-理解程度:softmax數值穩定技巧、cross-entropy loss的直覺(機率越低loss越高)、log機率解決連乘下溢問題這幾個核心概念,測驗3/3全對,能自己講出原理;PDF密度值可以大於1、變異數兩種公式為什麼等價這兩個地方一開始有誤解,後來用類比跟代數證明解決
-效率:整體順暢,中間VS Code編輯器分頁顯示異常卡了一下(後來發現是WSL路徑轉換問題,改用Windows路徑格式`D:\...`解決)
-完成度:4個Learning Objectives全部完成,其中PMF/PDF那項是照理解型分類完成(讀程式碼+跑demo,沒有手打實作),softmax/log_softmax由我代打完成
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | softmax數值穩定技巧、cross-entropy loss的直覺(機率越低loss越高)、log機率解決連乘下溢問題這幾個核心概念,測驗3/3全對,能自己講出原理;PDF密度值可以大於1、變異數兩種公式為什麼等價這兩個地方一開始有誤解,後來用類比跟代數證明解決 |
+| 效率 | 整體順暢,中間VS Code編輯器分頁顯示異常卡了一下(後來發現是WSL路徑轉換問題,改用Windows路徑格式`D:\...`解決) |
+| 完成度 | 4個Learning Objectives全部完成,其中PMF/PDF那項是照理解型分類完成(讀程式碼+跑demo,沒有手打實作),softmax/log_softmax由我代打完成 |
 
 ---
 
