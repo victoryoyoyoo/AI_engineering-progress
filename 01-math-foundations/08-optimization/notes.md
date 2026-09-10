@@ -20,6 +20,9 @@
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
+  - [`params[:]`:切片複製一份 list,避免共用同一個物件](#params切片複製一份-list避免共用同一個物件)
+  - [負數索引 `[-1]`:從尾端數](#負數索引-1從尾端數)
+  - [`for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構](#for-name-history-in--對一串-tuple-做迴圈解構)
 
 ## Learning Objectives 打勾清單
 - [x] 從零實作梯度下降、SGD with momentum、Adam ⚠️(`GradientDescent`真的看過對照公式;`SGDMomentum`、`Adam`寫在reference.py+跑過demo,沒有實際逐行帶著看,記進review-queue)
@@ -244,3 +247,34 @@ Optimization要解決的問題就是:給定loss函數(告訴你模型多爛)跟�
 | 效率 | 內容偏多(3個optimizer+凸非凸+鞍點+排程),照加快節奏一次教完才檢查,反而retention不好。使用者確認之後**節奏不變,但每教完一個概念就要停下來確認,不要連續塞多個概念**(已寫進teaching-protocol記憶) |
 | 完成度 | 4個Learning Objectives名義上都完成,但Adam/SGDMomentum屬於理解型(沒逐行看)、學習率排程只認識種類沒實作,損失地形視覺化跟全部Exercise都跳過記review-queue |
 | 花費時間 | 20分鐘(課程建議時間:約75分鐘,遠低於建議時間——這跟上面「這堂課教得太快」的問題直接對應,3個optimizer+凸非凸+鞍點+排程塞進20分鐘教完,退步的post測驗結果不是意外) |
+
+---
+
+(下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
+
+### `params[:]`:切片複製一份 list,避免共用同一個物件
+
+```python
+history = [params[:]]
+history.append(params[:])
+```
+
+`params[:]` 是切片(slicing),不寫起始/結束位置代表「從頭到尾整段取出」,結果是一個全新的 list,裡面的數字複製了一份,跟原本的 `params` 是兩個不同的物件,只是內容一樣。這跟直接寫 `history.append(params)` 不一樣——後者存進 `history` 的只是「指向同一個 list 的參照」,如果之後 `params` 這個物件本身被原地修改(例如用 `params[0] = ...` 改內容,而不是整個重新賦值),`history` 裡所有存過的紀錄都會跟著一起變,因為它們指向的其實是同一份資料。
+
+C++ 對照:這就是「值傳遞(拷貝)」跟「參照/指標」的差別。Python 的變數賦值(`a = b`)永遠只是複製「參照」,不是複製資料本身;list 這種可變(mutable)物件如果要真的複製一份獨立的資料,要像這裡一樣明寫 `a[:]`(或 `list(a)`、`copy.copy(a)`)。這堂課的 `step()` 方法本身用 list comprehension 回傳全新的 list,所以這裡其實不會真的發生資料互相污染的 bug,但 `params[:]` 是防禦性寫法——養成看到「要把目前狀態存起來,之後還要繼續改動原本那個變數」的情境就主動切片複製的習慣,可以避免掉很多這類難抓的 bug。
+
+### 負數索引 `[-1]`:從尾端數
+
+```python
+final = history[-1]
+```
+
+Python 的索引可以用負數,`-1` 代表「最後一個」、`-2` 代表「倒數第二個」,以此類推,不用像 C++ 那樣自己算 `v[v.size()-1]` 或呼叫 `v.back()`。正數索引從 `0` 開始往後數,負數索引從 `-1` 開始往前數,兩種可以混用在同一個 list 上。
+
+### `for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構
+
+```python
+for name, history in [("GD", gd_history), ("SGD+M", sgd_history), ("Adam", adam_history)]:
+```
+
+這裡直接寫一個 list,裡面裝三個 tuple(每個 tuple 是「名字, 資料」這一對),`for name, history in ...` 一次把每個 tuple 拆成兩個變數,寫法上是把 Lesson 3 學過的「解構賦值」跟 for 迴圈結合在一起,不用先建 `names` 跟 `histories` 兩個獨立的 list 再配合 `zip()` 才能一起走訪——資料本身內容不多、只是暫時要湊起來印出來比較的時候,直接寫成一串 tuple 的 list 更直覺。
