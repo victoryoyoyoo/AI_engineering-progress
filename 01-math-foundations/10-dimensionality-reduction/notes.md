@@ -1,5 +1,29 @@
 # Lesson 10 - Dimensionality Reduction(降維)
 
+## 目錄
+
+- [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
+- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [公式速查表](#公式速查表)
+- [這堂課的名詞總表](#這堂課的名詞總表)
+- [PCA的fit方法,一步一步拆解](#pca的fit方法一步一步拆解)
+- [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
+  - [名詞總表的「留變異量大的還是小的」](#名詞總表的留變異量大的還是小的)
+  - [np.mean(X, axis=0)到底在算什麼](#npmeanx-axis0到底在算什麼)
+  - [共變異數矩陣](#共變異數矩陣)
+  - [特徵向量/特徵值(eigenvector/eigenvalue)](#特徵向量特徵值eigenvectoreigenvalue)
+  - [argsort重排(2D)](#argsort重排2d)
+  - [「留前k個」跟explained_variance_ratio_是陣列還是單一數字](#留前k個跟explained_variance_ratio_是陣列還是單一數字)
+  - [transform為什麼用fit時存的mean,不是這批新資料自己的mean](#transform為什麼用fit時存的mean不是這批新資料自己的mean)
+  - [還原誤差(reconstruction error)為什麼要平方](#還原誤差reconstruction-error為什麼要平方)
+  - [Kernel PCA:標準PCA為什麼分不開同心圓、Kernel PCA怎麼解決](#kernel-pca標準pca為什麼分不開同心圓kernel-pca怎麼解決)
+  - [降維四種方法對照:PCA vs Kernel PCA vs t-SNE vs UMAP](#降維四種方法對照pca-vs-kernel-pca-vs-t-sne-vs-umap)
+  - [維度詛咒(curse of dimensionality)](#維度詛咒curse-of-dimensionality)
+- [面試向問題](#面試向問題)
+- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天評分](#今天評分)
+
 ## Learning Objectives 打勾清單
 - [x] 從零實作PCA:置中資料、算共變異數矩陣、特徵分解、投影
 - [x] 用explained variance ratio跟elbow method選要留幾個主成分
