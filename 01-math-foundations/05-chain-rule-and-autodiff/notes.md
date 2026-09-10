@@ -374,6 +374,12 @@ Difference: 3.66e-10   (遠小於1e-5,證明引擎寫對了)
 
 **商業/工程價值:** 這是所有深度學習框架的心臟——不管模型多大多深,訓練的核心機制永遠是「記錄計算圖、反向傳播算梯度」,這套東西讓「算所有參數的梯度」這件事,成本只跟「跑一次正向傳播」差不多,深度學習能訓練百萬甚至上兆參數模型,根本原因就是反向模式autodiff。
 
+## 面試向問題
+
+- 自己刻的自動微分結果跟手推公式對不上,你會怎麼用gradient checking去定位是哪一個運算的`_backward`寫錯了?(對應「Step6:梯度檢查(Gradient Checking)」那段)
+- 為什麼PyTorch訓練神經網路用reverse mode而不是forward mode的自動微分?(對應「Forward Mode vs Reverse Mode」那段)
+- 同一個權重被多處共用(weight sharing)時,`backward()`裡如果把梯度累加`+=`誤寫成覆蓋`=`,會造成什麼後果?(對應「常見地雷」那段)
+
 ## 我自己手打的部分
 
 `Value` class 的核心:`__init__`、`__repr__`、`__add__`、`__mul__`、`relu`、`backward` 這幾段親手打過並驗證(中間卡了很多輪反向傳播原理跟VS Code Copilot設定問題)。Step4補充運算(`__neg__`/`__sub__`/`__pow__`/`__truediv__`/`exp`/`log`/`tanh`)跟Neuron/Layer/MLP/XOR訓練迴圈,看邏輯+追蹤具體數字,沒有逐行手打,完整版在`reference.py`。
