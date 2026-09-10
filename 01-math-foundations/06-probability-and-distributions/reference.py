@@ -13,6 +13,7 @@ import math
 import random
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 1: 機率基礎 ----------
 
 def factorial(n):
@@ -64,6 +65,7 @@ def normal_pdf(x, mu, sigma):
     return coeff * math.exp(exponent)
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
 # ---------- Step 3: 期望值 / 變異數 ----------
 
 def expected_value(values, probabilities):
@@ -78,6 +80,7 @@ def variance(values, probabilities):
     return sum(p * (v - mu) ** 2 for v, p in zip(values, probabilities))
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 4: 抽樣 ----------
 
 def sample_bernoulli(p, n=1):
@@ -114,6 +117,7 @@ def sample_normal_box_muller(mu, sigma, n=1):
     return samples
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
 # ---------- Step 5: softmax / log-softmax / cross-entropy ----------
 
 def softmax(logits):
@@ -143,6 +147,7 @@ def cross_entropy_loss(logits, target_index):
     return -log_probs[target_index]
 
 
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 6: 中央極限定理 demo ----------
 
 def demonstrate_clt(dist_fn, n_samples, n_averages):
