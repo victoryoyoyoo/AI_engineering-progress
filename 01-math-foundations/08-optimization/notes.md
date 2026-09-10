@@ -181,6 +181,13 @@ scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(adam, T_max=100)
 
 Optimization要解決的問題就是:給定loss函數(告訴你模型多爛)跟梯度(告訴你哪個方向會更爛),怎麼有效率地走到山谷底部。三種optimizer是同一個問題的三種答案——梯度下降(最陽春,只看現在)、momentum(記住過去方向,解決震盪)、Adam(momentum + 每個權重自己的步伐大小,解決「不同權重需要不同學習率」的問題)。凸/非凸、鞍點,講的是「山谷長什麼樣子」——神經網路的loss地形不是單純一個碗,鞍點比局部最小值更常見更麻煩,而momentum、mini-batch的雜訊剛好都有助於逃離鞍點。學習率排程則是在時間軸上動態調整步伐,前期快、後期穩。
 
+## 面試向問題
+
+- 訓練loss一直在某個值附近震盪、降不下去,可能是optimizer選錯還是學習率設太大?你會怎麼判斷、怎麼調整?(對應「Momentum(動量)——解決什麼問題」那段)
+- 為什麼不少電腦視覺的SOTA模型論文,最後選的是SGD with momentum而不是Adam?(對應「常見地雷」那段)
+- 神經網路訓練卡住變慢,比較可能是卡在局部最小值還是鞍點?為什麼?(對應「鞍點(Saddle Point)——為什麼比局部最小值更麻煩」那段)
+- Transformer訓練常見的warmup+cosine annealing排程組合,實際上在解決什麼問題?(對應「學習率排程(Learning Rate Schedule)」那段)
+
 ## 課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)
 
 <details>
