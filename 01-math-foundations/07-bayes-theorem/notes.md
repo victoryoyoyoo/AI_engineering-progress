@@ -22,6 +22,8 @@
 | Beta distribution | Beta分布 | 專門描述「一個機率值本身」的分布,常拿來當共軛先驗 |
 | Base rate fallacy | 基本比率謬誤 | 只看準確率,忽略「這件事本身有多罕見」,導致誤判機率 |
 | L2 regularization | L2正則化(weight decay) | 訓練時懲罰過大的權重,讓模型不要過度擬合 |
+| Log-probability | 對數機率 | 用log(P)取代P,避免連乘很多小機率時發生浮點數下溢 |
+| False positive | 偽陽性 | 檢測結果說「是」,但真實狀態其實是「否」,基本比率謬誤的成因之一 |
 
 ---
 
