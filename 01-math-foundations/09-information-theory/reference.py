@@ -84,15 +84,6 @@ def cross_entropy_loss(true_class, logits):
     return -math.log(probs[true_class])
 
 
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
-def negative_log_likelihood(labels, all_logits):
-    """負對數概似(NLL)——跟cross_entropy_loss取平均後數學上完全相同"""
-    return sum(
-        cross_entropy_loss(label, logits)
-        for label, logits in zip(labels, all_logits)
-    ) / len(labels)
-
-
 # === 核心(手刻層,逐行講解+手打練熟) ===
 def perplexity(avg_cross_entropy, base="e"):
     """困惑度 = e^(交叉熵) 或 2^(交叉熵)
@@ -101,6 +92,15 @@ def perplexity(avg_cross_entropy, base="e"):
     if base == "e":
         return math.exp(avg_cross_entropy)
     return 2 ** avg_cross_entropy
+
+
+# === 理解層(講邏輯+demo驗證,不逐行摳) ===
+def negative_log_likelihood(labels, all_logits):
+    """負對數概似(NLL)——跟cross_entropy_loss取平均後數學上完全相同"""
+    return sum(
+        cross_entropy_loss(label, logits)
+        for label, logits in zip(labels, all_logits)
+    ) / len(labels)
 
 
 # === 理解層(講邏輯+demo驗證,不逐行摳) ===

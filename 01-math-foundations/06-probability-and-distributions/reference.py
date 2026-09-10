@@ -13,6 +13,50 @@ import math
 import random
 
 
+# === 核心(手刻層,逐行講解+手打練熟) ===
+# ---------- Step 3: 期望值 / 變異數 ----------
+
+def expected_value(values, probabilities):
+    """期望值 E[X]:每個結果乘上自己的機率再加總,機率加權平均"""
+    return sum(v * p for v, p in zip(values, probabilities))
+
+
+def variance(values, probabilities):
+    """變異數 Var(X) = E[(X-mu)^2]:每個結果離平均值的差距平方,再取機率加權平均
+    (跟展開版 E[X^2]-(E[X])^2 數學上等價,這裡用定義版,邏輯較直觀)"""
+    mu = expected_value(values, probabilities)
+    return sum(p * (v - mu) ** 2 for v, p in zip(values, probabilities))
+
+
+# ---------- Step 5: softmax / log-softmax / cross-entropy ----------
+
+def softmax(logits):
+    """把原始分數(logits)轉成合法機率分布(全部在0~1之間,加總=1)。
+    先減掉最大值再取exp,是數值穩定技巧:避免exp(大數字)直接溢位,
+    因為分子分母同時除以同一個常數,比例完全不變"""
+    max_logit = max(logits)
+    shifted = [z - max_logit for z in logits]
+    exps = [math.exp(z) for z in shifted]
+    total = sum(exps)
+    return [e / total for e in exps]
+
+
+def log_softmax(logits):
+    """直接算log機率,不用先softmax再取log(避免機率太小時log(0)出現負無窮)。
+    用log-sum-exp技巧把取指數跟取log合併簡化成一步"""
+    max_logit = max(logits)
+    shifted = [z - max_logit for z in logits]
+    log_sum_exp = max_logit + math.log(sum(math.exp(z) for z in shifted))
+    return [z - log_sum_exp for z in logits]
+
+
+def cross_entropy_loss(logits, target_index):
+    """分類問題的loss:正確類別的log機率取負號。
+    模型對正確答案越沒信心(機率越低),loss越大,值域是[0,+∞)"""
+    log_probs = log_softmax(logits)
+    return -log_probs[target_index]
+
+
 # === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 1: 機率基礎 ----------
 
@@ -65,22 +109,6 @@ def normal_pdf(x, mu, sigma):
     return coeff * math.exp(exponent)
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
-# ---------- Step 3: 期望值 / 變異數 ----------
-
-def expected_value(values, probabilities):
-    """期望值 E[X]:每個結果乘上自己的機率再加總,機率加權平均"""
-    return sum(v * p for v, p in zip(values, probabilities))
-
-
-def variance(values, probabilities):
-    """變異數 Var(X) = E[(X-mu)^2]:每個結果離平均值的差距平方,再取機率加權平均
-    (跟展開版 E[X^2]-(E[X])^2 數學上等價,這裡用定義版,邏輯較直觀)"""
-    mu = expected_value(values, probabilities)
-    return sum(p * (v - mu) ** 2 for v, p in zip(values, probabilities))
-
-
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 4: 抽樣 ----------
 
 def sample_bernoulli(p, n=1):
@@ -117,37 +145,6 @@ def sample_normal_box_muller(mu, sigma, n=1):
     return samples
 
 
-# === 核心(手刻層,逐行講解+手打練熟) ===
-# ---------- Step 5: softmax / log-softmax / cross-entropy ----------
-
-def softmax(logits):
-    """把原始分數(logits)轉成合法機率分布(全部在0~1之間,加總=1)。
-    先減掉最大值再取exp,是數值穩定技巧:避免exp(大數字)直接溢位,
-    因為分子分母同時除以同一個常數,比例完全不變"""
-    max_logit = max(logits)
-    shifted = [z - max_logit for z in logits]
-    exps = [math.exp(z) for z in shifted]
-    total = sum(exps)
-    return [e / total for e in exps]
-
-
-def log_softmax(logits):
-    """直接算log機率,不用先softmax再取log(避免機率太小時log(0)出現負無窮)。
-    用log-sum-exp技巧把取指數跟取log合併簡化成一步"""
-    max_logit = max(logits)
-    shifted = [z - max_logit for z in logits]
-    log_sum_exp = max_logit + math.log(sum(math.exp(z) for z in shifted))
-    return [z - log_sum_exp for z in logits]
-
-
-def cross_entropy_loss(logits, target_index):
-    """分類問題的loss:正確類別的log機率取負號。
-    模型對正確答案越沒信心(機率越低),loss越大,值域是[0,+∞)"""
-    log_probs = log_softmax(logits)
-    return -log_probs[target_index]
-
-
-# === 理解層(講邏輯+demo驗證,不逐行摳) ===
 # ---------- Step 6: 中央極限定理 demo ----------
 
 def demonstrate_clt(dist_fn, n_samples, n_averages):
