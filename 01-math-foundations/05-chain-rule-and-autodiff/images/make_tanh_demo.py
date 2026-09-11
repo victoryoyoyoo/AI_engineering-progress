@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 x = np.linspace(-4, 4, 400)
 y = np.tanh(x)
@@ -23,8 +24,8 @@ ax.axhline(0, color="#bbbbbb", lw=0.7)
 ax.axvline(0, color="#bbbbbb", lw=0.7)
 ax.set_ylim(-1.3, 1.3)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=10, loc="lower right")
-ax.set_title("tanh:壓縮到(-1,1)的S形曲線,中間變化快、兩端變化慢", fontsize=12.5, fontweight="bold")
+ax.legend(loc="lower right")
+ax.set_title("tanh:壓縮到(-1,1)的S形曲線,中間變化快、兩端變化慢")
 
 plt.tight_layout()
 plt.savefig("tanh_activation.png", dpi=150, bbox_inches="tight")

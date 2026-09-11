@@ -7,9 +7,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import MLP
@@ -45,7 +46,7 @@ ax.annotate(f"step 99\nloss={losses[-1]:.4f}", (99, losses[-1]), textcoords="off
 ax.set_ylim(0, 4.6)
 ax.set_xlabel("訓練步數 (step)")
 ax.set_ylabel("loss (MSE)")
-ax.set_title("親手刻的autograd引擎訓練XOR問題:loss真的持續下降", fontsize=12.5, fontweight="bold", pad=12)
+ax.set_title("親手刻的autograd引擎訓練XOR問題:loss真的持續下降", pad=12)
 ax.grid(alpha=0.3, linestyle="--")
 
 plt.tight_layout()

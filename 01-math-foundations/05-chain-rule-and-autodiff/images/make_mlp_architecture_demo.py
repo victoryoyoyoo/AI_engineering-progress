@@ -5,9 +5,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 fig, ax = plt.subplots(figsize=(8, 5.5))
 ax.set_xlim(0, 8)
@@ -38,7 +39,7 @@ ax.text(4, 0.6, "每一條連線就是一個weight,每個Neuron自己還有一�
                 "Neuron: 加權總和+bias再套tanh -> Layer: 一排並排的Neuron -> MLP: 好幾層Layer疊起來",
         ha="center", fontsize=9.5, color="#333333")
 
-ax.set_title("MLP([2, 4, 1]) 架構:Neuron → Layer → MLP", fontsize=13.5, fontweight="bold")
+ax.set_title("MLP([2, 4, 1]) 架構:Neuron → Layer → MLP")
 plt.tight_layout()
 plt.savefig("mlp_architecture.png", dpi=150, bbox_inches="tight")
 print("saved")

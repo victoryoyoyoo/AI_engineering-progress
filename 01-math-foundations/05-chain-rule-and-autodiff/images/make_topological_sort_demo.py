@@ -6,9 +6,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 fig, ax = plt.subplots(figsize=(9, 4.2))
 ax.set_xlim(0, 10)
@@ -35,7 +36,7 @@ for name, (x, y, c, order) in nodes.items():
     ax.text(x, y, name, ha="center", va="center", fontsize=9.5, fontweight="bold")
     ax.text(x, y - 1.05, f"topo順序: {order}", ha="center", fontsize=8.5, color=c)
 
-ax.set_title("拓撲排序(Topological Sort):小孩(左)一定排在爸媽(右)前面", fontsize=12.5, fontweight="bold")
+ax.set_title("拓撲排序(Topological Sort):小孩(左)一定排在爸媽(右)前面")
 ax.text(5, 0.15, "backward()把這個順序「倒過來」執行,才會是 y -> b -> a -> x1,x2",
         ha="center", fontsize=9.5)
 
