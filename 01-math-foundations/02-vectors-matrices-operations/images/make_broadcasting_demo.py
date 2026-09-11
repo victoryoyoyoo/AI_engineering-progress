@@ -5,9 +5,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 fig, ax = plt.subplots(figsize=(9.5, 4.8))
 ax.set_xlim(0, 10)
@@ -30,7 +31,7 @@ ax.text(6.4, 3.3, "broadcasting:\n第2維是1,\n自動複製4次去對齊", font
 
 grid(0.5, 1.6, 3, 4, "#55A868", "bias 複製後 (概念上)\nshape (3, 4),每欄都一樣")
 
-ax.set_title("Broadcasting:bias自動延伸去對齊batch維度", fontsize=13.5, fontweight="bold", pad=10)
+ax.set_title("Broadcasting:bias自動延伸去對齊batch維度", pad=10)
 plt.tight_layout()
 plt.savefig("broadcasting_bias.png", dpi=150, bbox_inches="tight")
 print("saved")
