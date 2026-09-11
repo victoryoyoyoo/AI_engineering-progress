@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 rng = np.random.default_rng(3)
 
@@ -49,8 +50,8 @@ ax.plot(x_sgd, f(x_sgd), "o-", color="#C44E52", lw=1.4, markersize=4, alpha=0.85
 ax.set_xlabel("參數 x", fontsize=10.5)
 ax.set_ylabel("loss = f(x)", fontsize=10.5)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=9.5)
-ax.set_title("Batch GD vs Mini-batch SGD:雜訊換來跳出平坦區/淺谷的機會", fontsize=12, fontweight="bold")
+ax.legend()
+ax.set_title("Batch GD vs Mini-batch SGD:雜訊換來跳出平坦區/淺谷的機會")
 
 plt.tight_layout()
 plt.savefig("sgd_noise.png", dpi=150, bbox_inches="tight")
