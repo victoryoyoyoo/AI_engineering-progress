@@ -6,9 +6,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 fig, ax = plt.subplots(figsize=(9.5, 4))
 ax.set_xlim(0, 10)
@@ -34,7 +35,7 @@ ax.add_patch(plt.Rectangle((3.3, -0.9), 3.4, 1.05, facecolor="#C44E52", alpha=0.
 ax.text(5, -0.4, "Posterior  P(A|B)\n看到證據後,更新過的信念", ha="center", va="center", fontsize=9.5, fontweight="bold", color="#C44E52")
 
 ax.set_ylim(-1.3, 3.2)
-ax.set_title("貝氏定理:Prior × Likelihood ÷ Evidence = Posterior", fontsize=13, fontweight="bold")
+ax.set_title("貝氏定理:Prior × Likelihood ÷ Evidence = Posterior")
 
 plt.tight_layout()
 plt.savefig("bayes_theorem_flow.png", dpi=150, bbox_inches="tight")
