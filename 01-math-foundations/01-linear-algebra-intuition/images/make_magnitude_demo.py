@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 v = np.array([4, 3])
 mag = float(np.linalg.norm(v))  # sqrt(4^2+3^2) = 5
@@ -32,7 +33,7 @@ ax.set_xlim(-1, 5.5)
 ax.set_ylim(-1, 4.5)
 ax.set_aspect("equal")
 ax.grid(alpha=0.3, linestyle="--")
-ax.set_title("magnitude(向量長度):畢氏定理的推廣", fontsize=13, fontweight="bold")
+ax.set_title("magnitude(向量長度):畢氏定理的推廣")
 
 plt.tight_layout()
 plt.savefig("magnitude.png", dpi=150, bbox_inches="tight")

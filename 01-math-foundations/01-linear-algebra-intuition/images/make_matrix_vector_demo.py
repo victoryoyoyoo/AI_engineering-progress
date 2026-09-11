@@ -5,9 +5,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 W = [[0.1, -0.2, 0.3], [0.4, 0.5, -0.1]]
 x = [1, 0.5, -0.3]
@@ -37,7 +38,7 @@ for i, (lab, c) in enumerate(zip(row_labels, colors)):
 ax.text(0.6, 1.2, f"輸出 y = W @ x = [{y[0]:.2f}, {y[1]:.2f}]  (matrix有幾列 -> 輸出就幾維)",
         fontsize=11.5, color="#333333")
 
-ax.set_title("矩陣乘向量:每一列各自跟輸入向量做內積,收集成輸出", fontsize=13.5, fontweight="bold", pad=10)
+ax.set_title("矩陣乘向量:每一列各自跟輸入向量做內積,收集成輸出", pad=10)
 plt.tight_layout()
 plt.savefig("matrix_vector_multiply.png", dpi=150, bbox_inches="tight")
 print("saved")

@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 v = np.array([2, 1])
 scalars = [1, 2, 0.5, -1]
@@ -28,8 +29,8 @@ ax.set_xlim(-3, 5)
 ax.set_ylim(-3, 3)
 ax.set_aspect("equal")
 ax.grid(alpha=0.3, linestyle="--")
-ax.set_title("純量乘法(scalar multiply):只改變長度,負數會反轉方向", fontsize=13, fontweight="bold")
-ax.legend(loc="upper left", fontsize=10, framealpha=0.9)
+ax.set_title("純量乘法(scalar multiply):只改變長度,負數會反轉方向")
+ax.legend(loc="upper left", framealpha=0.9)
 
 plt.tight_layout()
 plt.savefig("scalar_multiply.png", dpi=150, bbox_inches="tight")
