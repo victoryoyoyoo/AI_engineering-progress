@@ -14,6 +14,7 @@
   - [為什麼要用log機率而不是原始機率](#為什麼要用log機率而不是原始機率)
   - [Joint / Marginal 分布](#joint-marginal-分布)
 - [這堂課的總結](#這堂課的總結)
+- [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天花的時間](#今天花的時間)
@@ -161,6 +162,11 @@ Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal d
 **數值穩定是這堂課反覆出現的主題:** softmax的減最大值技巧、log_softmax合併exp跟log避免log(0)、log機率取代原始機率連乘避免下溢——這三個技巧背後都是同一個問題:電腦浮點數的表示範圍有限,數學上等價的兩種算法,在電腦上跑起來穩定性可能天差地遠。
 
 **PyTorch對應:** `torch.softmax`、`torch.log_softmax`、`nn.CrossEntropyLoss` 都是這堂課手刻函式的現成版本,而且 `nn.CrossEntropyLoss` 內部就是直接呼叫 log_softmax + 取負號,跟今天手刻的邏輯完全一致。
+
+## 相關概念(跨堂連結)
+
+- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課教的是cross-entropy loss的實作面(`-log(模型對正確答案給的機率)`)跟數值穩定技巧(softmax減最大值、log_softmax合併運算) → 理論面在 [Lesson 9](../09-information-theory/notes.md#cross-entropy交叉熵你每天在用的loss-function),那邊把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題,補齊了這堂課「這個loss為什麼長這樣」的理論後盾
+- **變異數的定義跟它在降維上的應用**:這堂課推導了變異數兩種等價公式(`E[(X-mu)²]`跟`E[X²]-(E[X])²`),量的是「結果離期望值有多分散」 → 實際應用在 [Lesson 10](../10-dimensionality-reduction/notes.md#共變異數矩陣),那邊把變異數擴展成共變異數矩陣(量兩個特徵是不是一起變大變小),PCA整套演算法都建立在「找變異量最大的方向」這個目標上,是這堂課變異數定義的直接延伸
 
 ## 面試向問題
 
