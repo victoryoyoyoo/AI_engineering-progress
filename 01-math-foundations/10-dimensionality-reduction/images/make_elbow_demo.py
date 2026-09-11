@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import PCA
@@ -42,7 +43,7 @@ ax2.set_ylim(0, 1.05)
 ax1.axvline(x=2, color="#55A868", linestyle="--", alpha=0.7)
 ax1.text(2.1, max(ratios) * 0.9, "斷崖點(elbow)\n第2個之後貢獻趨近雜訊", fontsize=9, color="#55A868")
 
-ax1.set_title("Elbow Method:找變異量的斷崖落差,決定留幾維", fontsize=12, fontweight="bold")
+ax1.set_title("Elbow Method:找變異量的斷崖落差,決定留幾維")
 fig.tight_layout()
 plt.savefig("elbow_method_demo.png", dpi=150, bbox_inches="tight")
 print("saved")

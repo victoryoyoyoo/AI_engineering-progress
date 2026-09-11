@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import PCA, reconstruction_error
@@ -32,10 +33,10 @@ ax.scatter(X_hat[:, 0], X_hat[:, 1], s=30, color="#C44E52", marker="x", label="�
 for i in range(n_samples):
     ax.plot([X[i, 0], X_hat[i, 0]], [X[i, 1], X_hat[i, 1]], color="gray", alpha=0.4, linewidth=0.8)
 
-ax.set_title(f"還原誤差示意:灰線=每筆資料的還原誤差\nMSE = {err:.4f}", fontsize=12, fontweight="bold")
-ax.legend(fontsize=10)
+ax.set_title(f"還原誤差示意:灰線=每筆資料的還原誤差\nMSE = {err:.4f}")
+ax.legend()
 ax.set_aspect("equal")
-ax.grid(alpha=0.3)
+ax.grid(alpha=0.3, linestyle="--")
 
 plt.tight_layout()
 plt.savefig("reconstruction_error_demo.png", dpi=150, bbox_inches="tight")
