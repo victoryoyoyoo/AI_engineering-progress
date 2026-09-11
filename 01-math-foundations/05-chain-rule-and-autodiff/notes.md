@@ -25,6 +25,7 @@
 - [Step6:梯度檢查(Gradient Checking)](#step6梯度檢查gradient-checking)
   - [Gradient Checking vs Gradient Clipping 對照](#gradient-checking-vs-gradient-clipping-對照)
 - [這堂課的總結](#這堂課的總結)
+- [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天花的時間](#今天花的時間)
@@ -463,6 +464,10 @@ Difference: 3.66e-10   (遠小於1e-5,證明引擎寫對了)
 **PyTorch對應:** 今天手刻的整套「記錄運算→拓撲排序→反向傳播」,PyTorch用 `tensor.requires_grad=True` + `loss.backward()` 兩行取代,`.grad`屬性存的就是算出來的梯度。
 
 **商業/工程價值:** 這是所有深度學習框架的心臟——不管模型多大多深,訓練的核心機制永遠是「記錄計算圖、反向傳播算梯度」,這套東西讓「算所有參數的梯度」這件事,成本只跟「跑一次正向傳播」差不多,深度學習能訓練百萬甚至上兆參數模型,根本原因就是反向模式autodiff。
+
+## 相關概念(跨堂連結)
+
+- **Eigenvalue解釋RNN梯度爆炸,是gradient clipping存在的原因**:這堂課討論gradient clipping(梯度裁剪)時,直接引用權重矩陣eigenvalue絕對值>1會造成梯度爆炸這個結論,來解釋為什麼訓練RNN需要限制梯度大小 → 完整推導在 [Lesson 3](../03-matrix-transformations/notes.md#這堂課的總結),那邊從`Av=λv`一路推導到RNN反覆相乘造成梯度爆炸/消失的完整數學過程,這堂課只是引用結論、沒有重新推導一次
 
 ## 面試向問題
 
