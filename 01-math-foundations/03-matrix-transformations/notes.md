@@ -12,6 +12,7 @@
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [今天評分](#今天評分)
 - [這堂課的總結](#這堂課的總結)
+- [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [解構賦值(unpacking)複習](#解構賦值unpacking複習)
 - [函式回傳多個值](#函式回傳多個值)
@@ -167,6 +168,11 @@ characteristic方程式: det(A - λI) = 0,展開後(2x2)是 λ² - trace·λ + d
 eigendecomposition:  A = V @ D @ V⁻¹
 奇異矩陣(singular):   det(A) = 0,存在非零向量被壓成零向量
 ```
+
+## 相關概念(跨堂連結)
+
+- **Eigenvalue絕對值決定RNN梯度爆炸/消失**:這堂課推導過eigendecomposition(`A=V@D@V⁻¹`),並用eigenvalue絕對值判斷RNN權重矩陣反覆相乘後梯度會爆炸(>1)或消失(<1) → 也出現在 [Lesson 5](../05-chain-rule-and-autodiff/notes.md#gradient-checking-vs-gradient-clipping-對照),那邊在解釋「gradient clipping(梯度裁剪)」的使用時機時,直接引用了這堂課eigenvalue絕對值>1會梯度爆炸的結論,把「為什麼RNN需要梯度裁剪」跟這堂課的理論直接接起來
+- **Eigenvector/eigenvalue是PCA的數學基礎**:這堂課只提過一句話「eigenvector是主成分方向」,沒有展開 → 完整實作在 [Lesson 10](../10-dimensionality-reduction/notes.md#特徵向量特徵值eigenvectoreigenvalue),那邊對共變異數矩陣做特徵分解,eigenvector對應資料變異的主要方向、eigenvalue對應那個方向的變異量大小,把這堂課推導的`Av=λv`整套機制,套用在真正的降維演算法上
 
 ## 面試向問題
 
