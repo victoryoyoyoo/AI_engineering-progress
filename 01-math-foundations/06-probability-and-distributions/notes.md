@@ -24,6 +24,10 @@
   - [math 模組](#math-模組)
   - [List comprehension 拆步驟寫](#list-comprehension-拆步驟寫)
   - [NumPy np.average 帶權重](#numpy-npaverage-帶權重)
+  - [// 整數除法(floor division)](#-整數除法floor-division)
+  - [break:提前跳出迴圈](#break提前跳出迴圈)
+  - [[值] * n:重複同一個元素建出一個 list](#值--n重複同一個元素建出一個-list)
+  - [連續比較 a <= x <= b](#連續比較-a--x--b)
   - [SciPy scipy.special.softmax / log_softmax](#scipy-scipyspecialsoftmax-log_softmax)
 
 ## Learning Objectives 打勾清單
@@ -258,6 +262,51 @@ np.average(die_values, weights=die_probs)
 ```
 
 `np.average` 預設是算普通平均(每個元素權重相等),但傳入 `weights=` 參數後,就變成**加權平均**——等同於我們手刻的 `expected_value`。這是NumPy函式常見的模式:同一個函式名稱,靠可選參數(optional argument)切換行為,不用另外寫一個新函式。
+
+### `//` 整數除法(floor division)
+
+```python
+def combinations(n, k):
+    return factorial(n) // (factorial(k) * factorial(n - k))
+```
+
+`//` 是「除完之後無條件捨去小數位,只留整數部分」,跟平常的 `/` 不一樣——`/` 在 Python 裡永遠回傳浮點數(即使兩邊都整除得盡),`//` 才會回傳整數(前提是兩邊輸入本身都是整數)。這裡用 `//` 是因為 `combinations`(排列組合)的結果理論上一定整除得盡,用 `//` 明確表達「這裡結果一定是整數,不要有浮點數誤差」。
+
+C++對照:C++的 `/` 用在兩個 `int` 相除時,本來就是無條件捨去小數(結果還是 `int`),行為比較接近Python的 `//`；但C++只要有一邊是 `double`,`/` 就會自動變成浮點數除法。Python把這兩種行為拆成兩個不同符號(`/` 永遠是浮點數除法、`//` 永遠捨去小數),不會因為輸入型別不同而默默切換行為,比較不容易踩到「忘記轉型導致整數除法」這種常見的C++地雷。
+
+### `break`:提前跳出迴圈
+
+```python
+for i, c in enumerate(cumulative):
+    if r <= c:
+        samples.append(i)
+        break
+```
+
+`break` 執行到就立刻結束當下這一層迴圈,不會再檢查剩下的項目,直接跳到迴圈外面接下來的程式碼。這裡是在做「輪盤選擇」:`cumulative` 是機率的累積區間(像 `[0.2, 0.5, 1.0]`),隨機數 `r` 一落在某個區間內(`r <= c` 第一次成立),就代表抽中了這一類,馬上記錄下來、沒必要再往後檢查其他還沒累積到的區間,所以用 `break` 提前結束。跟C++的 `break` 完全一樣,語意、用法都相同。
+
+### `[值] * n`:重複同一個元素建出一個 list
+
+```python
+die_probs = [1 / 6] * 6
+```
+
+`[x] * n` 把 list 裡的元素重複 n 次,建出一個新 list,這裡效果是 `[1/6, 1/6, 1/6, 1/6, 1/6, 1/6]`(骰子6面,每面機率均等)。**要小心的地雷:這招只在元素是「不可變(immutable)」的東西(像數字、字串)時安全**,如果元素本身是 list 這種可變(mutable)的東西(像 `[[0]] * 3`),重複出來的 n 份其實是**同一個 list 物件被引用了 n 次**,不是各自獨立的副本——修改其中一份會連帶影響其他份。這裡用的元素是單純數字 `1/6`,不會踩到這個地雷,但看到 `[某個list] * n` 這種寫法要提高警覺。
+
+C++對照:類似 `std::vector<double> die_probs(6, 1.0/6)`(建構子指定數量+初始值),但C++這種寫法在裝的是自訂物件時是「各自深拷貝」,不會有Python那種「共用同一個記憶體位置」的陷阱。
+
+### 連續比較 `a <= x <= b`
+
+```python
+def uniform_pdf(x, a, b):
+    if a <= x <= b:
+        return 1.0 / (b - a)
+    return 0.0
+```
+
+Python 允許把多個比較運算子連續寫在一起,`a <= x <= b` 等同 `a <= x and x <= b` 的縮寫,判斷「x 是不是同時大於等於a、小於等於b」,可以連寫任意長(`a < b < c < d` 也合法)。這是Python特有的語法糖,一次判斷「x 是不是落在某個區間內」時特別好讀。
+
+C++對照:C++ 沒有這種語法,`a <= x <= b` 在C++裡不會報錯但意義完全不同(會先算 `a <= x` 得到一個bool值,再拿這個bool值去跟 `b` 比較,幾乎肯定不是想要的結果),C++要判斷範圍必須老實寫成 `a <= x && x <= b`。
 
 ### SciPy `scipy.special.softmax` / `log_softmax`
 
