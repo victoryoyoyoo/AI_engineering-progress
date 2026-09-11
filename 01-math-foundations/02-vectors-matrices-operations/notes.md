@@ -23,6 +23,7 @@
 - [raise:主動丟出錯誤](#raise主動丟出錯誤)
 - [Shape tuple (m, n) 的判讀方式複習](#shape-tuple-m-n-的判讀方式複習)
 - [f-string 複習](#f-string-複習)
+- [`@staticmethod` 跟 `@property`：兩種不需要「先有物件」或「不用加括號」的方法](#staticmethod-跟-property兩種不需要先有物件或不用加括號的方法)
 
 ## Learning Objectives 打勾清單
 
@@ -309,3 +310,23 @@ print(f"Output shape:{output.shape}")
 ```
 
 `f"..."` 讓字串裡的 `{}` 可以直接放變數或運算式,執行時自動換成實際值。不加 `f` 的話 `{}` 只是普通文字,不會被替換,需要自己手動用 `+` 拼接字串(比較麻煩)。
+
+## `@staticmethod` 跟 `@property`:兩種不需要「先有物件」或「不用加括號」的方法
+
+```python
+@staticmethod
+def identity(n):
+    return Matrix([[1 if i == j else 0 for j in range(n)] for i in range(n)])
+
+@property
+def T(self):
+    return self.transpose()
+```
+
+`@staticmethod` 放在方法上面,代表這個方法**不需要先有一個物件才能呼叫**,呼叫時也不會自動傳入 `self`。像 `Matrix.identity(3)` 是直接對 class 本身呼叫,不是對某個已經建好的矩陣呼叫,因為建立單位矩陣這件事本來就跟「哪一個現有矩陣」無關,只需要一個數字 n。`Matrix.zeros(...)`、`Matrix.random(...)` 也是同樣道理,都是「造一個新矩陣出來」的工廠方法,不依賴任何既有物件的資料。
+
+`@property` 則相反,是套用在**需要 `self`** 的一般方法上,效果是讓呼叫時可以省略括號,把方法偽裝成一個屬性(資料成員)來用:寫 `A.T` 就會自動執行 `transpose()` 拿到結果,不用寫成 `A.T()`。適合用在「單純算個值回傳,不需要額外參數、也不會有副作用」的方法上,讓呼叫端的語法看起來更自然(轉置本來就常被當成矩陣的一個屬性去想)。
+
+`@` 開頭這一整類東西叫 decorator(裝飾器),語法上直接寫在 `def` 上面一行,效果是「用某種方式包裝、改變這個方法被呼叫的行為」,`@staticmethod` 改的是「要不要自動傳 self」,`@property` 改的是「呼叫時要不要加括號」,兩個是完全不同的裝飾器,只是剛好都跟「這個方法怎麼被呼叫」有關。
+
+C++對照:`@staticmethod` 等同 C++ class 裡的 `static` method,呼叫方式也很像(`Matrix::identity(3)` vs `Matrix.identity(3)`),都不需要先有物件、也拿不到 `this`/`self`。`@property` 在 C++ 沒有直接對應語法,比較接近手動多寫一個沒有參數的 getter 函式(`Matrix getTranspose() const`),差別是 C++ 呼叫 getter 還是要加括號,Python 用 `@property` 可以讓呼叫端完全不用加括號、當成一般成員變數在用。
