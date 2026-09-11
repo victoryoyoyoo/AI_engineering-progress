@@ -17,6 +17,7 @@
   - [Pearson相關係數 vs 互資訊 對照](#pearson相關係數-vs-互資訊-對照)
   - [Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」](#perplexity困惑度模型實際上在幾個選項間猶豫)
 - [這堂課的總結](#這堂課的總結)
+- [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
@@ -252,6 +253,11 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 ## 這堂課的總結
 
 資訊理論的六個概念,其實是同一套邏輯的不同切面:Information content量單一事件的驚訝程度,Entropy把它平均成整個分布的不確定性下限,Cross-entropy是「用不完美的模型去猜」實際要付出的成本(=loss function),KL divergence是這中間多浪費的部分,Perplexity把交叉熵換算成更直覺的「困惑選項數」。因為標籤的熵H(P)訓練時是常數,最小化交叉熵、最小化KL散度、最大化log-likelihood,三件事在數學上是同一個優化問題。Mutual information是獨立的一支,量兩個變數共享了多少資訊,在特徵選擇上比Pearson相關係數更全面(抓得到非線性關係)。
+
+## 相關概念(跨堂連結)
+
+- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題 → 實作面在 [Lesson 6](../06-probability-and-distributions/notes.md#cross-entropy-loss-的直覺),那邊教的是cross-entropy loss怎麼從softmax輸出算出來、以及softmax/log_softmax的數值穩定技巧,這堂課補的是理論後盾,兩堂課合起來才是完整的「cross-entropy是什麼、為什麼長這樣、怎麼算」
+- **log機率避免下溢與MLE/NLL的連結**:這堂課的information content(`-log(p(x))`)跟entropy整套資訊理論的量都建立在log機率上,而且明確推導「最大化log-likelihood=最小化negative log-likelihood=最小化cross-entropy」 → 對應到 [Lesson 7](../07-bayes-theorem/notes.md#naive-bayes分類器邏輯),那邊的Naive Bayes分類器用log機率相加取代連乘避免下溢,以及MLE(最大似然估計)選一組參數讓資料發生機率最大,是同一套log機率技巧跟同一個MLE/NLL等價關係,從貝氏統計的角度先出現過一次
 
 ## 面試向問題
 
