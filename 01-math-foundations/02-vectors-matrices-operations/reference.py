@@ -111,7 +111,7 @@ class Matrix:
 
     @property
     def T(self):
-        # 讓你可以打 矩陣.T 就直接拿到轉置結果(不用打矩陣.transpose()),
+        # 讓 矩陣.T 就直接拿到轉置結果(不用打矩陣.transpose()),
         # @property 讓一個方法看起來像屬性一樣,呼叫時不用加括號
         return self.transpose()
 

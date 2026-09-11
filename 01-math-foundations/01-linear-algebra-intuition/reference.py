@@ -1,6 +1,6 @@
 # Phase 1 / Lesson 1: Linear Algebra Intuition
 # 完整參考版本，對照官方教材 docs/en.md + code/vectors.py
-# 先讀懂、跑起來看結果，之後你會憑印象重打
+# 先讀懂、跑起來看結果，之後憑印象重打
 
 import math
 

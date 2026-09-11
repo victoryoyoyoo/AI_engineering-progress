@@ -305,7 +305,7 @@ def demo_more_complex():
     print("  x1 = torch.tensor(2.0, requires_grad=True)")
     print("  x2 = torch.tensor(3.0, requires_grad=True)")
     print("  y = torch.relu(x1 * x2 + 1)")
-    print("  y.backward()  # x1.grad=3.0, x2.grad=2.0 —— 跟我們的引擎算出同樣結果")
+    print("  y.backward()  # x1.grad=3.0, x2.grad=2.0 —— 跟上面Value引擎算出的結果一致")
     print()
 
 
