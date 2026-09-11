@@ -101,7 +101,7 @@ class KernelPCA:
         # 1. 算核矩陣 K
         K = self._rbf_kernel(X, X)
 
-        # 2. 在特徵空間裡置中(公式跟一般置中不一樣,因為我們沒有顯式座標)
+        # 2. 在特徵空間裡置中(公式跟一般置中不一樣,因為沒有顯式座標可以直接減平均)
         one_n = np.ones((n, n)) / n
         K_centered = K - one_n @ K - K @ one_n + one_n @ K @ one_n
 
