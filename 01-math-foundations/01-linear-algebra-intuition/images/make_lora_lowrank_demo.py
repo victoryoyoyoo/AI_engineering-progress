@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 m, n, r = 6, 6, 1.2  # r 畫得很窄,強調「低秩」
 
@@ -43,7 +44,7 @@ ax.text(ax_x, -1.1,
 ax.set_xlim(-0.5, ax_x + n + 0.5)
 ax.set_ylim(-2.2, n + 1.2)
 ax.axis("off")
-ax.set_title("LoRA(Low-Rank Adaptation):ΔW = B @ A,低秩分解", fontsize=13, fontweight="bold")
+ax.set_title("LoRA(Low-Rank Adaptation):ΔW = B @ A,低秩分解")
 
 plt.tight_layout()
 plt.savefig("lora_lowrank.png", dpi=150, bbox_inches="tight")
