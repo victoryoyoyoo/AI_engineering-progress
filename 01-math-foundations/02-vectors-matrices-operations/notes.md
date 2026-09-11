@@ -24,6 +24,7 @@
 - [Shape tuple (m, n) 的判讀方式複習](#shape-tuple-m-n-的判讀方式複習)
 - [f-string 複習](#f-string-複習)
 - [`@staticmethod` 跟 `@property`：兩種不需要「先有物件」或「不用加括號」的方法](#staticmethod-跟-property兩種不需要先有物件或不用加括號的方法)
+- [三元運算式(ternary expression)：`X if 條件 else Y`](#三元運算式ternary-expressionx-if-條件-else-y)
 
 ## Learning Objectives 打勾清單
 
@@ -326,6 +327,17 @@ def T(self):
 `@staticmethod` 放在方法上面,代表這個方法**不需要先有一個物件才能呼叫**,呼叫時也不會自動傳入 `self`。像 `Matrix.identity(3)` 是直接對 class 本身呼叫,不是對某個已經建好的矩陣呼叫,因為建立單位矩陣這件事本來就跟「哪一個現有矩陣」無關,只需要一個數字 n。`Matrix.zeros(...)`、`Matrix.random(...)` 也是同樣道理,都是「造一個新矩陣出來」的工廠方法,不依賴任何既有物件的資料。
 
 `@property` 則相反,是套用在**需要 `self`** 的一般方法上,效果是讓呼叫時可以省略括號,把方法偽裝成一個屬性(資料成員)來用:寫 `A.T` 就會自動執行 `transpose()` 拿到結果,不用寫成 `A.T()`。適合用在「單純算個值回傳,不需要額外參數、也不會有副作用」的方法上,讓呼叫端的語法看起來更自然(轉置本來就常被當成矩陣的一個屬性去想)。
+
+## 三元運算式(ternary expression):`X if 條件 else Y`
+
+```python
+[1 if i == j else 0 for j in range(n)]
+bracket_l = "|" if 0 < i < self.rows - 1 else ("/" if i == 0 else "\\")
+```
+
+Python 把 if/else 判斷式濃縮成一行,可以直接當一個「值」來用(不像一般 `if` 陳述式只能控制流程、不能直接當成運算式的一部分):`值A if 條件 else 值B` 會先判斷條件,條件是 `True` 就整個式子等於 `值A`,是 `False` 就等於 `值B`。`1 if i == j else 0` 讀作「如果 i 等於 j,結果是1,否則是0」,常常搭配 list comprehension 用,像這裡就是在對角線放1、其餘位置放0,建出單位矩陣。也可以疊在一起用(像 `bracket_l` 那行,`else` 後面接的又是另一個三元運算式),疊多層時讀起來要留意優先順序,由右往左依序判斷。
+
+C++對照:直接對應 C++ 的三元運算子 `條件 ? 值A : 值B`(例如 `i == j ? 1 : 0`),語意完全一樣,只是 Python 用 `if`/`else` 兩個關鍵字取代 `?`/`:` 兩個符號,而且順序反過來:C++ 先寫條件,Python 先寫「條件成立時的值」再寫條件。
 
 `@` 開頭這一整類東西叫 decorator(裝飾器),語法上直接寫在 `def` 上面一行,效果是「用某種方式包裝、改變這個方法被呼叫的行為」,`@staticmethod` 改的是「要不要自動傳 self」,`@property` 改的是「呼叫時要不要加括號」,兩個是完全不同的裝飾器,只是剛好都跟「這個方法怎麼被呼叫」有關。
 
