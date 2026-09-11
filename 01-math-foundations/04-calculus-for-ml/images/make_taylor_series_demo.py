@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 def f(x):
     return np.sin(x) + 0.15 * x ** 2
@@ -34,8 +35,8 @@ ax.plot(x0, f(x0), "o", color="#55A868", markersize=9, zorder=5, label=f"展開�
 ax.set_ylim(-1, 5)
 ax.set_xlim(-2, 4)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=10, loc="upper left")
-ax.set_title("泰勒展開:x0附近近似很準,離越遠誤差越大", fontsize=13, fontweight="bold")
+ax.legend(loc="upper left")
+ax.set_title("泰勒展開:x0附近近似很準,離越遠誤差越大")
 ax.set_xlabel("x")
 ax.set_ylabel("f(x)")
 

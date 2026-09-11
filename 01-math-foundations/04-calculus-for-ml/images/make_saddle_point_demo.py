@@ -8,9 +8,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D  # noqa
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 X, Y = np.meshgrid(np.linspace(-2, 2, 80), np.linspace(-2, 2, 80))
 Z_min = X ** 2 + Y ** 2          # Hessian eigenvalues全正 -> 真正最低點
@@ -30,7 +31,7 @@ ax2.scatter([0], [0], [0], color="#4C72B0", s=60, depthshade=False)
 ax2.set_title("鞍點 (Saddle Point)\nHessian eigenvalue有正有負", fontsize=11.5, fontweight="bold", color="#C44E52")
 ax2.set_xlabel("x"); ax2.set_ylabel("y"); ax2.set_zlabel("f")
 
-fig.suptitle("梯度=0的兩種情況:真正最低點 vs 鞍點,靠Hessian的eigenvalue分辨", fontsize=13, fontweight="bold")
+fig.suptitle("梯度=0的兩種情況:真正最低點 vs 鞍點,靠Hessian的eigenvalue分辨")
 plt.tight_layout()
 plt.savefig("saddle_point_vs_minimum.png", dpi=150, bbox_inches="tight")
 print("saved")

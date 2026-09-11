@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 
 def f(x):
@@ -49,8 +50,8 @@ ax.plot(newton_path, f(newton_path), "o-", color="#C44E52", lw=2, markersize=6,
 
 ax.axhline(0, color="#bbbbbb", lw=0.6)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=9.5, loc="upper center")
-ax.set_title("牛頓法 vs 梯度下降:多用二階資訊(Hessian)收斂更快", fontsize=12, fontweight="bold")
+ax.legend(loc="upper center")
+ax.set_title("牛頓法 vs 梯度下降:多用二階資訊(Hessian)收斂更快")
 
 plt.tight_layout()
 plt.savefig("newtons_method_vs_gd.png", dpi=150, bbox_inches="tight")

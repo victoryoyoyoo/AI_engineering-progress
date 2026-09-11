@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 def f(x, y):
     return (x - 1) ** 2 + 2 * (y - 0.5) ** 2
@@ -40,8 +41,8 @@ ax.text(px - g_unit[0] * 1.9, py - g_unit[1] * 1.9, "負梯度\n(梯度下降走
         fontsize=10.5, fontweight="bold", ha="center")
 
 ax.plot(1, 0.5, "*", color="#55A868", markersize=18, label="最低點 (1, 0.5)")
-ax.legend(loc="upper right", fontsize=9)
-ax.set_title("2D梯度方向:垂直於等高線,指向數值增加最快的方向", fontsize=12.5, fontweight="bold")
+ax.legend(loc="upper right")
+ax.set_title("2D梯度方向:垂直於等高線,指向數值增加最快的方向")
 ax.set_xlabel("x")
 ax.set_ylabel("y")
 

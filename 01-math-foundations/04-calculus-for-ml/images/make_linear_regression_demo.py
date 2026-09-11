@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 import random
 random.seed(42)
@@ -46,7 +47,7 @@ for (ep, (wv, bv)), c in zip(snapshots.items(), colors):
     ax.plot(xline, wv * xline + bv, color=c, lw=2, label=f"epoch {ep}: y={wv:.2f}x+{bv:.2f}")
 ax.set_xlim(0, 6); ax.set_ylim(0, 13)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=8.5)
+ax.legend()
 ax.set_title("擬合線隨訓練逐漸逼近真實關係", fontsize=11.5, fontweight="bold")
 
 ax = axes[1]
@@ -57,7 +58,7 @@ ax.set_ylabel("loss (MSE, log scale)", fontsize=10)
 ax.grid(alpha=0.3, linestyle="--")
 ax.set_title("loss隨梯度下降穩定下降", fontsize=11.5, fontweight="bold")
 
-fig.suptitle("線性迴歸(Linear Regression):predict -> loss -> gradient -> update", fontsize=13, fontweight="bold")
+fig.suptitle("線性迴歸(Linear Regression):predict -> loss -> gradient -> update")
 plt.tight_layout()
 plt.savefig("linear_regression_training.png", dpi=150, bbox_inches="tight")
 print("saved", f"final w={w:.3f} b={b:.3f}")
