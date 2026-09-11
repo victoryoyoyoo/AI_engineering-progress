@@ -6,9 +6,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import information_content
@@ -29,7 +30,7 @@ for b, v in zip(bars, values):
     ax.text(b.get_x() + b.get_width() / 2, v + 0.2, f"{v:.2f} bits", ha="center", fontsize=10.5, fontweight="bold")
 
 ax.set_ylabel("驚訝程度 I(x) = -log2(p)  (bits)")
-ax.set_title("Information Content:機率越低,驚訝程度(資訊量)越大", fontsize=13, fontweight="bold")
+ax.set_title("Information Content:機率越低,驚訝程度(資訊量)越大")
 ax.set_ylim(0, 11)
 ax.grid(alpha=0.3, linestyle="--", axis="y")
 

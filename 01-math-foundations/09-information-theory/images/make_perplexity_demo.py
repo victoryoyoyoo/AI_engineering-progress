@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 vocab_size = 50
 random_model_perplexity = 81.23   # 課堂demo實際跑出來的數字(未訓練模型)
@@ -29,7 +30,7 @@ ax.text(2.35, vocab_size + 1.5, "vocab_size=50\n(比隨機亂猜的基準線)", 
 
 ax.set_ylabel("Perplexity")
 ax.set_ylim(0, 95)
-ax.set_title("Perplexity:未訓練模型(81.23)比隨機亂猜(50)還爛,訓練好才會遠低於此", fontsize=12, fontweight="bold")
+ax.set_title("Perplexity:未訓練模型(81.23)比隨機亂猜(50)還爛,訓練好才會遠低於此")
 ax.grid(alpha=0.3, linestyle="--", axis="y")
 
 plt.tight_layout()
