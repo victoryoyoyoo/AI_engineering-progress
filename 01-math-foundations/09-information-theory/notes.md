@@ -24,6 +24,7 @@
   - [one-hot 在cross-entropy簡化公式裡的角色需要補強](#one-hot-在cross-entropy簡化公式裡的角色需要補強)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
+- [Generator expression 加 `if` 篩選條件](#generator-expression-加-if-篩選條件)
 
 ## Learning Objectives 打勾清單
 - [x] 從零算出entropy、cross-entropy、KL divergence,解釋三者的關係
@@ -313,3 +314,32 @@ Cross-entropy的完整定義是 `H(P,Q) = -sum(p(x)*log(q(x)))`,對所有可能�
 | 效率 | 延續「每教完一個概念就停下確認」的節奏,這次retention明顯比Lesson 8好,沒有出現連續好幾個「不知道」的狀況 |
 | 完成度 | 4個Learning Objectives都完成,MI的完整特徵排序demo跳過記review-queue;新增了配圖(entropy/cross-entropy/概念串連圖/互資訊Venn圖),也把Lesson 1-8的舊筆記回頭補了圖並推上GitHub |
 | 花費時間 | 56分4秒(課程建議時間:約60分鐘,幾乎完全對上) |
+
+---
+
+(下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
+
+## Generator expression 加 `if` 篩選條件
+
+```python
+def entropy(probs, base=2):
+    return sum(
+        p * information_content(p, base)
+        for p in probs if p > 0
+    )
+```
+
+之前(Lesson 1、Lesson 6)學過的 generator expression 都是單純 `運算式 for 變數 in 可走訪的東西`,這裡多了一個 `if 條件` 接在最後面,效果是「只有符合條件的元素才會被拿去算、才會被收進結果裡,不符合條件的直接跳過、完全不處理」。等同展開成:
+
+```python
+total = 0
+for p in probs:
+    if p > 0:
+        total += p * information_content(p, base)
+```
+
+這裡故意過濾掉 `p <= 0` 的情況,是因為熵的公式裡有 `log(p)`,`log(0)` 在數學上沒有定義(結果是負無窮大),提前跳過機率是0的項目,避免程式試圖對0取log而出錯或算出無意義的值——機率為0的事件本來就「不可能發生」,對整體熵的貢獻理論上也趨近於0,直接跳過不算是安全且正確的做法。
+
+`if` 這個篩選子句也能加在一般的 list comprehension 後面(不只是 generator expression),寫法完全一樣,像 `[x for x in nums if x > 0]` 就是「只保留大於0的數字,組成一個新 list」。
+
+C++對照:概念上類似在迴圈裡加一個 `if (condition) continue;` 跳過不符合的元素,或用 `<algorithm>` 的 `std::copy_if`/`std::remove_if` 做篩選;Python 直接把「篩選條件」內建進 comprehension/generator 語法裡,不用另外寫一行判斷式跳過。
