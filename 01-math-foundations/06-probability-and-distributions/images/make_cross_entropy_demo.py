@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 p = np.linspace(0.01, 1, 300)
 loss = -np.log(p)
@@ -28,7 +29,7 @@ for hp, c in zip(highlights, colors):
 ax.set_xlabel("模型對正確答案給的機率 p")
 ax.set_ylabel("loss = -log(p)")
 ax.set_ylim(0, 5)
-ax.set_title("Cross-entropy loss:機率越接近1 loss越接近0,越接近0 loss飆高", fontsize=12.5, fontweight="bold")
+ax.set_title("Cross-entropy loss:機率越接近1 loss越接近0,越接近0 loss飆高")
 ax.grid(alpha=0.3, linestyle="--")
 
 plt.tight_layout()

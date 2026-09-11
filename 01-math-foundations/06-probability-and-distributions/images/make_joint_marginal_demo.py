@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 joint = np.array([[0.10, 0.05, 0.05],
                    [0.15, 0.20, 0.05],
@@ -48,7 +49,7 @@ ax.text(m + 1.6, n / 2, "Marginal\nP(X):\n每一列\n加總", ha="center", fonts
 ax.set_xlim(-1.3, m + 2.3)
 ax.set_ylim(-0.8, n + 1.6)
 ax.axis("off")
-ax.set_title("Joint distribution P(X,Y) 跟 Marginal distribution 的關係", fontsize=13, fontweight="bold")
+ax.set_title("Joint distribution P(X,Y) 跟 Marginal distribution 的關係")
 
 plt.tight_layout()
 plt.savefig("joint_marginal_distribution.png", dpi=150, bbox_inches="tight")
