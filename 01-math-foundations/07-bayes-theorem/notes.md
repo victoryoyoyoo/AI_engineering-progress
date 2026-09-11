@@ -20,6 +20,8 @@
   - [set() 集合,用來存不重複的詞彙表](#set-集合用來存不重複的詞彙表)
   - [float("-inf") 負無窮大](#float-inf-負無窮大)
   - [dict.get(key, 預設值)](#dictgetkey-預設值)
+  - [字串方法串接 .lower().split()](#字串方法串接-lowersplit)
+  - [直接對 dict 做 for 迴圈,拿到的是 key;.values() 拿所有 value](#直接對-dict-做-for-迴圈拿到的是-keyvalues-拿所有-value)
 
 ## Learning Objectives 打勾清單
 - [x] 從先驗、似然、證據算出後驗機率(貝氏定理本身)
@@ -319,3 +321,26 @@ count = self.word_counts[cls].get(word, 0)
 ```
 
 跟直接用`self.word_counts[cls][word]`不同,`.get(word, 0)`如果`word`不存在,不會自動新增這個key,只是回傳預設值`0`,字典本身不會被修改。這裡故意用`.get()`而不是直接查詢,是因為`predict()`階段只是「讀取」,不應該因為查了一個沒看過的詞就把它意外加進詞彙表裡。
+
+### 字串方法串接 `.lower().split()`
+
+```python
+words = doc.lower().split()
+```
+
+`.lower()`回傳一份全部轉小寫的新字串(原本的`doc`不會被改變,字串在Python裡是不可變的,every string method都是回傳一份新的),接著馬上對這個回傳結果呼叫`.split()`——不用中間變數存起來,直接一路串接下去用。`.split()`沒給參數時,預設用「任意空白(空格、tab、換行都算)」當分隔符號,把字串切成一串詞的list,並且會自動忽略字串開頭/結尾多餘的空白、也會把連續多個空白當成一個分隔符號處理(不會因為兩個字之間多打一個空格就切出一個空字串)。這裡轉小寫是為了讓`"Free"`跟`"free"`被當成同一個詞計算,不會因為大小寫不同被誤判成兩個不同的詞。
+
+C++對照:C++字串沒有內建`.lower()`,通常要自己寫迴圈套用`std::tolower`逐字元轉換;`.split()`也沒有內建對應函式,常見做法是用`std::istringstream`配合`>>`運算子,或自己寫迴圈找空白位置手動切割,遠不如Python這樣兩個方法串起來一行解決。
+
+### 直接對 dict 做 `for` 迴圈,拿到的是 key;`.values()` 拿所有 value
+
+```python
+for cls in self.class_counts:
+    ...
+
+total_docs = sum(self.class_counts.values())
+```
+
+`for x in 某個dict:`預設走訪的是這個dict的**所有key**(不是value、也不是key-value配對),`for cls in self.class_counts:`實際上是「把每個類別的名字(key)一個一個拿出來」,要拿對應的value要另外用`self.class_counts[cls]`查。如果想直接拿到所有value,用`.values()`(回傳所有值,不含key),這裡`sum(self.class_counts.values())`就是「把每個類別各自的文件數全部加起來」算出訓練集總文件數。類似地,`.keys()`可以明確拿所有key(效果跟直接`for x in dict`一樣,只是寫法更明確)、`.items()`可以同時拿到key跟value配對(`for k, v in d.items():`)。
+
+C++對照:對應`std::map`的迭代——C++走訪`map`時每次拿到的是`std::pair<key, value>`(要用`.first`/`.second`取值,或C++17後可以用結構化綁定`for (auto& [k, v] : m)`直接拆開),不像Python預設只給key、要value得額外呼叫`.values()`或`.items()`。
