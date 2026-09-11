@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 t = np.arange(0, 21)
 cases = {
@@ -26,8 +27,8 @@ ax.set_yscale("log")
 ax.set_xlabel("時間步 t(RNN反覆套用權重矩陣的次數)", fontsize=10.5)
 ax.set_ylabel("沿eigenvector方向的梯度大小 = λ^t (log scale)", fontsize=10.5)
 ax.grid(alpha=0.3, linestyle="--", which="both")
-ax.legend(fontsize=10)
-ax.set_title("RNN梯度穩定性:eigenvalue絕對值決定爆炸/消失/穩定", fontsize=12.5, fontweight="bold")
+ax.legend()
+ax.set_title("RNN梯度穩定性:eigenvalue絕對值決定爆炸/消失/穩定")
 
 plt.tight_layout()
 plt.savefig("rnn_stability.png", dpi=150, bbox_inches="tight")

@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 rot90 = np.array([[0, -1], [1, 0]])
 scale = np.array([[1, 0], [0, 0.5]])
@@ -45,8 +46,7 @@ draw_path(axes[1], [p, mid2, final2], ["p=(1,1)", "先縮放y*0.5", "再轉90°"
 
 f1 = tuple(float(v) for v in np.round(final1, 2))
 f2 = tuple(float(v) for v in np.round(final2, 2))
-fig.suptitle(f"複合變換順序影響結果:{f1} vs {f2}",
-             fontsize=13, fontweight="bold")
+fig.suptitle(f"複合變換順序影響結果:{f1} vs {f2}")
 plt.tight_layout()
 plt.savefig("composition_order_matters.png", dpi=150, bbox_inches="tight")
 print("saved")

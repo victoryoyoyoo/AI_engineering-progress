@@ -10,9 +10,10 @@ import sys
 sys.path.insert(0, "..")
 from reference import eigenvalues_2x2  # noqa: E402
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 A = np.array([[2, 1], [1, 2]])
 trace = A[0, 0] + A[1, 1]
@@ -33,8 +34,8 @@ for l, c in zip([lam1, lam2], ["#C44E52", "#55A868"]):
 ax.set_xlabel("λ", fontsize=11)
 ax.set_ylabel("det(A - λI)", fontsize=11)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=10)
-ax.set_title("characteristic equation:det(A-λI)=0 的根就是 eigenvalue", fontsize=12.5, fontweight="bold")
+ax.legend()
+ax.set_title("characteristic equation:det(A-λI)=0 的根就是 eigenvalue")
 
 plt.tight_layout()
 plt.savefig("characteristic_equation.png", dpi=150, bbox_inches="tight")

@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 rng = np.random.default_rng(7)
 transform = np.array([[2.2, 1.1], [0.3, 0.6]])
@@ -37,8 +38,8 @@ ax.axhline(0, color="#bbbbbb", lw=0.6)
 ax.axvline(0, color="#bbbbbb", lw=0.6)
 ax.set_aspect("equal")
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=8.5, loc="upper left")
-ax.set_title("PCA:協方差矩陣的eigenvector就是主成分方向", fontsize=12.5, fontweight="bold")
+ax.legend(loc="upper left")
+ax.set_title("PCA:協方差矩陣的eigenvector就是主成分方向")
 
 plt.tight_layout()
 plt.savefig("pca_direction.png", dpi=150, bbox_inches="tight")
