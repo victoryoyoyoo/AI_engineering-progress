@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 np.random.seed(0)
 dims = [1, 2, 3, 5, 10, 50, 100, 500, 1000]
@@ -27,8 +28,8 @@ ax.plot(dims, ratios, marker="o", linewidth=2, color="#C44E52")
 ax.set_xscale("log")
 ax.set_xlabel("維度數(log scale)", fontsize=11)
 ax.set_ylabel("(最遠距離 - 最近距離) / 最近距離", fontsize=11)
-ax.set_title("維度詛咒:維度越高,近跟遠的差別越消失", fontsize=13, fontweight="bold")
-ax.grid(alpha=0.3)
+ax.set_title("維度詛咒:維度越高,近跟遠的差別越消失")
+ax.grid(alpha=0.3, linestyle="--")
 plt.tight_layout()
 plt.savefig("curse_of_dimensionality.png", dpi=150, bbox_inches="tight")
 print("saved")
