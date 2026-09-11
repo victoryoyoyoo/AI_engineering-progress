@@ -22,6 +22,7 @@
   - [展開版(不用 list comprehension 的寫法)](#展開版不用-list-comprehension-的寫法)
 - [numerical_gradient 函式對應的公式(中央差分法)](#numerical_gradient-函式對應的公式中央差分法)
 - [f-string 格式化複習](#f-string-格式化複習)
+- [`lambda`:寫在一行裡的匿名函式](#lambda寫在一行裡的匿名函式)
 
 ## Learning Objectives 打勾清單
 
@@ -320,3 +321,26 @@ print(f"step {step:2d}  x={x:8.4f}  f(x)={x**2:10.6f}")
 ```
 
 `{step:2d}` 整數至少佔2字元寬;`{x:8.4f}` 浮點數至少佔8字元寬、小數4位;`{x**2:10.6f}` 同樣道理、小數6位。純粹是排版對齊用,跟演算法邏輯無關。
+
+## `lambda`:寫在一行裡的匿名函式
+
+```python
+test_functions = [
+    ("x^2", lambda x: x ** 2, lambda x: 2 * x),
+    ("x^3", lambda x: x ** 3, lambda x: 3 * x ** 2),
+    ("sin(x)", lambda x: math.sin(x), lambda x: math.cos(x)),
+]
+```
+
+`lambda 參數: 回傳的運算式` 是一個「不用 `def`、不用取名字」的迷你函式寫法,整個定義只能寫一行,而且沒有 `return`——冒號後面那段運算式本身就是回傳值。`lambda x: x ** 2` 效果等同:
+
+```python
+def square(x):
+    return x ** 2
+```
+
+差別是 `lambda` 建出來的函式**不需要先取名字才能用**,可以直接當成一個值塞進 list、當成參數傳給別的函式。這裡的用法是把「函式名稱」、「函式本身」、「對應的導數函式」三個東西包成一個 tuple,湊成一個 list,方便用迴圈一次跑過好幾組函式做測試,不用為每個函式額外寫一個 `def` 再手動組 list。
+
+`taylor_approx(math.sin, math.cos, lambda x: -math.sin(x), x0, h, order=2)` 這裡也是同樣道理:`math.sin`、`math.cos` 是現成已經有名字的函式,直接當參數傳進去;但「sin 的二階導數是 -sin(x)」這件事沒有現成函式可以傳,又不值得為了這一次用途特地寫一個 `def neg_sin(x): return -math.sin(x)`,所以用 `lambda` 就地生一個沒有名字的函式傳進去。
+
+C++對照:概念上對應 C++11 的 lambda 表達式 `[](double x) { return x * x; }`,都是「不用事先取名字的匿名函式」,可以當成參數或存進容器裡。差別是 C++ lambda 用 `[]` 宣告要不要捕獲外部變數、`{}` 包函式本體、要自己判斷回傳型別;Python 的 `lambda` 更精簡但也更受限——只能寫「一個運算式」,沒辦法像 C++ lambda 或 Python 一般的 `def` 那樣包含多行邏輯、迴圈或多個陳述式。
