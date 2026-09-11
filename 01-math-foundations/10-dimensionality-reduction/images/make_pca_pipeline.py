@@ -7,9 +7,10 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 fig, ax = plt.subplots(figsize=(13, 4))
 ax.set_xlim(0, 13)
@@ -50,7 +51,7 @@ for i, (title, desc, color) in enumerate(steps):
         )
         ax.add_patch(arrow)
 
-ax.set_title("PCA.fit() 五步驟流水線", fontsize=14, fontweight="bold", pad=14)
+ax.set_title("PCA.fit() 五步驟流水線", pad=14)
 plt.tight_layout()
 plt.savefig("pca_fit_pipeline.png", dpi=150, bbox_inches="tight")
 print("saved")
