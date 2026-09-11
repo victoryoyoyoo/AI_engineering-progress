@@ -20,6 +20,7 @@
 - [backward() 本體 —— 拓撲排序(Topological Sort)](#backward-本體-拓撲排序topological-sort)
 - [Step4:補齊的運算(看邏輯,沒有逐行手打)](#step4補齊的運算看邏輯沒有逐行手打)
 - [Step5:Neuron(神經元)→ Layer(層)→ MLP(多層感知器)—— 看邏輯+具體追蹤](#step5neuron神經元-layer層-mlp多層感知器-看邏輯具體追蹤)
+- [Step5補充語法:__call__、反向運算子(__radd__等)、sum()帶起始值、雙層for攤平巢狀list](#step5補充語法__call__反向運算子__radd__等sum帶起始值雙層for攤平巢狀list)
 - [Step5:XOR(互斥或)訓練,具體追蹤](#step5xor互斥或訓練具體追蹤)
 - [Step6:梯度檢查(Gradient Checking)](#step6梯度檢查gradient-checking)
   - [Gradient Checking vs Gradient Clipping 對照](#gradient-checking-vs-gradient-clipping-對照)
@@ -334,6 +335,65 @@ Layer2輸出: tanh(0.4621+(-0.4621)) = tanh(0.0) = 0.0
 **tanh(雙曲正切函數,Hyperbolic Tangent):** 把任何數字壓縮成-1到1之間。`tanh(0)=0`,輸入越大越接近1(但到不了),越小越接近-1。中間變化快、兩端變化慢,是條S形曲線。**用途:讓網路能學會彎曲、非線性的規律**(沒有它,疊再多層Layer本質上還是等於一層,學不會XOR這種沒辦法用直線分開的問題)。
 
 ![tanh:壓縮到(-1,1)的S形曲線,中間變化快、兩端變化慢](images/tanh_activation.png)
+
+## Step5補充語法:__call__、反向運算子(__radd__等)、sum()帶起始值、雙層for攤平巢狀list
+
+這幾個 Neuron/Layer/MLP 這段用到、前面沒特別拆解過的語法,補在這裡:
+
+**`__call__`:讓物件本身可以像函式一樣直接被呼叫。**
+
+```python
+class Neuron:
+    def __call__(self, x):
+        act = sum((wi * xi for wi, xi in zip(self.w, x)), self.b)
+        return act.tanh()
+
+n = Neuron(3)
+n([1.0, 2.0, 3.0])   # 這樣寫,Python會自動翻譯成 n.__call__([1.0, 2.0, 3.0])
+```
+
+只要 class 裡定義了 `__call__`,這個 class 建出來的物件後面直接加一對括號、塞參數進去(`model(x)`),Python 就會自動去執行 `__call__` 這個方法,`x` 就是括號裡傳的東西。這也是為什麼程式碼裡 `model(x)`(呼叫一個「模型物件」,不是呼叫函式)看起來合法——`model` 其實是 `MLP` 的實例,不是函式,能被這樣呼叫全靠 `__call__`。
+
+C++對照:直接對應 C++ 的 `operator()` 重載(讓一個物件變成「仿函式」functor),例如 `struct Neuron { double operator()(vector<double> x) {...} };`,寫法概念完全一樣,都是讓自訂型別的物件可以用函式呼叫的語法使用。
+
+**反向運算子(`__radd__`/`__rmul__`/`__rsub__`):處理「Value 在運算子右邊」的情況。**
+
+```python
+def __radd__(self, other):   # 讓 5 + Value(3) 也能動
+    return self + other
+```
+
+前面學過的 `__add__` 只處理得了「自己在左邊」的情況,像 `value_obj + 5`——這時候 Python 看到 `+`,會先呼叫左邊物件(`value_obj`)的 `__add__`,把 `5` 當 `other` 傳進去,沒問題。但反過來寫 `5 + value_obj`,Python 會先去問**左邊的東西(這裡是普通的 `int` 5)**有沒有 `__add__` 方法能處理「跟一個 Value 相加」這件事——`int` 當然完全不認識 `Value` 這個自訂型別,處理不了。這時候 Python 不會直接報錯放棄,而是換個方向,去問**右邊的物件**有沒有定義 `__radd__`(reflected/right-hand add,「反過來加」的意思),如果有,就呼叫 `value_obj.__radd__(5)` 來補救。因為加法本身沒有方向性(`a+b == b+a`),`__radd__` 這裡直接借用已經寫好的 `__add__` 就解決了;`__rsub__` 就不能這樣偷懶(減法有方向性,`5 - value_obj` 不等於 `value_obj - 5`),所以要另外寫成 `other + (-self)`。
+
+C++對照:C++ 的 `operator+` 可以宣告成獨立於 class 之外的「自由函式」(`Value operator+(double lhs, const Value& rhs)`),不需要區分左右邊分別處理,寫一次就同時涵蓋兩種順序。Python 沒有這種自由函式重載運算子的機制,運算子永遠是「问左邊物件的方法優先,失敗了才問右邊物件的反向方法」,所以才需要 `__add__`/`__radd__`、`__sub__`/`__rsub__` 這樣成對出現。
+
+**`sum(generator, self.b)`:sum() 其實可以指定「從哪個值開始加」,不一定是從0開始。**
+
+```python
+act = sum((wi * xi for wi, xi in zip(self.w, x)), self.b)
+```
+
+`sum(可加總的東西)` 平常沒寫第二個參數時,預設是從 `0` 開始累加。但 `sum()` 其實可以接第二個參數,代表「起始值」,累加會從這個值開始,不是從0開始——效果等同 `total = self.b; for v in generator: total += v`。這裡故意這樣寫,是因為神經元的公式是「所有 `wi*xi` 加總,再加上偏差 `b`」,直接把 `b` 當成起始值,省掉另外再寫一行 `+ self.b`。這裡能這樣用,是因為 `self.b` 是一個 `Value` 物件、`Value` 已經定義了 `__add__`,`sum()` 內部本質上就是重複呼叫 `+`,不限定只能加普通數字。
+
+**雙層 `for` 的 list comprehension:攤平「一個 list 裡面裝著好幾個 list」。**
+
+```python
+def parameters(self):
+    return [p for n in self.neurons for p in n.parameters()]
+```
+
+跟 Lesson1/2 學過的雙層巢狀 comprehension(中括號包中括號,做出矩陣那種二維結構)不一樣,這裡是**同一層中括號裡寫兩個 `for`**,效果是把「多個 list」串接攤平成「一個 list」,不是做出二維結構。展開等同:
+
+```python
+result = []
+for n in self.neurons:        # 外層for寫在前面
+    for p in n.parameters():  # 內層for寫在後面
+        result.append(p)
+```
+
+讀的順序**跟寫出來的順序一致**(由左到右、由外到內),跟前面矩陣那種「由內而外讀」的雙層中括號巢狀寫法容易搞混,差別在於矩陣版本是「中括號裡面還有一層中括號」(兩層獨立的 list),這裡是「同一層中括號裡連續寫兩個 `for`」(串起來變成一層)。`n.parameters()` 每次回傳的是一個 list(這個神經元自己的 `w` 加 `b`),外層 for 跑過每個神經元,內層 for 把每個神經元回傳的 list 一個一個拆開串接起來,最後整個 Layer/MLP 的所有參數變成一份攤平的 list。
+
+C++對照:概念上類似把 `vector<vector<double>>` 攤平成 `vector<double>`,C++17 之後常用 `for (auto& inner : outer) for (auto& x : inner) result.push_back(x);`,雙層 for 迴圈邏輯完全一樣,只是 Python 把「宣告空 list + 兩層迴圈 + push_back」濃縮成一行。
 
 ## Step5:XOR(互斥或)訓練,具體追蹤
 
