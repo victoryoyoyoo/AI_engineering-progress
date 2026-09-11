@@ -1,6 +1,4 @@
-# 筆記總索引
-
-全部課程的`notes.md`,一行一堂,點連結直接跳過去。每堂附上「30秒抓重點」的第一句,快速判斷要不要點進去。
+# Notes Index
 
 ## Phase 1 — Math Foundations
 
@@ -17,6 +15,3 @@
 | 9 | Information Theory | Information content量單一事件的驚訝程度,entropy是整個分布的平均驚訝程度,是不確定性的下限 | [notes.md](01-math-foundations/09-information-theory/notes.md) |
 | 10 | Dimensionality Reduction | PCA的fit流程:置中資料→算共變異數矩陣→特徵分解→由大到小排序→留變異量最大的前k個方向 | [notes.md](01-math-foundations/10-dimensionality-reduction/notes.md) |
 
----
-
-這份索引每完成一堂新課就會更新一行,不用自己去記資料夾路徑。
