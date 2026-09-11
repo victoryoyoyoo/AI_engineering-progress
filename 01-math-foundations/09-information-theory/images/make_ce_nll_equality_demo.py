@@ -12,9 +12,10 @@ import sys
 sys.path.insert(0, "..")
 from reference import negative_log_likelihood, softmax  # noqa: E402
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 random.seed(42)
 n_samples = 1000
@@ -35,7 +36,7 @@ for b, v in zip(bars, [ce_avg, nll_avg]):
     ax.text(b.get_x() + b.get_width() / 2, v + 0.01, f"{v:.6f}", ha="center", fontsize=10)
 ax.set_ylabel("平均loss (nats)", fontsize=10.5)
 ax.set_ylim(0, max(ce_avg, nll_avg) * 1.3)
-ax.set_title(f"兩條不同來源的公式,算出完全相同的數字\n(1000筆樣本,差異={abs(ce_avg-nll_avg):.2e})", fontsize=11.5, fontweight="bold")
+ax.set_title(f"兩條不同來源的公式,算出完全相同的數字\n(1000筆樣本,差異={abs(ce_avg-nll_avg):.2e})")
 
 plt.tight_layout()
 plt.savefig("ce_nll_equality.png", dpi=150, bbox_inches="tight")

@@ -7,9 +7,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import entropy, cross_entropy, kl_divergence
@@ -36,7 +37,7 @@ ax.text(1, h_cross + 0.05, f"{h_cross:.4f}", ha="center", fontsize=10.5, fontwei
 ax.set_ylabel("bits")
 ax.set_xlim(-0.6, 2.4)
 ax.set_ylim(0, max(h_cross, h_true) + 0.3)
-ax.set_title("KL Divergence = H(P,Q) - H(P):用Q取代P多浪費的bit數", fontsize=12.5, fontweight="bold")
+ax.set_title("KL Divergence = H(P,Q) - H(P):用Q取代P多浪費的bit數")
 ax.grid(alpha=0.3, linestyle="--", axis="y")
 
 plt.tight_layout()

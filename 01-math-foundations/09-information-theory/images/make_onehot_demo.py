@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 classes = ["貓", "狗", "鳥", "魚"]
 one_hot = [0, 0, 1, 0]  # 真實類別是"鳥"
@@ -30,11 +31,11 @@ ax = axes[1]
 ax.bar(classes, q, color="#4C72B0", edgecolor="black", alpha=0.8)
 ax.set_ylim(0, 1.2)
 ax.set_ylabel("Q(x) (模型猜的機率)", fontsize=10)
-ax.set_title(f"套公式:只有\"鳥\"那項(p=1)有貢獻\nH(P,Q) = -log({q[2]}) = {-np.log(q[2]):.3f} nats", fontsize=10.5, fontweight="bold")
+ax.set_title(f"套公式:只有\"鳥\"那項(p=1)有貢獻\nH(P,Q) = -log({q[2]}) = {-np.log(q[2]):.3f} nats", fontsize=11.5, fontweight="bold")
 for i, v in enumerate(q):
     ax.text(i, v + 0.05, f"{v}", ha="center", fontsize=9.5)
 
-fig.suptitle("為什麼分類問題的cross-entropy只看正確答案那一項的機率", fontsize=12.5, fontweight="bold")
+fig.suptitle("為什麼分類問題的cross-entropy只看正確答案那一項的機率")
 plt.tight_layout()
 plt.savefig("onehot_encoding.png", dpi=150, bbox_inches="tight")
 print("saved")
