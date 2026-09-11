@@ -10,9 +10,10 @@ import sys
 sys.path.insert(0, "..")
 from reference import expected_value, variance  # noqa: E402
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 die_values = [1, 2, 3, 4, 5, 6]
 die_probs = [1 / 6] * 6
@@ -30,8 +31,8 @@ ax.set_xlabel("骰子點數 x", fontsize=10.5)
 ax.set_ylabel("機率", fontsize=10.5)
 ax.set_ylim(0, 0.22)
 ax.grid(alpha=0.3, linestyle="--", axis="y")
-ax.legend(fontsize=10, loc="upper right")
-ax.set_title("Expected value(期望值)與Variance(變異數):骰子範例", fontsize=12.5, fontweight="bold")
+ax.legend(loc="upper right")
+ax.set_title("Expected value(期望值)與Variance(變異數):骰子範例")
 
 plt.tight_layout()
 plt.savefig("expected_variance.png", dpi=150, bbox_inches="tight")
