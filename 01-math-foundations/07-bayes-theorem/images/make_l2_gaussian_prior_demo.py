@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 w = np.linspace(-3, 3, 300)
 sigma = 1.0
@@ -32,7 +33,7 @@ axes[1].set_xlabel("w")
 axes[1].set_ylabel("-log P(w)  (懲罰項)")
 axes[1].grid(alpha=0.3, linestyle="--")
 
-fig.suptitle("L2正則化本質上就是貝氏統計:同一條公式的兩種寫法", fontsize=13, fontweight="bold")
+fig.suptitle("L2正則化本質上就是貝氏統計:同一條公式的兩種寫法")
 plt.tight_layout()
 plt.savefig("l2_regularization_as_gaussian_prior.png", dpi=150, bbox_inches="tight")
 print("saved")

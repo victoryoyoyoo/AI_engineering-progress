@@ -6,9 +6,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 vocab_size = 20
 total_words = 50
@@ -27,8 +28,8 @@ ax.set_xticks(list(x))
 ax.set_xticklabels(words, fontsize=9.5)
 ax.set_ylabel("P(詞|類別)", fontsize=10.5)
 ax.grid(alpha=0.3, linestyle="--", axis="y")
-ax.legend(fontsize=10)
-ax.set_title("Laplace smoothing:未出現詞的機率從0變成一個很小的非零值", fontsize=12, fontweight="bold")
+ax.legend()
+ax.set_title("Laplace smoothing:未出現詞的機率從0變成一個很小的非零值")
 ax.annotate("這裡是0!\n連乘會讓整句話的分數直接塌陷成0", (3 - w / 2, 0), textcoords="offset points",
             xytext=(-10, 30), fontsize=8.5, color="#C44E52", ha="center",
             arrowprops=dict(arrowstyle="->", color="#C44E52"))
