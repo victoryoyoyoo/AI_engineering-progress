@@ -8,9 +8,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 sys.path.insert(0, "..")
 from reference import GradientDescent, SGDMomentum, Adam, rosenbrock, rosenbrock_gradient, optimize
@@ -44,8 +45,8 @@ ax.set_xlim(-1.5, 1.5)
 ax.set_ylim(-1, 2)
 ax.set_xlabel("x")
 ax.set_ylabel("y")
-ax.set_title("GD vs SGD+Momentum vs Adam:同一個Rosenbrock地形,3000步後的真實軌跡", fontsize=12.5, fontweight="bold")
-ax.legend(fontsize=9, loc="upper left")
+ax.set_title("GD vs SGD+Momentum vs Adam:同一個Rosenbrock地形,3000步後的真實軌跡")
+ax.legend(loc="upper left")
 
 plt.tight_layout()
 plt.savefig("optimizer_comparison_rosenbrock.png", dpi=150, bbox_inches="tight")

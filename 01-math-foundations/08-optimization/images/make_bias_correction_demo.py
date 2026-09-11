@@ -6,9 +6,10 @@ import matplotlib
 import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 beta1 = 0.9
 true_gradient = 1.0  # 假設梯度大致穩定在1.0附近
@@ -26,8 +27,8 @@ ax.axhline(true_gradient, color="#999999", lw=1.4, linestyle="--", label="真實
 ax.set_xlabel("訓練步數 t", fontsize=10.5)
 ax.set_ylabel("一階矩估計值", fontsize=10.5)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(fontsize=9.5, loc="lower right")
-ax.set_title("Adam的Bias Correction:修正m、v在訓練初期的低估", fontsize=12.5, fontweight="bold")
+ax.legend(loc="lower right")
+ax.set_title("Adam的Bias Correction:修正m、v在訓練初期的低估")
 
 plt.tight_layout()
 plt.savefig("bias_correction.png", dpi=150, bbox_inches="tight")
