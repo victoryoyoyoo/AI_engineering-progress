@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 A = np.array([[1, 2, 3], [4, 5, 6]])
 AT = A.T
@@ -24,12 +25,11 @@ for ax, M, title, hi in zip(axes, [A, AT], [f"A  shape={A.shape}", f"A.T  shape=
             ax.text(j, i, str(M[i, j]), ha="center", va="center", fontsize=13, fontweight="bold")
     ax.set_xlim(-0.5, M.shape[1] - 0.5)
     ax.set_ylim(M.shape[0] - 0.5, -0.5)
-    ax.set_title(title, fontsize=12, fontweight="bold")
+    ax.set_title(title, fontsize=11.5, fontweight="bold")
     ax.set_xticks([]); ax.set_yticks([])
 
 axes[0].text(2, 0, "", fontsize=1)
-fig.suptitle("transpose(轉置):A[0][2]=3 轉置後變成 A.T[2][0]=3(紅框標示同一個數字)",
-             fontsize=11.5, fontweight="bold")
+fig.suptitle("transpose(轉置):A[0][2]=3 轉置後變成 A.T[2][0]=3(紅框標示同一個數字)")
 plt.tight_layout()
 plt.savefig("transpose.png", dpi=150, bbox_inches="tight")
 print("saved")

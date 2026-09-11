@@ -7,9 +7,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 A = np.array([[2.0, 0.5], [0.3, 1.5]])
 A_inv = np.linalg.inv(A)
@@ -30,9 +31,8 @@ ax.axvline(0, color="#999999", lw=0.8)
 ax.set_xlim(-0.5, 3); ax.set_ylim(-0.5, 3)
 ax.set_aspect("equal")
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(loc="upper left", fontsize=10, framealpha=0.9)
-ax.set_title("inverse(逆矩陣):A⁻¹ 把 A 搬過去的東西「搬回來」\nA @ A⁻¹ = identity matrix(單位矩陣,乘上任何東西不改變它)",
-             fontsize=11.5, fontweight="bold")
+ax.legend(loc="upper left", framealpha=0.9)
+ax.set_title("inverse(逆矩陣):A⁻¹ 把 A 搬過去的東西「搬回來」\nA @ A⁻¹ = identity matrix(單位矩陣,乘上任何東西不改變它)")
 
 check = A @ A_inv
 ax.text(0.05, -0.35, f"驗證: A @ A⁻¹ ≈\n{np.round(check, 2)}", transform=ax.transAxes,

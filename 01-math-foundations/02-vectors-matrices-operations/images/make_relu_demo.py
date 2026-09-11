@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 x = np.linspace(-4, 4, 400)
 y = np.maximum(0, x)
@@ -22,8 +23,8 @@ ax.axvline(0, color="#999999", lw=0.8)
 ax.set_xlabel("輸入 x (即 W@x+b 算出來的值)", fontsize=10)
 ax.set_ylabel("relu(x) = max(0, x)", fontsize=10)
 ax.grid(alpha=0.3, linestyle="--")
-ax.legend(loc="upper left", fontsize=9.5)
-ax.set_title("relu:引入非線性,負數砍0、正數不變", fontsize=13, fontweight="bold")
+ax.legend(loc="upper left")
+ax.set_title("relu:引入非線性,負數砍0、正數不變")
 
 plt.tight_layout()
 plt.savefig("relu.png", dpi=150, bbox_inches="tight")

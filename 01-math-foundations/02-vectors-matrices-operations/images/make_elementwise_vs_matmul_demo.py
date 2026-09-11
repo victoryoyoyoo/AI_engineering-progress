@@ -6,9 +6,10 @@ import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-fm.fontManager.addfont("/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf")
-matplotlib.rcParams["font.family"] = ["DejaVu Sans", "Droid Sans Fallback"]
-matplotlib.rcParams["axes.unicode_minus"] = False
+import sys
+sys.path.insert(0, "../../_shared")
+from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+setup_style()
 
 A = np.array([[1, 2], [3, 4]])
 B = np.array([[5, 6], [7, 8]])
@@ -22,7 +23,7 @@ def draw_grid(ax, M, title, color, highlight=None):
     ax.set_ylim(0, M.shape[0])
     ax.invert_yaxis()
     ax.set_aspect("equal")
-    ax.set_title(title, fontsize=12, fontweight="bold", color=color)
+    ax.set_title(title, fontsize=11.5, fontweight="bold", color=color)
     for i in range(M.shape[0]):
         for j in range(M.shape[1]):
             fc = "#FDECEC" if highlight == (i, j) else "#F0F0F0"
@@ -37,7 +38,7 @@ axes[0].text(1, 2.3, "[0][0] = 1*5 = 5\n(對應位置直接乘)", fontsize=9, ha
 draw_grid(axes[1], mat, "A @ B (matrix multiply)\n列跟行做內積", "#C44E52")
 axes[1].text(1, 2.3, "[0][0] = 1*5+2*7 = 19\n(row0 · col0,做內積)", fontsize=9, ha="center", color="#C44E52")
 
-fig.suptitle("Element-wise vs Matrix Multiply:同樣的A、B,結果完全不同", fontsize=13.5, fontweight="bold")
+fig.suptitle("Element-wise vs Matrix Multiply:同樣的A、B,結果完全不同")
 plt.tight_layout()
 plt.savefig("elementwise_vs_matmul.png", dpi=150, bbox_inches="tight")
 print("saved")
