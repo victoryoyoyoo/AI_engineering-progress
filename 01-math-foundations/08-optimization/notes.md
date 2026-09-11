@@ -23,6 +23,7 @@
   - [`params[:]`:切片複製一份 list,避免共用同一個物件](#params切片複製一份-list避免共用同一個物件)
   - [負數索引 `[-1]`:從尾端數](#負數索引-1從尾端數)
   - [`for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構](#for-name-history-in--對一串-tuple-做迴圈解構)
+  - [`is None`:判斷「是不是還沒被賦值」,不是用 `==`](#is-none判斷是不是還沒被賦值不是用-)
 
 ## Learning Objectives 打勾清單
 - [x] 從零實作梯度下降、SGD with momentum、Adam ⚠️(`GradientDescent`真的看過對照公式;`SGDMomentum`、`Adam`寫在reference.py+跑過demo,沒有實際逐行帶著看,記進review-queue)
@@ -278,3 +279,20 @@ for name, history in [("GD", gd_history), ("SGD+M", sgd_history), ("Adam", adam_
 ```
 
 這裡直接寫一個 list,裡面裝三個 tuple(每個 tuple 是「名字, 資料」這一對),`for name, history in ...` 一次把每個 tuple 拆成兩個變數,寫法上是把 Lesson 3 學過的「解構賦值」跟 for 迴圈結合在一起,不用先建 `names` 跟 `histories` 兩個獨立的 list 再配合 `zip()` 才能一起走訪——資料本身內容不多、只是暫時要湊起來印出來比較的時候,直接寫成一串 tuple 的 list 更直覺。
+
+### `is None`:判斷「是不是還沒被賦值」,不是用 `==`
+
+```python
+def __init__(self, lr=0.001, momentum=0.9):
+    self.velocity = None
+
+def step(self, params, grads):
+    if self.velocity is None:
+        self.velocity = [0.0] * len(params)
+```
+
+`None` 是 Python 內建代表「什麼都沒有/空值」的特殊值,常拿來當「這個變數還沒被真正賦值」的初始狀態——這裡 `SGDMomentum`、`Adam` 在 `__init__` 時還不知道參數有幾維,先把 `velocity`/`m`/`v` 設成 `None` 佔位,等到第一次呼叫 `step()`、真正拿到 `params` 知道長度之後,才用 `[0.0] * len(params)` 建出正確大小的初始值。`if self.velocity is None:` 就是在檢查「這是不是第一次呼叫 `step()`(還沒初始化過)」。
+
+判斷是不是 `None`,慣例上要用 `is None`(或 `is not None`),而不是 `== None`。原因是 `is` 比較的是「兩個東西是不是記憶體裡同一個物件」(身分比較,identity),`==` 比較的是「值是否相等」(可以被自訂物件重新定義,像這堂課 Lesson1 學過的 `__add__` 那樣,理論上也能自訂 `__eq__` 讓 `==` 的行為變得不可預期)。`None` 在整個程式運作期間全域只有唯一一份,不會有第二個「另外一個 None」存在,所以用「是不是同一個物件」(`is`)來判斷比「值相不相等」(`==`)更精確、也更快(不用呼叫任何比較邏輯),這是 Python 社群公認的慣例寫法。
+
+C++對照:C++沒有完全對應 `None` 的東西,情境類似的有 `nullptr`(指標沒有指向任何東西)或 `std::optional` 的 `std::nullopt`(代表「這個值目前是空的」),比較時通常就用 `==`(`ptr == nullptr`),因為C++的 `==` 對指標本來就是比較位址、C++沒有Python這種「`==` 可能被自訂物件覆寫成完全不是比較位址」的疑慮。
