@@ -56,8 +56,8 @@
 | 用途 | 公式 |
 |---|---|
 | 內積(dot product) | `a·b = a1*b1 + a2*b2 + ...`(對應位置相乘再全部加總) |
-| 長度(magnitude) | `|a| = sqrt(a1² + a2² + ...)`(畢氏定理推廣) |
-| 餘弦相似度(cosine similarity) | `cos_sim(a,b) = (a·b) / (|a| * |b|)`,範圍-1到1 |
+| 長度(magnitude) | `\|a\| = sqrt(a1² + a2² + ...)`(畢氏定理推廣) |
+| 餘弦相似度(cosine similarity) | `cos_sim(a,b) = (a·b) / (\|a\| * \|b\|)`,範圍-1到1 |
 | 矩陣乘向量 | 輸出第i個數字 = 矩陣第i列 · 輸入向量(逐列做內積) |
 | LoRA低秩分解 | `ΔW = B @ A`,B是(m,r)、A是(r,n),r遠小於m和n |
 
