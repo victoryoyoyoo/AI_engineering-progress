@@ -14,4 +14,5 @@
 | 8 | Optimization | 三種optimizer是同一問題的三種答案:梯度下降(只看現在)、momentum(記住過去方向)、Adam(momentum+每個權重自己的步伐) | [notes.md](01-math-foundations/08-optimization/notes.md) |
 | 9 | Information Theory | Information content量單一事件的驚訝程度,entropy是整個分布的平均驚訝程度,是不確定性的下限 | [notes.md](01-math-foundations/09-information-theory/notes.md) |
 | 10 | Dimensionality Reduction | PCA的fit流程:置中資料→算共變異數矩陣→特徵分解→由大到小排序→留變異量最大的前k個方向 | [notes.md](01-math-foundations/10-dimensionality-reduction/notes.md) |
+| 11 | Singular Value Decomposition | 任何矩陣不管形狀,都可以拆成「旋轉→縮放→旋轉」三個動作:A = U × Σ × Vᵀ | [notes.md](01-math-foundations/11-singular-value-decomposition/notes.md) |
 
