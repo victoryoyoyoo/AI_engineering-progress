@@ -1,23 +1,17 @@
-# Lesson 3 筆記:Matrix Transformations
+# Lesson 3 - Matrix Transformations(矩陣變換)
 
 ## 目錄
 
 - [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
-- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [30秒抓重點](#30秒抓重點)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-- [我自己手打的部分](#我自己手打的部分)
-- [今天花的時間](#今天花的時間)
-- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
-- [今天評分](#今天評分)
-- [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
-- [解構賦值(unpacking)複習](#解構賦值unpacking複習)
-- [函式回傳多個值](#函式回傳多個值)
-- [complex():複數](#complex複數)
-- [np.diag()](#npdiag)
-- [np.linalg.eig() / np.linalg.inv()](#nplinalgeig-nplinalginv)
+- [課程結尾理解確認題](#課程結尾理解確認題)
+- [我自己手打的部分](#我自己手打的部分)
+- [今天評分](#今天評分)
+- [程式語法筆記](#程式語法筆記)
 
 ## Learning Objectives 打勾清單
 
@@ -26,7 +20,7 @@
 - [x] Compute eigenvalues and eigenvectors of 2x2 matrices from the characteristic equation — 完整推導過一次(從 Av=λv 到 det(A-λI)=0 再到套用一元二次方程式公式解),親眼看過程式跑出來的 A@v 跟 λ*v 真的一樣。
 - [~] Explain why eigenvalues determine PCA directions, RNN stability, and spectral clustering behavior — RNN 穩定性(eigenvalue絕對值>1會爆、<1會消失)講清楚也測驗答對。⚠️ PCA 只提過一句話(eigenvector是主成分方向),沒有真的展開講；spectral clustering 完全沒教,刻意標記成之後才需要懂的東西。
 
-## 30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)
+## 30秒抓重點
 
 - 旋轉/縮放/切斜/鏡射矩陣都是「對空間做某種固定操作」的說明書,各自固定的數字排法(旋轉用sin/cos、縮放放對角線、鏡射用正負1)
 - 複合變換沒有交換律,順序不能換,而且矩陣乘法從右邊先算——先轉再縮放跟先縮放再轉,結果真的不一樣
@@ -35,7 +29,34 @@
 - RNN權重矩陣的eigenvalue絕對值>1會梯度爆炸、<1會梯度消失;PCA則是協方差矩陣最大eigenvalue對應的eigenvector就是變異量最大的方向
 - 3D旋轉矩陣跟spectral clustering這堂課沒教,留在review queue
 
+<details>
+<summary>這堂課的總結</summary>
+
+這堂課先講矩陣的「幾何直覺」:旋轉、縮放、切斜、鏡射,這四種矩陣其實就是「對空間做某種固定操作」的說明書,每一種都有各自固定的數字排法(旋轉用sin/cos、縮放放對角線、切斜放偏移量、鏡射用正負1)。複合變換(把多個矩陣疊起來用)最重要的一課是:矩陣乘法沒有交換律,順序不能換,而且運算順序是從右邊先算——這件事親眼驗證過(先轉再縮放跟先縮放再轉,結果真的不一樣)。
+
+這堂課真正的核心是 eigenvalue(特徵值)跟 eigenvector(特徵向量):在所有被矩陣變換的向量裡,存在幾個特殊方向,沿著這些方向的向量只會被拉長縮短、方向完全不變。找出這些特殊方向跟拉伸倍數的整套推導(`Av=λv → (A-λI)v=0 → det(A-λI)=0 → 一元二次方程式`),親手走過一次而且看程式碼驗證過答案是對的。Eigendecomposition(`A = V @ D @ V⁻¹`)則是把矩陣拆解成「换到eigenvector座標系→沿各軸伸縮→换回來」,這個概念後面 PCA、RNN穩定性分析都會用到。
+
+3D旋轉矩陣跟PCA/spectral clustering的實際應用這堂課沒有深入,留在 review queue,不影響核心 eigenvalue/eigenvector 直覺的紮實程度。
+
+**這堂課的關鍵公式,複習時直接看這幾條就夠:**
+
+```
+旋轉矩陣:            [[cosθ,-sinθ],[sinθ,cosθ]]
+縮放矩陣:            [[sx,0],[0,sy]]
+複合變換:            B @ A @ 點 = 先套用A、再套用B(從右邊先算)
+eigenvector定義:     A @ v = λ * v(v非零)
+characteristic方程式: det(A - λI) = 0,展開後(2x2)是 λ² - trace·λ + det = 0
+解出λ:               λ = (trace ± √(trace² - 4·det)) / 2
+eigendecomposition:  A = V @ D @ V⁻¹
+奇異矩陣(singular):   det(A) = 0,存在非零向量被壓成零向量
+```
+
+</details>
+
 ## 公式速查表
+
+<details>
+<summary>展開:公式速查表</summary>
 
 | 用途 | 公式 |
 |---|---|
@@ -50,7 +71,12 @@
 | eigendecomposition | `A = V @ D @ V⁻¹` |
 | 奇異矩陣(singular) | `det(A) = 0`,存在非零向量被壓成零向量 |
 
+</details>
+
 ## 這堂課的名詞總表
+
+<details>
+<summary>展開:名詞總表</summary>
 
 | 英文 | 中文 | 一句話定義 |
 |---|---|---|
@@ -122,100 +148,38 @@
 
 </details>
 
-## 我自己手打的部分
-
-這堂課完全是 Top-Down 討論 + 看程式碼跑真實輸出,沒有指定手打的核心邏輯行,`practice.py` 保持空白。整堂課的重點是把 eigenvalue/eigenvector 這個新概念的直覺跟推導搞懂,不是手刻程式。完整程式碼(旋轉/縮放/切斜/鏡射矩陣、eigenvalue求解、驗證邏輯)都在 `reference.py`,已經加好中文註解、跑過確認正確。
-
-## 今天花的時間
-
-計時器顯示 4:49:50,但中途離開處理其他事情約 2 小時 40 分,實際專注時間是 **2:09:50**。比 Lesson 2 的 2:16:30 差不多,這堂課概念密度比較高(eigenvalue是全新概念),花的時間主要在反覆確認推導邏輯跟語法問題上。(課程建議時間:約75分鐘,實際花費接近建議時間的1.7倍)
-
-## 課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)
-
-<details>
-<summary><b>Q1：什麼是 eigenvector(特徵向量)跟 eigenvalue(特徵值)?從定義式 `Av=λv` 出發,怎麼一步步推導出 characteristic equation `det(A-λI)=0`?</b></summary>
-
-答案：eigenvector 是一個特殊的非零向量,矩陣 A 乘上它之後,方向完全不變,只有長度被拉伸或縮短;拉伸縮短的倍數就是 eigenvalue(可能是負數,代表方向翻面;也可能是複數,例如旋轉矩陣的情況)。推導過程：定義本身是「矩陣乘上這個向量」等於「這個向量直接乘上一個數字」,寫成 `Av=λv`。把等式兩邊移到同一側,改寫成 `(A-λI)v=0`(用單位矩陣 I 乘 λ 是為了讓「數字」跟「矩陣」可以相減)。因為題目規定 v 不能是零向量(零向量代入永遠成立,沒有篩選意義),所以要找的是「存在非零向量,被 `(A-λI)` 這個矩陣壓成零向量」的情況——而一個矩陣能把非零向量壓成零向量,代表這個矩陣是奇異矩陣(singular matrix),也就是行列式(determinant)等於0。於是問題就變成：找出所有讓 `det(A-λI)=0` 成立的 λ,這個方程式就叫 characteristic equation。對 2x2 矩陣展開後會得到一個一元二次方程式 `λ²-trace·λ+det=0`,可以直接套公式解出 λ,再把每個 λ 代回 `(A-λI)v=0` 解出對應的 eigenvector。
-
 </details>
-
-<details>
-<summary><b>Q2：為什麼 RNN(循環神經網路)的權重矩陣,eigenvalue 絕對值大於1或小於1,會分別造成梯度爆炸或梯度消失?</b></summary>
-
-答案：RNN 會把同一個權重矩陣反覆套用很多次(每一個時間步都乘一次),這跟 eigendecomposition(`A = V @ D @ V⁻¹`)的概念直接相關——如果沿著 eigenvector 的方向去看,矩陣反覆相乘的效果,等同於把 eigenvalue 反覆相乘。如果某個 eigenvalue 的絕對值大於1,重複乘上自己 t 次(對應 t 個時間步)會讓數值指數成長,沿著這個方向的梯度會越滾越大,最終爆炸到數值溢位,這就是梯度爆炸(exploding gradient)。反過來,如果 eigenvalue 絕對值小於1,重複相乘會讓數值指數縮小,越乘越接近0,沿著這個方向傳遞的梯度會消失不見,模型學不到「久遠之前」的資訊,這就是梯度消失(vanishing gradient)。只有 eigenvalue 絕對值剛好等於或接近1,重複相乘的結果才會保持穩定,不爆炸也不消失,這也是為什麼 LSTM/GRU 等設計會特別去控制這個機制。
-
-![RNN梯度穩定性:eigenvalue絕對值決定爆炸/消失/穩定](images/rnn_stability.png)
-
-</details>
-
-<details>
-<summary><b>Q3：PCA(主成分分析,Principal Component Analysis)裡,為什麼協方差矩陣最大的 eigenvalue 對應的 eigenvector,就是資料變異量(variance)最大的方向?</b></summary>
-
-答案：PCA 要找的是「資料點分布最開、資訊量最豐富」的方向——把高維資料投影到這個方向上時,資料點彼此之間的差異保留得最多。協方差矩陣(covariance matrix)描述的正是資料在各個方向上如何一起變動(包含每個維度自己的變異數,以及維度之間的共變異數)。eigenvector 的定義是「矩陣作用在它身上時,方向不會被扭轉,只會被拉伸」——套用在協方差矩陣上,eigenvector 就是資料「自然分散」的那幾個特殊方向(不會因為套用協方差結構而被轉向其他方向),而對應的 eigenvalue,量的正是資料沿著這個方向的變異量有多大(eigenvalue 越大,代表資料沿著這個方向散得越開)。因此把所有 eigenvalue 由大到小排序,最大的那個對應的 eigenvector,就是「資料變異量最大的方向」,也就是 PCA 選出的第一個主成分(principal component);把資料投影到前幾個最大 eigenvalue 對應的 eigenvector 上,就能用更少的維度保留住資料裡大部分的資訊量。
-
-![PCA:協方差矩陣的eigenvector就是主成分方向,最大eigenvalue對應變異量最大的方向](images/pca_direction.png)
-
-</details>
-
-## 今天評分
-
-| 項目 | 說明 |
-|---|---|
-| 理解程度 | 8/10,eigenvalue/eigenvector 的核心直覺(特殊方向、方向不變只拉伸)、characteristic equation 的推導、複合變換順序規則,都是真的懂,能自己用一句話講出來 |
-| 效率 | 這堂課中間卡在 Python 語法細節(解構賦值、函式多重回傳值)卡了一段時間,後來決定跳過逐行拆語法、只看懂邏輯,效率就回升了 |
-| 完成度 | 核心 4 個 Learning Objectives 裡,2 個完全做到、2 個部分做到(3D 版本、PCA/spectral clustering 應用沒深入) |
-
-## 這堂課的總結
-
-這堂課先講矩陣的「幾何直覺」:旋轉、縮放、切斜、鏡射,這四種矩陣其實就是「對空間做某種固定操作」的說明書,每一種都有各自固定的數字排法(旋轉用sin/cos、縮放放對角線、切斜放偏移量、鏡射用正負1)。複合變換(把多個矩陣疊起來用)最重要的一課是:矩陣乘法沒有交換律,順序不能換,而且運算順序是從右邊先算——這件事親眼驗證過(先轉再縮放跟先縮放再轉,結果真的不一樣)。
-
-這堂課真正的核心是 eigenvalue(特徵值)跟 eigenvector(特徵向量):在所有被矩陣變換的向量裡,存在幾個特殊方向,沿著這些方向的向量只會被拉長縮短、方向完全不變。找出這些特殊方向跟拉伸倍數的整套推導(`Av=λv → (A-λI)v=0 → det(A-λI)=0 → 一元二次方程式`),親手走過一次而且看程式碼驗證過答案是對的。Eigendecomposition(`A = V @ D @ V⁻¹`)則是把矩陣拆解成「换到eigenvector座標系→沿各軸伸縮→换回來」,這個概念後面 PCA、RNN穩定性分析都會用到。
-
-3D旋轉矩陣跟PCA/spectral clustering的實際應用這堂課沒有深入,留在 review queue,不影響核心 eigenvalue/eigenvector 直覺的紮實程度。
-
-**這堂課的關鍵公式,複習時直接看這幾條就夠:**
-
-```
-旋轉矩陣:            [[cosθ,-sinθ],[sinθ,cosθ]]
-縮放矩陣:            [[sx,0],[0,sy]]
-複合變換:            B @ A @ 點 = 先套用A、再套用B(從右邊先算)
-eigenvector定義:     A @ v = λ * v(v非零)
-characteristic方程式: det(A - λI) = 0,展開後(2x2)是 λ² - trace·λ + det = 0
-解出λ:               λ = (trace ± √(trace² - 4·det)) / 2
-eigendecomposition:  A = V @ D @ V⁻¹
-奇異矩陣(singular):   det(A) = 0,存在非零向量被壓成零向量
-```
 
 ## 相關概念(跨堂連結)
 
-- **Eigenvalue絕對值決定RNN梯度爆炸/消失**:這堂課推導過eigendecomposition(`A=V@D@V⁻¹`),並用eigenvalue絕對值判斷RNN權重矩陣反覆相乘後梯度會爆炸(>1)或消失(<1) → 也出現在 [Lesson 5](../05-chain-rule-and-autodiff/notes.md#step6梯度檢查gradient-checking),那邊在解釋「gradient clipping(梯度裁剪)」的使用時機時,直接引用了這堂課eigenvalue絕對值>1會梯度爆炸的結論,把「為什麼RNN需要梯度裁剪」跟這堂課的理論直接接起來
+- **Eigenvalue絕對值決定RNN梯度爆炸/消失**:這堂課推導過eigendecomposition(`A=V@D@V⁻¹`),並用eigenvalue絕對值判斷RNN權重矩陣反覆相乘後梯度會爆炸(>1)或消失(<1) → 也出現在 [Lesson 5](../05-chain-rule-and-autodiff/notes.md#這堂課我卡住搞混的地方完整問答記錄給複習用),那邊在解釋「gradient clipping(梯度裁剪)」的使用時機時,直接引用了這堂課eigenvalue絕對值>1會梯度爆炸的結論,把「為什麼RNN需要梯度裁剪」跟這堂課的理論直接接起來
 - **Eigenvector/eigenvalue是PCA的數學基礎**:這堂課只提過一句話「eigenvector是主成分方向」,沒有展開 → 完整實作在 [Lesson 10](../10-dimensionality-reduction/notes.md#這堂課我卡住搞混的地方完整問答記錄給複習用),那邊對共變異數矩陣做特徵分解,eigenvector對應資料變異的主要方向、eigenvalue對應那個方向的變異量大小,把這堂課推導的`Av=λv`整套機制,套用在真正的降維演算法上
 
 ## 面試向問題
 
 <details>
-<summary><b>為什麼RNN訓練久了容易梯度爆炸或梯度消失?這跟權重矩陣的eigenvalue有什麼關係?</b></summary>
+<summary>Q1: 為什麼RNN訓練久了容易梯度爆炸或梯度消失?這跟權重矩陣的eigenvalue有什麼關係?</summary>
 
 RNN會把同一個權重矩陣反覆套用很多次(每一個時間步都乘一次),這跟eigendecomposition(`A=V@D@V⁻¹`)直接相關——沿著eigenvector的方向去看,矩陣反覆相乘的效果,等同於把對應的eigenvalue反覆相乘。如果某個eigenvalue的絕對值大於1,重複乘上自己t次(對應t個時間步)會讓數值指數成長,沿著這個方向的梯度會越滾越大,最終爆炸到數值溢位,這就是梯度爆炸。反過來,如果eigenvalue絕對值小於1,重複相乘會讓數值指數縮小,越乘越接近0,沿著這個方向傳遞的梯度會消失不見,模型學不到久遠之前的資訊,這就是梯度消失。只有eigenvalue絕對值剛好等於或接近1,重複相乘的結果才會保持穩定,不爆炸也不消失,這也是LSTM/GRU等架構設計要特別控制這個機制的原因。
 
 </details>
 
 <details>
-<summary><b>對同一份資料先做旋轉、再做縮放,跟先縮放、再旋轉,結果會不會一樣?為什麼?</b></summary>
+<summary>Q2: 對同一份資料先做旋轉、再做縮放,跟先縮放、再旋轉,結果會不會一樣?為什麼?</summary>
 
 不會一樣。矩陣乘法沒有交換律,`B@A@點`代表先套用A、再套用B,運算順序是從右邊先算——這堂課實際驗證過,先轉90度再縮放、跟先縮放再轉90度,同一個點會落在不同位置(例如結果分別是(0,0.5)跟(0,2))。直覺上可以想成:旋轉會改變「哪個軸該被放大縮小」,如果先轉90度,原本的x軸方向變成了新的y軸方向,這時候再套用縮放矩陣,縮放的是「轉完之後」的座標軸;但如果先縮放、再旋轉,縮放套用在原始座標軸上,縮放完的結果才整個被轉向。兩種操作的先後順序決定了「縮放發生在哪個座標系底下」,這正是矩陣乘法沒有交換律的幾何體現,只有極少數矩陣彼此有特殊結構、可以交換時才會是例外。
 
 </details>
 
 <details>
-<summary><b>PCA為什麼要挑協方差矩陣最大eigenvalue對應的eigenvector當作第一主成分?</b></summary>
+<summary>Q3: PCA為什麼要挑協方差矩陣最大eigenvalue對應的eigenvector當作第一主成分?</summary>
 
 PCA要找的是「資料點分布最開、資訊量最豐富」的方向——把高維資料投影到這個方向上時,資料點彼此之間的差異保留得最多。協方差矩陣描述的正是資料在各個方向上如何一起變動。eigenvector的定義是「矩陣作用在它身上時,方向不會被扭轉,只會被拉伸」——套用在協方差矩陣上,eigenvector就是資料「自然分散」的那幾個特殊方向,而對應的eigenvalue,量的正是資料沿著這個方向的變異量有多大(eigenvalue越大,代表資料沿著這個方向散得越開)。因此把所有eigenvalue由大到小排序,最大的那個對應的eigenvector,就是「資料變異量最大的方向」,也就是PCA選出的第一個主成分;把資料投影到前幾個最大eigenvalue對應的eigenvector上,就能用更少的維度保留住資料裡大部分的資訊量。
 
 </details>
 
 <details>
-<summary><b>不是每個方陣都能做eigendecomposition,這種情況實務上什麼時候會踩到?</b></summary>
+<summary>Q4: 不是每個方陣都能做eigendecomposition,這種情況實務上什麼時候會踩到?</summary>
 
 主要有兩種情況,實務上都會踩到。第一種是eigenvalue本身是複數而非實數,像旋轉矩陣就是這樣——因為旋轉矩陣會把所有向量都轉向,沒有一個方向是「完全不變、只被拉伸」的實數方向,對應到這堂課discriminant小於0的情況;深度學習裡任何涉及旋轉、週期性結構的權重矩陣都可能出現複數eigenvalue。第二種是defective matrix:即使eigenvalue都是實數,但某個eigenvalue重複出現時,對應到的線性獨立eigenvector數量不夠,湊不出完整的V矩陣去做`A=V@D@V⁻¹`分解。實務上分析RNN權重矩陣的穩定性、或對深度學習模型的權重做特徵分析時,常常會遇到權重矩陣不是理想的「條件良好」矩陣,這時候要嘛改用更泛用的奇異值分解(SVD,任何矩陣都能做,不要求方陣也不要求可對角化),要嘛只能在複數範圍內討論,不能直接套用「找到一組完全不變的實數方向」這個直覺。
 
@@ -225,7 +189,53 @@ PCA要找的是「資料點分布最開、資訊量最豐富」的方向——�
 
 (下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
 
-## 解構賦值(unpacking)複習
+## 課程結尾理解確認題
+
+<details>
+<summary>Q1: 什麼是 eigenvector(特徵向量)跟 eigenvalue(特徵值)?從定義式 `Av=λv` 出發,怎麼一步步推導出 characteristic equation `det(A-λI)=0`?</summary>
+
+答案：eigenvector 是一個特殊的非零向量,矩陣 A 乘上它之後,方向完全不變,只有長度被拉伸或縮短;拉伸縮短的倍數就是 eigenvalue(可能是負數,代表方向翻面;也可能是複數,例如旋轉矩陣的情況)。推導過程：定義本身是「矩陣乘上這個向量」等於「這個向量直接乘上一個數字」,寫成 `Av=λv`。把等式兩邊移到同一側,改寫成 `(A-λI)v=0`(用單位矩陣 I 乘 λ 是為了讓「數字」跟「矩陣」可以相減)。因為題目規定 v 不能是零向量(零向量代入永遠成立,沒有篩選意義),所以要找的是「存在非零向量,被 `(A-λI)` 這個矩陣壓成零向量」的情況——而一個矩陣能把非零向量壓成零向量,代表這個矩陣是奇異矩陣(singular matrix),也就是行列式(determinant)等於0。於是問題就變成：找出所有讓 `det(A-λI)=0` 成立的 λ,這個方程式就叫 characteristic equation。對 2x2 矩陣展開後會得到一個一元二次方程式 `λ²-trace·λ+det=0`,可以直接套公式解出 λ,再把每個 λ 代回 `(A-λI)v=0` 解出對應的 eigenvector。
+
+</details>
+
+<details>
+<summary>Q2: 為什麼 RNN(循環神經網路)的權重矩陣,eigenvalue 絕對值大於1或小於1,會分別造成梯度爆炸或梯度消失?</summary>
+
+答案：RNN 會把同一個權重矩陣反覆套用很多次(每一個時間步都乘一次),這跟 eigendecomposition(`A = V @ D @ V⁻¹`)的概念直接相關——如果沿著 eigenvector 的方向去看,矩陣反覆相乘的效果,等同於把 eigenvalue 反覆相乘。如果某個 eigenvalue 的絕對值大於1,重複乘上自己 t 次(對應 t 個時間步)會讓數值指數成長,沿著這個方向的梯度會越滾越大,最終爆炸到數值溢位,這就是梯度爆炸(exploding gradient)。反過來,如果 eigenvalue 絕對值小於1,重複相乘會讓數值指數縮小,越乘越接近0,沿著這個方向傳遞的梯度會消失不見,模型學不到「久遠之前」的資訊,這就是梯度消失(vanishing gradient)。只有 eigenvalue 絕對值剛好等於或接近1,重複相乘的結果才會保持穩定,不爆炸也不消失,這也是為什麼 LSTM/GRU 等設計會特別去控制這個機制。
+
+![RNN梯度穩定性:eigenvalue絕對值決定爆炸/消失/穩定](images/rnn_stability.png)
+
+</details>
+
+<details>
+<summary>Q3: PCA(主成分分析,Principal Component Analysis)裡,為什麼協方差矩陣最大的 eigenvalue 對應的 eigenvector,就是資料變異量(variance)最大的方向?</summary>
+
+答案：PCA 要找的是「資料點分布最開、資訊量最豐富」的方向——把高維資料投影到這個方向上時,資料點彼此之間的差異保留得最多。協方差矩陣(covariance matrix)描述的正是資料在各個方向上如何一起變動(包含每個維度自己的變異數,以及維度之間的共變異數)。eigenvector 的定義是「矩陣作用在它身上時,方向不會被扭轉,只會被拉伸」——套用在協方差矩陣上,eigenvector 就是資料「自然分散」的那幾個特殊方向(不會因為套用協方差結構而被轉向其他方向),而對應的 eigenvalue,量的正是資料沿著這個方向的變異量有多大(eigenvalue 越大,代表資料沿著這個方向散得越開)。因此把所有 eigenvalue 由大到小排序,最大的那個對應的 eigenvector,就是「資料變異量最大的方向」,也就是 PCA 選出的第一個主成分(principal component);把資料投影到前幾個最大 eigenvalue 對應的 eigenvector 上,就能用更少的維度保留住資料裡大部分的資訊量。
+
+![PCA:協方差矩陣的eigenvector就是主成分方向,最大eigenvalue對應變異量最大的方向](images/pca_direction.png)
+
+</details>
+
+## 我自己手打的部分
+
+這堂課完全是 Top-Down 討論 + 看程式碼跑真實輸出,沒有指定手打的核心邏輯行,`practice.py` 保持空白。整堂課的重點是把 eigenvalue/eigenvector 這個新概念的直覺跟推導搞懂,不是手刻程式。完整程式碼(旋轉/縮放/切斜/鏡射矩陣、eigenvalue求解、驗證邏輯)都在 `reference.py`,已經加好中文註解、跑過確認正確。
+
+## 今天評分
+
+| 項目 | 說明 |
+|---|---|
+| 理解程度 | 8/10,eigenvalue/eigenvector 的核心直覺(特殊方向、方向不變只拉伸)、characteristic equation 的推導、複合變換順序規則,都是真的懂,能自己用一句話講出來 |
+| 效率 | 這堂課中間卡在 Python 語法細節(解構賦值、函式多重回傳值)卡了一段時間,後來決定跳過逐行拆語法、只看懂邏輯,效率就回升了 |
+| 完成度 | 核心 4 個 Learning Objectives 裡,2 個完全做到、2 個部分做到(3D 版本、PCA/spectral clustering 應用沒深入) |
+| 花費時間 | 計時器顯示 4:49:50,但中途離開處理其他事情約 2 小時 40 分,實際專注時間是 **2:09:50**。比 Lesson 2 的 2:16:30 差不多,這堂課概念密度比較高(eigenvalue是全新概念),花的時間主要在反覆確認推導邏輯跟語法問題上。(課程建議時間:約75分鐘,實際花費接近建議時間的1.7倍) |
+
+## 程式語法筆記
+
+<details>
+<summary>展開:程式語法筆記</summary>
+
+<details>
+<summary>解構賦值(unpacking)複習</summary>
 
 ```python
 a, b = matrix[0]
@@ -236,7 +246,10 @@ c, d = matrix[1]
 
 對照 C++:類似 C++17 的結構化綁定 `auto [a, b] = matrix[0];`,或舊寫法用 `std::tie(a, b) = ...`,概念是把一個容器一次拆開存進多個變數。
 
-## 函式回傳多個值
+</details>
+
+<details>
+<summary>函式回傳多個值</summary>
 
 ```python
 def eigenvalues_2x2(matrix):
@@ -256,7 +269,10 @@ Python 的 `return X, Y` 本質上是回傳一個 tuple(用逗號隔開兩個東
 
 對照 C++:C++ 要嘛包一個 struct/`std::pair`當回傳型別,要嘛用參考/指標當輸出參數;Python 不用額外定義型別,`return a, b` 就能一次回傳多個東西,呼叫端要不要拆開接,自己選。
 
-## `complex()`:複數
+</details>
+
+<details>
+<summary>`complex()`:複數</summary>
 
 ```python
 if discriminant < 0:
@@ -267,7 +283,10 @@ if discriminant < 0:
 
 判別式是負的,代表這個一元二次方程式沒有實數解,eigenvalue 是複數(旋轉矩陣就屬於這種情況,因為旋轉矩陣把向量都轉向了,沒有真正「方向不變」的實數方向)。`complex(實部, 虛部)` 是 Python 內建的複數型態,這堂課沒深入用到,先知道「discriminant<0時eigenvalue會是複數」這個對應關係就好。
 
-## `np.diag()`
+</details>
+
+<details>
+<summary>`np.diag()`</summary>
 
 ```python
 D = np.diag(eigenvalues)
@@ -275,7 +294,10 @@ D = np.diag(eigenvalues)
 
 把一串數字(這裡是 `[3.0, 1.0]`)放到一個新矩陣的對角線上,其餘位置補0,建出對角矩陣。是 eigendecomposition `A = V @ D @ V⁻¹` 裡 D 的建立方式。
 
-## `np.linalg.eig()` / `np.linalg.inv()`
+</details>
+
+<details>
+<summary>`np.linalg.eig()` / `np.linalg.inv()`</summary>
 
 ```python
 eigenvalues, eigenvectors = np.linalg.eig(A)   # 一行算出所有eigenvalue+eigenvector
@@ -283,3 +305,7 @@ V_inv = np.linalg.inv(V)                        # 算逆矩陣
 ```
 
 這兩個是 NumPy 現成的線性代數函式,把手動推導、手寫程式驗證的整套流程包成一行呼叫。`eigenvectors` 回傳的矩陣裡,**每一行(column)是一個eigenvector**,不是每一列,這跟平常「一列是一筆資料」的直覺相反,用的時候要注意。
+
+</details>
+
+</details>

@@ -3,18 +3,18 @@
 ## 目錄
 
 - [Learning Objectives 打勾清單](#learning-objectives-打勾清單)
-- [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
+- [30秒抓重點](#30秒抓重點)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-- [PyTorch對應](#pytorch對應)
-- [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
-- [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
+- [課程結尾理解確認題](#課程結尾理解確認題)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
+- [程式語法筆記](#程式語法筆記)
 
 ## Learning Objectives 打勾清單
+
 - [x] 從零實作梯度下降、SGD with momentum、Adam ⚠️(`GradientDescent`真的看過對照公式;`SGDMomentum`、`Adam`寫在reference.py+跑過demo,沒有實際逐行帶著看,記進review-queue)
 - [x] 比較三種optimizer在Rosenbrock函數上的收斂速度,解釋Adam為什麼能給每個權重自適應學習率
 - [x] 分辨凸/非凸loss地形,解釋鞍點在高維度空間的角色
@@ -22,7 +22,7 @@
 
 ⚠️ **這堂課教得太快,post測驗5題裡3題完全沒印象(optimization定義、mini-batch雜訊為什麼有益、cosine annealing）。已經在課堂上重新用更短的版本補教過一次,但值得回頭日再確認一次是否真的記住。**
 
-## 30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)
+## 30秒抓重點
 
 - 三種optimizer是同一問題的三種答案:梯度下降(只看現在)、momentum(記住過去方向解決震盪)、Adam(momentum+每個權重自己的步伐大小)
 - SGD/mini-batch用一小批資料估計梯度,犧牲準確度換速度;雜訊反而能把optimizer推出淺的局部最小值或鞍點
@@ -31,7 +31,14 @@
 - 學習率排程在時間軸上動態調整步伐,cosine annealing前面大步後面小步,Transformer常搭配warmup使用
 - 這堂課教得偏快,3個optimizer+凸非凸+鞍點+排程一次教完,post測驗3題沒印象,已重新補教過核心點
 
+**這堂課的總結**
+
+Optimization要解決的問題就是:給定loss函數(告訴你模型多爛)跟梯度(告訴你哪個方向會更爛),怎麼有效率地走到山谷底部。三種optimizer是同一個問題的三種答案——梯度下降(最陽春,只看現在)、momentum(記住過去方向,解決震盪)、Adam(momentum + 每個權重自己的步伐大小,解決「不同權重需要不同學習率」的問題)。凸/非凸、鞍點,講的是「山谷長什麼樣子」——神經網路的loss地形不是單純一個碗,鞍點比局部最小值更常見更麻煩,而momentum、mini-batch的雜訊剛好都有助於逃離鞍點。學習率排程則是在時間軸上動態調整步伐,前期快、後期穩。
+
 ## 公式速查表
+
+<details>
+<summary>展開:公式速查表</summary>
 
 | 用途 | 公式 |
 |---|---|
@@ -42,7 +49,12 @@
 | Adam偏差修正 | `m_hat = m / (1 - beta1^t)`,`v_hat = v / (1 - beta2^t)` |
 | Adam更新規則 | `w = w - lr * m_hat / (sqrt(v_hat) + epsilon)` |
 
+</details>
+
 ## 這堂課的名詞總表
+
+<details>
+<summary>展開:名詞總表</summary>
 
 | 英文 | 中文 | 一句話定義 |
 |---|---|---|
@@ -204,73 +216,60 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 
 </details>
 
-## PyTorch對應
-
-```python
-sgd = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
-adam = torch.optim.Adam(model.parameters(), lr=0.001)
-adamw = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=0.01)
-scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(adam, T_max=100)
-```
-
-實務經驗法則:先試Adam(lr=0.001,大多數問題不用調就堪用);要衝最好的最終準確度、且能花時間調參,換SGD with momentum(lr=0.01, momentum=0.9);Transformer用AdamW(decoupled weight decay);訓練超過幾個epoch一定要搭配學習率排程。
-
-## 這堂課的總結
-
-Optimization要解決的問題就是:給定loss函數(告訴你模型多爛)跟梯度(告訴你哪個方向會更爛),怎麼有效率地走到山谷底部。三種optimizer是同一個問題的三種答案——梯度下降(最陽春,只看現在)、momentum(記住過去方向,解決震盪)、Adam(momentum + 每個權重自己的步伐大小,解決「不同權重需要不同學習率」的問題)。凸/非凸、鞍點,講的是「山谷長什麼樣子」——神經網路的loss地形不是單純一個碗,鞍點比局部最小值更常見更麻煩,而momentum、mini-batch的雜訊剛好都有助於逃離鞍點。學習率排程則是在時間軸上動態調整步伐,前期快、後期穩。
+</details>
 
 ## 相關概念(跨堂連結)
 
-- **梯度下降是這三個optimizer共同的起點**:這堂課的momentum、Adam都是在`w = w - lr * gradient`這條最原始的規則上疊加東西(momentum疊過去方向、Adam再疊每個權重專屬步伐) → 原始推導在 [Lesson 4](../04-calculus-for-ml/notes.md#這堂課的總結),那邊從1個變數的梯度下降手推到線性迴歸的w、b,是這堂課三種optimizer共用的同一條底層規則,沒有變過
+- **梯度下降是這三個optimizer共同的起點**:這堂課的momentum、Adam都是在`w = w - lr * gradient`這條最原始的規則上疊加東西(momentum疊過去方向、Adam再疊每個權重專屬步伐) → 原始推導在 [Lesson 4](../04-calculus-for-ml/notes.md#30秒抓重點),那邊從1個變數的梯度下降手推到線性迴歸的w、b,是這堂課三種optimizer共用的同一條底層規則,沒有變過
 
 ## 面試向問題
 
 <details>
-<summary><b>訓練loss一直在某個值附近震盪、降不下去,可能是optimizer選錯還是學習率設太大?你會怎麼判斷、怎麼調整?</b></summary>
+<summary>Q1: 訓練loss一直在某個值附近震盪、降不下去,可能是optimizer選錯還是學習率設太大?你會怎麼判斷、怎麼調整?</summary>
 
 兩個可能性要分開排查。如果是學習率設太大,徵兆通常是loss震盪的幅度較大、甚至偶爾往上跳,而且不管訓練多久都不會收斂變小,因為每一步跨得太遠,超過了損失地形局部線性逼近的有效範圍;這種情況第一步該做的是直接調降學習率,通常降到十分之一左右重新觀察。如果學習率沒有明顯太大,又持續在窄山谷型的地形裡震盪(loss下降但左右來回抖動、走「之字形」),更可能是optimizer只看現在梯度、沒有記住過去方向所致——這是梯度下降最陽春版本的典型症狀,換成加了momentum的optimizer(`v = beta*v + gradient; w = w - lr*v`)通常就能明顯改善,因為momentum會把左右互相抵消的震盪力道消掉,只留下前後方向一致、真正在推進的部分。實務判斷順序通常是:先確認學習率不是設太大(調小看有沒有改善),如果調小學習率震盪還是持續存在、只是幅度變小,才比較可能是optimizer本身缺少momentum這個機制,該換成SGD+momentum或Adam。
 
 </details>
 
 <details>
-<summary><b>為什麼不少電腦視覺的SOTA模型論文,最後選的是SGD with momentum而不是Adam?</b></summary>
+<summary>Q2: 為什麼不少電腦視覺的SOTA模型論文,最後選的是SGD with momentum而不是Adam?</summary>
 
 Adam收斂快、對超參數不太敏感,訓練loss下降的速度上通常有優勢,這是因為它同時做了momentum(記住過去方向)加上每個權重各自的自適應學習率(除以`sqrt(v_hat)`,讓梯度通常較大的權重步伐變小、梯度通常較小的權重步伐變大)。但不少研究觀察到,SGD with momentum在調好學習率、momentum係數之後,最終在測試集上的泛化效果反而常常比Adam更好——這也是為什麼很多電腦視覺的SOTA論文最後選SGD+momentum。這不是說Adam「比較差」,而是選optimizer要看場景,不是單純「越新越複雜越好」:Adam的優勢是收斂快、好調,適合快速迭代實驗;SGD+momentum的優勢是(在願意花時間調參的前提下)常有更好的最終泛化能力,適合追求極限效能、已經進入最後衝刺精修階段的正式訓練。
 
 </details>
 
 <details>
-<summary><b>神經網路訓練卡住變慢,比較可能是卡在局部最小值還是鞍點?為什麼?</b></summary>
+<summary>Q3: 神經網路訓練卡住變慢,比較可能是卡在局部最小值還是鞍點?為什麼?</summary>
 
 更可能是卡在鞍點。局部最小值要求「所有方向都是山谷」(Hessian矩陣的eigenvalue全部是正的),在神經網路動輒上萬甚至上百萬個參數的高維空間裡,要每一個方向剛好同時都是谷底,機率其實很低;相反地,「一部分方向是谷、一部分方向是山頂」(對應Hessian的eigenvalue有正有負,鞍點的定義)在高維度空間裡反而非常常見。鞍點的特徵是梯度在附近會變得很小很小(看起來像已經到底,但沿著某些方向走其實還能繼續往下),這正是訓練卡住變慢最常見的成因,而不是真的走進了一個沒有出路的谷底。因為這個原因,momentum(記住過去的方向,慣性能帶著optimizer滑過鞍點附近的平坦區)跟mini-batch SGD的雜訊(隨機擾動有機會把optimizer推出鞍點附近的平坦區),都是實務上用來對付鞍點卡住問題的常見手段。
 
 </details>
 
 <details>
-<summary><b>Transformer訓練常見的warmup+cosine annealing排程組合,實際上在解決什麼問題?</b></summary>
+<summary>Q4: Transformer訓練常見的warmup+cosine annealing排程組合,實際上在解決什麼問題?</summary>
 
 這個組合解決的是訓練不同階段需要不同大小學習率這個問題,而且特別針對大模型訓練初期的不穩定性。Warmup(先線性把學習率從很小的值拉升到目標學習率)解決的是訓練剛開始時,模型參數還是隨機初始化、梯度估計本身雜訊很大且不可靠,如果一開始就用完整大小的學習率,很容易讓參數一步跨太遠、把訓練帶向不穩定甚至發散的狀態;先用很小的學習率讓模型跑幾步、梯度估計跟參數都稍微穩定下來,再逐步拉到目標學習率,可以避免這個問題。Cosine annealing接在warmup後面,讓學習率沿著餘弦曲線平滑地從目標值遞減到接近0,對應「訓練前期想大步快跑、後期想小步精修收斂到更精確位置」這個需求,而且cosine曲線兩端變化平緩、中段變化較快的形狀,不會像step decay那樣有突然的階梯式跳動,讓整個訓練過程更平滑穩定。這個組合對Transformer這種動輒百億參數、訓練成本極高、一旦訓練不穩定就代價慘重的模型格外重要,是幾乎標配的排程策略。
 
 </details>
 
-## 課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)
+## 課程結尾理解確認題
 
 <details>
-<summary><b>Q1：在機器學習的情境下,「optimization(最佳化)」具體是在解決什麼問題?</b></summary>
+<summary>Q1: 在機器學習的情境下,「optimization(最佳化)」具體是在解決什麼問題?</summary>
 
 答案：optimization 要解決的問題是:給定一個 loss 函數(告訴你模型現在有多爛)跟它的梯度(告訴你往哪個方向調整參數會讓模型變得更爛或更好),要怎麼有效率地、一步一步找到能讓 loss 最小的那組參數。可以想成在一片高低起伏的「損失地形(loss landscape)」上找山谷谷底——梯度告訴你「現在腳下這個點,往上爬最快的方向是哪裡」,optimization 演算法要做的就是不斷沿著梯度的反方向調整參數,反覆更新,逐步逼近山谷底部。這堂課學的梯度下降(gradient descent)、momentum、Adam,是三種不同複雜程度的「怎麼決定每一步該往哪裡走、走多大步」的具體策略,解決的都是同一個核心問題:給定當下的梯度資訊,怎麼設計一套更新規則,讓模型的參數能又快又穩地收斂到讓 loss 夠低的地方。
 
 </details>
 
 <details>
-<summary><b>Q2：為什麼 mini-batch SGD 帶來的「雜訊(noise)」反而對訓練有幫助,而不是缺點?</b></summary>
+<summary>Q2: 為什麼 mini-batch SGD 帶來的「雜訊(noise)」反而對訓練有幫助,而不是缺點?</summary>
 
 答案：Batch gradient descent 每走一步都要看過「全部」訓練資料才能算出梯度,梯度雖然精確,但資料量一大(百萬筆)會慢到不能用。SGD/mini-batch 的做法是只用一小批資料(mini-batch,通常32~256筆)去估計一個「大概」的梯度方向就更新,犧牲一點準確度換取速度跟記憶體。這帶來的副作用是:每一步算出來的梯度,跟用全部資料算出來的「真正」梯度會有一些隨機偏差,也就是雜訊。這個雜訊之所以是好事而不是缺點,關鍵在於損失地形裡有很多「淺的」局部最小值跟鞍點(saddle point)——如果梯度每一步都精準無誤,optimizer 走到一個梯度剛好等於或接近0的地方就會停滯不動,不管那裡是不是真正夠好的最低點。而 mini-batch 帶來的隨機震動,會讓每一步的方向稍微偏離「精確」的梯度,這種隨機擾動有機會把 optimizer 從這些淺的局部最小值或鞍點附近「推出去」,讓它繼續往更低的地方走,而不會乖乖卡在原地出不來。
 
 </details>
 
 <details>
-<summary><b>Q3：cosine annealing 這種學習率排程(learning rate schedule)的邏輯是什麼?為什麼它在 Transformer 訓練中常被使用?</b></summary>
+<summary>Q3: cosine annealing 這種學習率排程(learning rate schedule)的邏輯是什麼?為什麼它在 Transformer 訓練中常被使用?</summary>
 
 答案：固定不變的學習率其實是一種妥協——訓練初期,參數離最佳解還很遠,希望能大步快跑,加快收斂速度;訓練後期,參數已經很接近最佳解附近,這時候如果還跨大步,反而容易在最低點附近來回震盪、跨過頭,希望能小步精修,穩定收斂到更精確的位置。學習率排程要解決的正是「同一個訓練過程裡,不同階段需要不同大小的步伐」這個問題。cosine annealing 的做法,是讓學習率沿著一條餘弦(cosine)曲線平滑地從初始值遞減到接近0——因為 cosine 曲線的形狀是「兩端變化平緩、中間變化較快」,所以學習率在訓練剛開始跟快結束時下降得比較慢(維持較大的步伐或已經很小趨於穩定),在訓練中段下降得比較快,整體是一條平滑、沒有突然跳動的曲線,不像 step decay 那樣是階梯式的突然砍半或乘0.1。這種平滑遞減、前面大步後面小步的特性,搭配訓練初期常見的 warmup(先線性拉升學習率避免一開始訓練不穩定),是 Transformer 這種大模型訓練時很常見的排程組合,能在保有前期快速學習的同時,讓後期收斂得更穩定精確。
 
@@ -281,6 +280,9 @@ Adam收斂快、對超參數不太敏感,訓練loss下降的速度上通常有�
 `GradientDescent`(含`rosenbrock`/`rosenbrock_gradient`)真的對照公式看過,寫進`practice.py`,跑過驗證(x=0.798131, y=0.636104, loss=0.04083385,跟reference.py的GD結果一致)。`SGDMomentum`、`Adam`寫在`reference.py`+跑過demo驗證,沒有實際逐行帶著看,記進review-queue,之後真的要用再回來查。損失地形視覺化、Exercise 1-4、Ship It的prompt產出,這次都沒做。
 
 ## 今天評分
+
+<details>
+<summary>展開:今天評分</summary>
 
 | 項目 | 說明 |
 |---|---|
@@ -346,5 +348,28 @@ def step(self, params, grads):
 判斷是不是 `None`,慣例上要用 `is None`(或 `is not None`),而不是 `== None`。原因是 `is` 比較的是「兩個東西是不是記憶體裡同一個物件」(身分比較,identity),`==` 比較的是「值是否相等」(可以被自訂物件重新定義,像這堂課 Lesson1 學過的 `__add__` 那樣,理論上也能自訂 `__eq__` 讓 `==` 的行為變得不可預期)。`None` 在整個程式運作期間全域只有唯一一份,不會有第二個「另外一個 None」存在,所以用「是不是同一個物件」(`is`)來判斷比「值相不相等」(`==`)更精確、也更快(不用呼叫任何比較邏輯),這是 Python 社群公認的慣例寫法。
 
 C++對照:C++沒有完全對應 `None` 的東西,情境類似的有 `nullptr`(指標沒有指向任何東西)或 `std::optional` 的 `std::nullopt`(代表「這個值目前是空的」),比較時通常就用 `==`(`ptr == nullptr`),因為C++的 `==` 對指標本來就是比較位址、C++沒有Python這種「`==` 可能被自訂物件覆寫成完全不是比較位址」的疑慮。
+
+</details>
+
+</details>
+
+## 程式語法筆記
+
+<details>
+<summary>展開:程式語法筆記</summary>
+
+<details>
+<summary>PyTorch對應</summary>
+
+```python
+sgd = torch.optim.SGD(model.parameters(), lr=0.01, momentum=0.9)
+adam = torch.optim.Adam(model.parameters(), lr=0.001)
+adamw = torch.optim.AdamW(model.parameters(), lr=0.001, weight_decay=0.01)
+scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(adam, T_max=100)
+```
+
+實務經驗法則:先試Adam(lr=0.001,大多數問題不用調就堪用);要衝最好的最終準確度、且能花時間調參,換SGD with momentum(lr=0.01, momentum=0.9);Transformer用AdamW(decoupled weight decay);訓練超過幾個epoch一定要搭配學習率排程。
+
+</details>
 
 </details>
