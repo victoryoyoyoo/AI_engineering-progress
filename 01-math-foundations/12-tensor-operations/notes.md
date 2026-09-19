@@ -35,6 +35,9 @@
 
 ## 公式速查表
 
+<details>
+<summary>展開:公式速查表</summary>
+
 | 用途 | 寫法 |
 |---|---|
 | 元素總數 | 所有軸大小相乘,`(2,3,4)` → 24 |
@@ -52,7 +55,12 @@
 | 合併頭 | `x.transpose(0, 2, 1, 3).reshape(B, T, H*D)` |
 | stride(row-major) | shape `(2,3)` → strides `(3,1)`(元素為單位;NumPy顯示位元組) |
 
+</details>
+
 ## 這堂課的名詞總表
+
+<details>
+<summary>展開:名詞總表</summary>
 
 | 英文 | 中文 | 一句話定義 |
 |---|---|---|
@@ -71,6 +79,8 @@
 | Permute | 重排軸 | 一次重新排列所有軸的順序;transpose是只交換兩個軸的特例 |
 | Reduction | 歸約 | sum、mean、max等把一個或多個軸「收掉」的運算 |
 | Main diagonal / Trace | 主對角線/跡 | (Lesson 11複習時補的)跡是主對角線的加總 |
+
+</details>
 
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
@@ -273,6 +283,9 @@ reshape是在告訴NumPy「a是直的、b是橫的」:`a.reshape(-1,1)`→`(3,1)
 
 ## 程式語法筆記
 
+<details>
+<summary>展開:程式語法筆記</summary>
+
 (下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
 
 ### `import numpy as np`
@@ -300,3 +313,5 @@ reshape是在告訴NumPy「a是直的、b是橫的」:`a.reshape(-1,1)`→`(3,1)
 ### `print(a, b, c)`
 
 `print`可以一次放多個值,用逗號分開,會用空白隔開印在同一行。
+
+</details>
