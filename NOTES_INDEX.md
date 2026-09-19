@@ -15,4 +15,4 @@
 | 9 | Information Theory | Information content量單一事件的驚訝程度,entropy是整個分布的平均驚訝程度,是不確定性的下限 | [notes.md](01-math-foundations/09-information-theory/notes.md) |
 | 10 | Dimensionality Reduction | PCA的fit流程:置中資料→算共變異數矩陣→特徵分解→由大到小排序→留變異量最大的前k個方向 | [notes.md](01-math-foundations/10-dimensionality-reduction/notes.md) |
 | 11 | Singular Value Decomposition | 任何矩陣不管形狀,都可以拆成「旋轉→縮放→旋轉」三個動作:A = U × Σ × Vᵀ | [notes.md](01-math-foundations/11-singular-value-decomposition/notes.md) |
-
+| 12 | Tensor Operations | Tensor就是維度不限的陣列,寫深度學習最常見的bug是shape對不上,這堂練的是看shape的眼力:reshape、transpose、broadcasting | [notes.md](01-math-foundations/12-tensor-operations/notes.md) |
