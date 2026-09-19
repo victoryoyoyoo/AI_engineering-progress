@@ -79,15 +79,40 @@
 | Basis | 基底 | 一組數量最少、彼此線性獨立、且能張成整個空間的向量,相當於這個空間的座標軸 |
 | Orthonormal | 單位正交 | 彼此互相垂直、且長度都是1的一組向量,常見於旋轉矩陣跟QR分解裡 |
 
+<details>
+<summary>向量加法:頭尾相接法</summary>
+
 ![向量加法:頭尾相接法](images/vectors_as_arrows_addition.png)
+
+</details>
+
+<details>
+<summary>純量乘法:只改變長度,負數會反轉方向</summary>
 
 ![純量乘法:只改變長度,負數會反轉方向](images/scalar_multiply.png)
 
+</details>
+
+<details>
+<summary>內積/餘弦相似度的幾何意義:同方向、垂直、反方向</summary>
+
 ![內積/餘弦相似度的幾何意義:同方向、垂直、反方向](images/dot_product_geometric_meaning.png)
+
+</details>
+
+<details>
+<summary>矩陣乘向量:每一列各自跟輸入向量做內積</summary>
 
 ![矩陣乘向量:每一列各自跟輸入向量做內積](images/matrix_vector_multiply.png)
 
+</details>
+
+<details>
+<summary>magnitude(向量長度):畢氏定理的推廣</summary>
+
 ![magnitude(向量長度):畢氏定理的推廣](images/magnitude.png)
+
+</details>
 
 #### 常見地雷
 
@@ -218,7 +243,7 @@ class Matrix:
 
 ## 相關概念(跨堂連結)
 
-- **rank(秩)與資料的有效維度**:這堂課的rank量的是一組向量裡有幾個「真正獨立」的方向,冗餘的列不增加維度(LoRA就是利用權重更新量rank通常很低這件事省參數) → 也出現在 [Lesson 10](../10-dimensionality-reduction/notes.md#名詞總表的留變異量大的還是小的),那邊PCA是從變異量的角度做同樣的事:資料維度間相關性/冗餘越高,少數主成分就能抓住大部分變異量,兩者都是「矩陣/資料表面上維度很大,但真正帶資訊的方向遠比表面維度少」這同一個直覺,只是rank是精確的線性代數判準(能不能被其他向量線性組合表示出來),PCA的變異量是統計上更模糊、但更貼近真實資料分佈的判準
+- **rank(秩)與資料的有效維度**:這堂課的rank量的是一組向量裡有幾個「真正獨立」的方向,冗餘的列不增加維度(LoRA就是利用權重更新量rank通常很低這件事省參數) → 也出現在 [Lesson 10](../10-dimensionality-reduction/notes.md#這堂課我卡住搞混的地方完整問答記錄給複習用),那邊PCA是從變異量的角度做同樣的事:資料維度間相關性/冗餘越高,少數主成分就能抓住大部分變異量,兩者都是「矩陣/資料表面上維度很大,但真正帶資訊的方向遠比表面維度少」這同一個直覺,只是rank是精確的線性代數判準(能不能被其他向量線性組合表示出來),PCA的變異量是統計上更模糊、但更貼近真實資料分佈的判準
 
 ## 面試向問題
 

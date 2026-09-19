@@ -6,13 +6,6 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [PDF 單一點的值不是機率](#pdf-單一點的值不是機率)
-  - [變異數兩種公式是同一個東西](#變異數兩種公式是同一個東西)
-  - [Softmax 數值穩定的原理](#softmax-數值穩定的原理)
-  - [Log-softmax 為什麼不能分開算](#log-softmax-為什麼不能分開算)
-  - [Cross-entropy loss 的直覺](#cross-entropy-loss-的直覺)
-  - [為什麼要用log機率而不是原始機率](#為什麼要用log機率而不是原始機率)
-  - [Joint / Marginal 分布](#joint-marginal-分布)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
@@ -20,16 +13,6 @@
 - [今天花的時間](#今天花的時間)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [今天評分](#今天評分)
-  - [zip() 配對兩個 list](#zip-配對兩個-list)
-  - [Generator expression(生成器表達式)vs List comprehension(列表推導式)](#generator-expression生成器表達式vs-list-comprehension列表推導式)
-  - [math 模組](#math-模組)
-  - [List comprehension 拆步驟寫](#list-comprehension-拆步驟寫)
-  - [NumPy np.average 帶權重](#numpy-npaverage-帶權重)
-  - [// 整數除法(floor division)](#-整數除法floor-division)
-  - [break:提前跳出迴圈](#break提前跳出迴圈)
-  - [[值] * n:重複同一個元素建出一個 list](#值--n重複同一個元素建出一個-list)
-  - [連續比較 a <= x <= b](#連續比較-a--x--b)
-  - [SciPy scipy.special.softmax / log_softmax](#scipy-scipyspecialsoftmax-log_softmax)
 
 ## Learning Objectives 打勾清單
 - [x] 從零實作 Bernoulli、categorical、Poisson、uniform、normal 的 PMF/PDF ⚠️(這幾個PMF/PDF屬於理解型分類,是用讀reference.py程式碼+跑demo驗證來理解邏輯,不是自己手打實作的)
@@ -83,11 +66,22 @@
 
 （以下為詳細教學內容,教學過程中補上）
 
+<details>
+<summary>常見分布的形狀:Bernoulli PMF、Poisson PMF、常態分布 PDF</summary>
+
 ![常見分布的形狀:Bernoulli PMF、Poisson PMF、常態分布 PDF](images/distribution_shapes.png)
+
+</details>
+
+<details>
+<summary>Sample space、事件、條件機率與獨立事件的文氏圖示意</summary>
 
 ![Sample space、事件、條件機率與獨立事件的文氏圖示意](images/conditional_independence.png)
 
-### PDF 單一點的值不是機率
+</details>
+
+<details>
+<summary>PDF 單一點的值不是機率</summary>
 
 連續變數的 `P(X = 剛好等於某個值) = 0`,永遠是0——因為對一個寬度是0的區間積分,面積一定是0。`f(x)` 這個函數量的是**密度(density)**,不是機率,密度可以大於1(合理,不是錯誤),之後一定要對一段區間積分才能得到真正的機率。類比:人口密度可以是每平方公里1萬人(數字很大沒問題),但不會說「這一個點住了1萬人」,要問「這一整塊區域有多少人」才有意義。
 
@@ -97,7 +91,10 @@
 >
 > 實際上:PDF量的是密度不是機率,連續變數在單一個點的機率永遠是0,必須對一段區間做積分才有意義;密度本身大於1完全正常(只要對整條曲線積分起來等於1即可),不能直接把PDF的y軸讀成機率。
 
-### 變異數兩種公式是同一個東西
+</details>
+
+<details>
+<summary>變異數兩種公式是同一個東西</summary>
 
 ```
 Var(X) = E[(X - mu)²]          ← 定義版:每個值減平均、平方、取期望值
@@ -123,7 +120,10 @@ E[(X - mu)²]
 
 ![Softmax 把原始分數(logits)轉換成合法的機率分布](images/softmax_transformation.png)
 
-### Softmax 數值穩定的原理
+</details>
+
+<details>
+<summary>Softmax 數值穩定的原理</summary>
 
 減掉最大logit再取exp,結果跟原本完全一樣,因為這相當於分子分母同時除以同一個常數(`exp(c)`)——比例不變,但避免了 `exp(大數字)` 直接爆掉。代數證明:
 
@@ -133,25 +133,39 @@ exp(z_i - c) / Σ_j exp(z_j - c)
 = exp(z_i) / Σ_j exp(z_j)              ← 分子分母的 1/exp(c) 互相消掉
 ```
 
-### Log-softmax 為什麼不能分開算
+</details>
+
+<details>
+<summary>Log-softmax 為什麼不能分開算</summary>
 
 如果先 `softmax()` 得到機率,再對機率取 `log()`,遇到機率非常接近0的類別時,可能因為浮點數精度先被捨去成 `0.0`,這時候 `log(0)` 會是負無窮,程式壞掉。`log_softmax` 用log-sum-exp技巧把「取指數」跟「取log」合併成一步直接算,不會有這個風險。驗證過:`exp(log_softmax(x))` 完全等於 `softmax(x)`,兩者數學上等價。
 
-### Cross-entropy loss 的直覺
+</details>
+
+<details>
+<summary>Cross-entropy loss 的直覺</summary>
 
 `loss = -log(模型對正確答案給的機率)`。機率越接近1,loss越接近0;機率越接近0,loss趨近無窮大。loss值域是 `[0, +∞)`,理論最小值0代表模型100%確定且答對。這個設計讓訓練時的梯度會一直推著模型「提高正確答案的機率」。
 
 ![Cross-entropy loss曲線:機率越接近1 loss越接近0,越接近0 loss飆高](images/cross_entropy_loss_curve.png)
 
-### 為什麼要用log機率而不是原始機率
+</details>
+
+<details>
+<summary>為什麼要用log機率而不是原始機率</summary>
 
 原始機率連乘(例如一句話裡每個詞的機率相乘),乘到幾十項後會因為浮點數下溢(underflow)直接變成0,而且不是「後面的詞被忽略」,是全部貢獻都塌陷成0一起消失。取log後乘法變加法,100個負數相加不會有這種指數級縮小到浮點數極限外的問題,而且保留了每個詞各自攜帶的資訊。
 
-### Joint / Marginal 分布
+</details>
+
+<details>
+<summary>Joint / Marginal 分布</summary>
 
 Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal distribution 是把其中一個變數加總消掉:`P(X=x) = Σ_y P(X=x, Y=y)`,對應到聯合機率表格裡「每一列/每一欄的加總」。
 
 ![Joint distribution跟Marginal distribution的關係:表格內是joint,每列/每欄加總是marginal](images/joint_marginal_distribution.png)
+
+</details>
 
 ## 這堂課的總結
 
@@ -165,8 +179,8 @@ Joint distribution `P(X,Y)` 描述兩個變數一起發生的機率。Marginal d
 
 ## 相關概念(跨堂連結)
 
-- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課教的是cross-entropy loss的實作面(`-log(模型對正確答案給的機率)`)跟數值穩定技巧(softmax減最大值、log_softmax合併運算) → 理論面在 [Lesson 9](../09-information-theory/notes.md#cross-entropy交叉熵你每天在用的loss-function),那邊把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題,補齊了這堂課「這個loss為什麼長這樣」的理論後盾
-- **變異數的定義跟它在降維上的應用**:這堂課推導了變異數兩種等價公式(`E[(X-mu)²]`跟`E[X²]-(E[X])²`),量的是「結果離期望值有多分散」 → 實際應用在 [Lesson 10](../10-dimensionality-reduction/notes.md#共變異數矩陣),那邊把變異數擴展成共變異數矩陣(量兩個特徵是不是一起變大變小),PCA整套演算法都建立在「找變異量最大的方向」這個目標上,是這堂課變異數定義的直接延伸
+- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課教的是cross-entropy loss的實作面(`-log(模型對正確答案給的機率)`)跟數值穩定技巧(softmax減最大值、log_softmax合併運算) → 理論面在 [Lesson 9](../09-information-theory/notes.md#這堂課的名詞總表),那邊把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題,補齊了這堂課「這個loss為什麼長這樣」的理論後盾
+- **變異數的定義跟它在降維上的應用**:這堂課推導了變異數兩種等價公式(`E[(X-mu)²]`跟`E[X²]-(E[X])²`),量的是「結果離期望值有多分散」 → 實際應用在 [Lesson 10](../10-dimensionality-reduction/notes.md#這堂課我卡住搞混的地方完整問答記錄給複習用),那邊把變異數擴展成共變異數矩陣(量兩個特徵是不是一起變大變小),PCA整套演算法都建立在「找變異量最大的方向」這個目標上,是這堂課變異數定義的直接延伸
 
 ## 面試向問題
 
@@ -236,7 +250,8 @@ cross-entropy loss突然變成`inf`,通常代表模型對正確答案給出的�
 
 這堂課主要複習/加深了之前學過的語法,新東西不多,整理一下重點。
 
-### `zip()` 配對兩個 list
+<details>
+<summary>`zip()` 配對兩個 list</summary>
 
 ```python
 for v, p in zip(values, probabilities)
@@ -246,7 +261,10 @@ for v, p in zip(values, probabilities)
 
 C++對照:類似同時遍歷兩個vector,但C++通常要手動用index(`for(int i=0;i<n;i++)`)或者用 `std::views::zip`(C++23才有,更早版本沒有內建的zip)。
 
-### Generator expression(生成器表達式)vs List comprehension(列表推導式)
+</details>
+
+<details>
+<summary>Generator expression(生成器表達式)vs List comprehension(列表推導式)</summary>
 
 ```python
 sum(v * p for v, p in zip(values, probabilities))
@@ -259,7 +277,10 @@ sum(v * p for v, p in zip(values, probabilities))
 
 當你只是要把結果丟進 `sum()`、`max()` 這種「一次消耗掉」的函式,用generator比較省記憶體,因為根本不需要真的建一個完整的list出來。
 
-### `math` 模組
+</details>
+
+<details>
+<summary>`math` 模組</summary>
 
 ```python
 import math
@@ -269,7 +290,10 @@ math.log(x)   # 自然對數(以e為底)
 
 C++對照:對應 `<cmath>` 裡的 `std::exp`、`std::log`,用法邏輯一樣,只是Python要先 `import math` 才能用,而且呼叫時要加 `math.` 前綴(除非用 `from math import exp, log`)。
 
-### List comprehension 拆步驟寫
+</details>
+
+<details>
+<summary>List comprehension 拆步驟寫</summary>
 
 ```python
 shifted = [z - max_logit for z in logits]
@@ -278,7 +302,10 @@ exps = [math.exp(z) for z in shifted]
 
 這兩行分開寫(先算shifted、再算exps),沒有硬塞成一行巢狀的推導式(雖然技術上可以寫成 `[math.exp(z - max_logit) for z in logits]`)。分開寫可讀性更好,尤其是每一步都有明確的數學意義(先做數值穩定平移、再取指數),分開命名變數方便除錯跟理解。
 
-### NumPy `np.average` 帶權重
+</details>
+
+<details>
+<summary>NumPy `np.average` 帶權重</summary>
 
 ```python
 np.average(die_values, weights=die_probs)
@@ -286,7 +313,10 @@ np.average(die_values, weights=die_probs)
 
 `np.average` 預設是算普通平均(每個元素權重相等),但傳入 `weights=` 參數後,就變成**加權平均**——等同於我們手刻的 `expected_value`。這是NumPy函式常見的模式:同一個函式名稱,靠可選參數(optional argument)切換行為,不用另外寫一個新函式。
 
-### `//` 整數除法(floor division)
+</details>
+
+<details>
+<summary>`//` 整數除法(floor division)</summary>
 
 ```python
 def combinations(n, k):
@@ -297,7 +327,10 @@ def combinations(n, k):
 
 C++對照:C++的 `/` 用在兩個 `int` 相除時,本來就是無條件捨去小數(結果還是 `int`),行為比較接近Python的 `//`；但C++只要有一邊是 `double`,`/` 就會自動變成浮點數除法。Python把這兩種行為拆成兩個不同符號(`/` 永遠是浮點數除法、`//` 永遠捨去小數),不會因為輸入型別不同而默默切換行為,比較不容易踩到「忘記轉型導致整數除法」這種常見的C++地雷。
 
-### `break`:提前跳出迴圈
+</details>
+
+<details>
+<summary>`break`:提前跳出迴圈</summary>
 
 ```python
 for i, c in enumerate(cumulative):
@@ -308,7 +341,10 @@ for i, c in enumerate(cumulative):
 
 `break` 執行到就立刻結束當下這一層迴圈,不會再檢查剩下的項目,直接跳到迴圈外面接下來的程式碼。這裡是在做「輪盤選擇」:`cumulative` 是機率的累積區間(像 `[0.2, 0.5, 1.0]`),隨機數 `r` 一落在某個區間內(`r <= c` 第一次成立),就代表抽中了這一類,馬上記錄下來、沒必要再往後檢查其他還沒累積到的區間,所以用 `break` 提前結束。跟C++的 `break` 完全一樣,語意、用法都相同。
 
-### `[值] * n`:重複同一個元素建出一個 list
+</details>
+
+<details>
+<summary>`[值] * n`:重複同一個元素建出一個 list</summary>
 
 ```python
 die_probs = [1 / 6] * 6
@@ -318,7 +354,10 @@ die_probs = [1 / 6] * 6
 
 C++對照:類似 `std::vector<double> die_probs(6, 1.0/6)`(建構子指定數量+初始值),但C++這種寫法在裝的是自訂物件時是「各自深拷貝」,不會有Python那種「共用同一個記憶體位置」的陷阱。
 
-### 連續比較 `a <= x <= b`
+</details>
+
+<details>
+<summary>連續比較 `a <= x <= b`</summary>
 
 ```python
 def uniform_pdf(x, a, b):
@@ -331,10 +370,15 @@ Python 允許把多個比較運算子連續寫在一起,`a <= x <= b` 等同 `a 
 
 C++對照:C++ 沒有這種語法,`a <= x <= b` 在C++裡不會報錯但意義完全不同(會先算 `a <= x` 得到一個bool值,再拿這個bool值去跟 `b` 比較,幾乎肯定不是想要的結果),C++要判斷範圍必須老實寫成 `a <= x && x <= b`。
 
-### SciPy `scipy.special.softmax` / `log_softmax`
+</details>
+
+<details>
+<summary>SciPy `scipy.special.softmax` / `log_softmax`</summary>
 
 ```python
 from scipy.special import softmax, log_softmax
 ```
 
 這兩個函式內部已經內建了「減最大值做數值穩定」的邏輯,不需要自己再手動處理——這也是為什麼手刻理解底層邏輯很重要:知道函式庫幫你做了什麼,遇到數值不穩定的bug時才知道要往哪裡查。
+
+</details>

@@ -13,7 +13,6 @@
 - [反向傳播公式(最終版)](#反向傳播公式最終版)
 - [反向傳播每一站的規則,永遠只有一種(容易搞混的地方)](#反向傳播每一站的規則永遠只有一種容易搞混的地方)
 - [Forward Mode vs Reverse Mode(正向模式 vs 反向模式)](#forward-mode-vs-reverse-mode正向模式-vs-反向模式)
-  - [Forward Mode vs Reverse Mode 對照](#forward-mode-vs-reverse-mode-對照)
 - [對偶數(Dual Numbers)—— 正向模式的一種實作方式](#對偶數dual-numbers-正向模式的一種實作方式)
 - [Value class 的 __add__/__mul__ —— 語法拆解](#value-class-的-__add____mul__-語法拆解)
 - [為什麼「反向」不是把正向運算「倒過來做」](#為什麼反向不是把正向運算倒過來做)
@@ -23,7 +22,6 @@
 - [Step5補充語法:__call__、反向運算子(__radd__等)、sum()帶起始值、雙層for攤平巢狀list](#step5補充語法__call__反向運算子__radd__等sum帶起始值雙層for攤平巢狀list)
 - [Step5:XOR(互斥或)訓練,具體追蹤](#step5xor互斥或訓練具體追蹤)
 - [Step6:梯度檢查(Gradient Checking)](#step6梯度檢查gradient-checking)
-  - [Gradient Checking vs Gradient Clipping 對照](#gradient-checking-vs-gradient-clipping-對照)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
@@ -96,7 +94,12 @@
 
 `y = f(g(x))` 時,`dy/dx = f'(g(x)) · g'(x)`——每多一層合成函數,就多乘一個這一層的局部導數。
 
+<details>
+<summary>計算圖:正向傳播算值、反向傳播算梯度(上游梯度×局部導數)</summary>
+
 ![計算圖:正向傳播算值、反向傳播算梯度(上游梯度×局部導數)](images/computational_graph_forward_backward.png)
+
+</details>
 
 ## 為什麼計算圖(Computational Graph)要拆成一步一步寫
 
@@ -182,9 +185,15 @@ dy/dx2 = dy/da × 乘法局部導數(x2)  = 1 × x1 = 1 × 2 = 2
 
 **為什麼神經網路一定用反向模式:** 神經網路有百萬個權重(輸入)、只有1個loss(輸出)。正向模式要「每個輸入各跑一次」,百萬個輸入=百萬次;反向模式「一次就拿到所有輸入的梯度」。輸入多、輸出少的情境,反向模式效率贏非常多。
 
+<details>
+<summary>Forward Mode vs Reverse Mode:種子放的位置跟傳播方向不同</summary>
+
 ![Forward Mode vs Reverse Mode:種子放的位置跟傳播方向不同](images/forward_vs_reverse_mode.png)
 
-### Forward Mode vs Reverse Mode 對照
+</details>
+
+<details>
+<summary>Forward Mode vs Reverse Mode 對照</summary>
 
 | | Forward Mode(正向模式) | Reverse Mode(反向模式) |
 |---|---|---|
@@ -193,6 +202,8 @@ dy/dx2 = dy/da × 乘法局部導數(x2)  = 1 × x1 = 1 × 2 = 2
 | 要跑幾次才拿到全部梯度 | 每個輸入各跑一次 | 一次反向傳播拿到所有輸入的梯度 |
 | 適合的情境 | 輸入少、輸出多 | 輸入多、輸出少 |
 | 神經網路用哪個 | 不用,輸入(權重)動輒百萬個,跑不起 | 用這個,百萬個權重、只有1個loss,反向模式效率贏非常多 |
+
+</details>
 
 ## 對偶數(Dual Numbers)—— 正向模式的一種實作方式
 
@@ -276,7 +287,12 @@ def backward(self):
 
 **`for v in reversed(topo): v._backward()`:** 把排好的名單倒過來看(變成「爸媽在前、小孩在後」),依序執行每個節點的`_backward()`——這樣才符合「從輸出y開始,一路往回走到輸入」的方向。
 
+<details>
+<summary>拓撲排序:小孩一定排在爸媽前面,backward()把順序倒過來執行</summary>
+
 ![拓撲排序:小孩一定排在爸媽前面,backward()把順序倒過來執行](images/topological_sort.png)
+
+</details>
 
 ⚠️ **老實記錄:`build_topo`的遞迴語法(`if v not in visited`、`for child in v._prev`那幾行)概念已經確認懂,但語法本身還沒到能自己默寫的程度,列進review-queue.md。**
 
@@ -319,7 +335,12 @@ def backward(self):
 
 **MLP(多層感知器,Multi-Layer Perceptron):** 好幾個Layer(層)「疊起來」,前一層的輸出list直接變成下一層的輸入list。
 
+<details>
+<summary>MLP([2,4,1])架構:Neuron組成Layer,Layer疊起來變MLP</summary>
+
 ![MLP([2,4,1])架構:Neuron組成Layer,Layer疊起來變MLP](images/mlp_architecture.png)
+
+</details>
 
 **具體例子(手動指定簡單權重,MLP([2,2,1])):**
 ```
@@ -335,7 +356,12 @@ Layer2輸出: tanh(0.4621+(-0.4621)) = tanh(0.0) = 0.0
 
 **tanh(雙曲正切函數,Hyperbolic Tangent):** 把任何數字壓縮成-1到1之間。`tanh(0)=0`,輸入越大越接近1(但到不了),越小越接近-1。中間變化快、兩端變化慢,是條S形曲線。**用途:讓網路能學會彎曲、非線性的規律**(沒有它,疊再多層Layer本質上還是等於一層,學不會XOR這種沒辦法用直線分開的問題)。
 
+<details>
+<summary>tanh:壓縮到(-1,1)的S形曲線,中間變化快、兩端變化慢</summary>
+
 ![tanh:壓縮到(-1,1)的S形曲線,中間變化快、兩端變化慢](images/tanh_activation.png)
+
+</details>
 
 ## Step5補充語法:__call__、反向運算子(__radd__等)、sum()帶起始值、雙層for攤平巢狀list
 
@@ -417,7 +443,12 @@ for p in model.parameters():
 
 **跑100步的loss變化:** `4.1491 → 2.9166 → 1.4733 → 0.6011 → 0.2936`——loss一路下降,代表17個參數被逐步調整成更能正確預測XOR規則的樣子。
 
+<details>
+<summary>親手刻的autograd引擎訓練XOR:實際跑100步的loss曲線,持續下降</summary>
+
 ![親手刻的autograd引擎訓練XOR:實際跑100步的loss曲線,持續下降](images/xor_training_loss.png)
+
+</details>
 
 ## Step6:梯度檢查(Gradient Checking)
 
@@ -432,9 +463,15 @@ Difference: 3.66e-10   (遠小於1e-5,證明引擎寫對了)
 
 **什麼時候用:** 新增運算到autograd引擎時、訓練不收斂懷疑梯度算錯時——是「驗證程式碼正確性」的工具,不是訓練時的防護機制(跟「梯度裁剪Gradient Clipping」防止梯度爆炸是完全不同的東西,測驗時搞混過一次)。
 
+<details>
+<summary>gradient checking:autodiff跟數值法算出的梯度幾乎一致,誤差遠小於門檻</summary>
+
 ![gradient checking:autodiff跟數值法算出的梯度幾乎一致,誤差遠小於門檻](images/gradient_checking.png)
 
-### Gradient Checking vs Gradient Clipping 對照
+</details>
+
+<details>
+<summary>Gradient Checking vs Gradient Clipping 對照</summary>
 
 名字很像,測驗時搞混過一次,兩個解決的是完全不同的問題:
 
@@ -444,6 +481,8 @@ Difference: 3.66e-10   (遠小於1e-5,證明引擎寫對了)
 | 怎麼做 | 拿autodiff梯度跟數值法梯度比對,誤差夠小才算過關 | 梯度數值太大時直接按比例縮小,限制在一個上限內 |
 | 什麼時候用 | 新增運算到autograd引擎時、訓練不收斂懷疑梯度算錯時 | 訓練RNN這類容易梯度爆炸(對應Lesson3 eigenvalue絕對值>1)的網路時 |
 | 跟訓練過程的關係 | 事後除錯工具,不影響訓練本身 | 訓練當下主動介入,每一步都可能觸發 |
+
+</details>
 
 ## 這堂課的總結
 

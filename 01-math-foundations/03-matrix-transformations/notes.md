@@ -6,7 +6,6 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [Eigenvalue 完整推導(用文字講,少符號版)](#eigenvalue-完整推導用文字講少符號版)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天花的時間](#今天花的時間)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
@@ -67,9 +66,19 @@
 | Singular Matrix | 奇異矩陣 | det=0的矩陣,存在非零向量被壓成零向量,空間被壓扁、資訊遺失、不可逆 |
 | Determinant | 行列式 | \|det\|=變換把面積/體積放大縮小的倍數,旋轉/切斜恆=1(面積不變)、鏡射恆=-1(面積不變但翻面)、縮放=sx*sy |
 
+<details>
+<summary>旋轉/縮放/切斜/鏡射矩陣套用在一個正方形上的前後對照</summary>
+
 ![旋轉/縮放/切斜/鏡射矩陣套用在一個正方形上的前後對照](images/transformations_before_after.png)
 
+</details>
+
+<details>
+<summary>複合變換順序影響結果:先轉再縮放 vs 先縮放再轉,同一個點走到不同地方</summary>
+
 ![複合變換順序影響結果:先轉再縮放 vs 先縮放再轉,同一個點走到不同地方](images/composition_order_matters.png)
+
+</details>
 
 #### 常見地雷
 
@@ -77,9 +86,15 @@
 >
 > 實際上:矩陣乘法沒有交換律,順序不同代表變換套用的先後順序不同——這堂課已經親自驗證過「先轉90度再縮放」跟「先縮放再轉90度」,同一個點會落在不同位置。只有極少數特殊情況(例如兩個矩陣本身有特殊結構、彼此可交換)才會相等,不能預設順序無所謂。
 
+<details>
+<summary>singular matrix(奇異矩陣):det=0,空間被壓扁成一條線,面積歸零</summary>
+
 ![singular matrix(奇異矩陣):det=0,空間被壓扁成一條線,面積歸零](images/singular_matrix.png)
 
-### Eigenvalue 完整推導(用文字講,少符號版)
+</details>
+
+<details>
+<summary>Eigenvalue 完整推導(用文字講,少符號版)</summary>
 
 1. 要找的東西滿足:「矩陣乘上這個向量」等於「這個向量直接乘上一個數字」,寫成 `Av = λv`。
 2. 改寫成:「矩陣減掉(這個數字乘上單位矩陣)之後,再乘上這個向量,結果是零向量」:`(A - λI)v = 0`。
@@ -104,6 +119,8 @@
 > 容易誤會成:任何一個方陣都一定有實數的eigenvector,而且一定可以做eigendecomposition(`A=V@D@V⁻¹`)。
 >
 > 實際上:像旋轉矩陣這類矩陣,eigenvalue是複數,沒有對應的「方向完全不變」的實數方向(這堂課的discriminant<0情況就是這樣);就算eigenvalue都是實數,如果某個eigenvalue對應的獨立eigenvector數量不夠(這種矩陣叫defective matrix),也湊不出完整的V去做eigendecomposition。這堂課練習的2x2矩陣多半是條件良好的情況,現實中的矩陣不一定滿足這些前提。
+
+</details>
 
 ## 我自己手打的部分
 
@@ -171,8 +188,8 @@ eigendecomposition:  A = V @ D @ V⁻¹
 
 ## 相關概念(跨堂連結)
 
-- **Eigenvalue絕對值決定RNN梯度爆炸/消失**:這堂課推導過eigendecomposition(`A=V@D@V⁻¹`),並用eigenvalue絕對值判斷RNN權重矩陣反覆相乘後梯度會爆炸(>1)或消失(<1) → 也出現在 [Lesson 5](../05-chain-rule-and-autodiff/notes.md#gradient-checking-vs-gradient-clipping-對照),那邊在解釋「gradient clipping(梯度裁剪)」的使用時機時,直接引用了這堂課eigenvalue絕對值>1會梯度爆炸的結論,把「為什麼RNN需要梯度裁剪」跟這堂課的理論直接接起來
-- **Eigenvector/eigenvalue是PCA的數學基礎**:這堂課只提過一句話「eigenvector是主成分方向」,沒有展開 → 完整實作在 [Lesson 10](../10-dimensionality-reduction/notes.md#特徵向量特徵值eigenvectoreigenvalue),那邊對共變異數矩陣做特徵分解,eigenvector對應資料變異的主要方向、eigenvalue對應那個方向的變異量大小,把這堂課推導的`Av=λv`整套機制,套用在真正的降維演算法上
+- **Eigenvalue絕對值決定RNN梯度爆炸/消失**:這堂課推導過eigendecomposition(`A=V@D@V⁻¹`),並用eigenvalue絕對值判斷RNN權重矩陣反覆相乘後梯度會爆炸(>1)或消失(<1) → 也出現在 [Lesson 5](../05-chain-rule-and-autodiff/notes.md#step6梯度檢查gradient-checking),那邊在解釋「gradient clipping(梯度裁剪)」的使用時機時,直接引用了這堂課eigenvalue絕對值>1會梯度爆炸的結論,把「為什麼RNN需要梯度裁剪」跟這堂課的理論直接接起來
+- **Eigenvector/eigenvalue是PCA的數學基礎**:這堂課只提過一句話「eigenvector是主成分方向」,沒有展開 → 完整實作在 [Lesson 10](../10-dimensionality-reduction/notes.md#這堂課我卡住搞混的地方完整問答記錄給複習用),那邊對共變異數矩陣做特徵分解,eigenvector對應資料變異的主要方向、eigenvalue對應那個方向的變異量大小,把這堂課推導的`Av=λv`整套機制,套用在真正的降維演算法上
 
 ## 面試向問題
 

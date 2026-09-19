@@ -6,9 +6,7 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [element-wise multiply vs matrix multiply 對照](#element-wise-multiply-vs-matrix-multiply-對照)
 - [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
-  - [Broadcasting 一開始不知道實際會用在哪裡](#broadcasting-一開始不知道實際會用在哪裡)
 - [我自己手打的部分](#我自己手打的部分)
 - [這堂課用的新教學策略](#這堂課用的新教學策略)
 - [今天花的時間](#今天花的時間)
@@ -69,21 +67,57 @@
 | ReLU Layer (`relu(W @ x + b)`) | 神經網路一層 | 深度學習裡最常重複的一行,W決定輸入怎麼組合、b是每個輸出的偏移量、relu把負數砍成0;輸出維度由W的形狀決定 |
 | Broadcasting | 廣播 | 形狀不完全一樣的陣列做運算時,numpy自動把size是1的維度複製延伸去對齊另一邊,對不齊才報錯,常見於一次丟一整批(batch)資料時bias自動複製batch次 |
 
+<details>
+<summary>矩陣乘向量:把矩陣想成一台機器,每個輸出數字都是矩陣的某一列跟輸入向量做內積</summary>
+
 ![矩陣乘向量:把矩陣想成一台機器,每個輸出數字都是矩陣的某一列跟輸入向量做內積](images/matrix_as_machine.png)
+
+</details>
+
+<details>
+<summary>element-wise vs matrix multiply對照:同樣的A、B結果完全不同</summary>
 
 ![element-wise vs matrix multiply對照:同樣的A、B結果完全不同](images/elementwise_vs_matmul.png)
 
+</details>
+
+<details>
+<summary>determinant:單位正方形被放大/縮小/壓扁的比例,det=0代表資訊遺失</summary>
+
 ![determinant:單位正方形被放大/縮小/壓扁的比例,det=0代表資訊遺失](images/determinant_area_scaling.png)
+
+</details>
+
+<details>
+<summary>broadcasting:bias自動延伸去對齊batch維度</summary>
 
 ![broadcasting:bias自動延伸去對齊batch維度](images/broadcasting_bias.png)
 
+</details>
+
+<details>
+<summary>transpose:行列互換,A[i][j]轉置後變成A.T[j][i]</summary>
+
 ![transpose:行列互換,A[i][j]轉置後變成A.T[j][i]](images/transpose.png)
+
+</details>
+
+<details>
+<summary>inverse與identity matrix:A搬過去,A逆矩陣搬回來,乘積是單位矩陣</summary>
 
 ![inverse與identity matrix:A搬過去,A逆矩陣搬回來,乘積是單位矩陣](images/inverse_identity.png)
 
+</details>
+
+<details>
+<summary>relu:引入非線性,負數砍0、正數不變</summary>
+
 ![relu:引入非線性,負數砍0、正數不變](images/relu.png)
 
-### element-wise multiply vs matrix multiply 對照
+</details>
+
+<details>
+<summary>element-wise multiply vs matrix multiply 對照</summary>
 
 這兩個是這堂課最容易搞混的一對,名字都有「multiply」,numpy裡差一個符號,但邏輯完全不同,放在一起對照:
 
@@ -101,9 +135,12 @@
 >
 > 實際上:numpy的`*`是element-wise multiply(逐項相乘,形狀不變),真正的矩陣乘法要用`@`,兩者形狀規則、算法完全不同,混用會讓程式碼「跑得動但答案錯」——如果剛好兩個矩陣形狀相同,`*`不會報錯,只是默默算出完全不對的數字。
 
+</details>
+
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
-### Broadcasting 一開始不知道實際會用在哪裡
+<details>
+<summary>Broadcasting 一開始不知道實際會用在哪裡</summary>
 
 Learning Objectives 打勾清單裡記錄的原話是:選擇題選對了(知道規則),但講不出「這個東西實際上用在什麼場景」——換句話說,規則背起來了,但沒有連到「為什麼要有這個功能存在」。
 
@@ -126,6 +163,8 @@ Learning Objectives 打勾清單裡記錄的原話是:選擇題選對了(知道�
 np.array([1, 2]) + np.array([3, 4])    # numpy array 的 +:逐項相加 → [4, 6]
 ```
 這兩者用的是完全不同的 `+` 實作(list 的 `+` 是串接、numpy array 的 `+` 是數學上的逐項加法,broadcasting規則只套用在後者身上),親手驗證過兩邊行為確實不同,不是同一套運算子被兩種資料結構共用。
+
+</details>
 
 ## 我自己手打的部分
 
