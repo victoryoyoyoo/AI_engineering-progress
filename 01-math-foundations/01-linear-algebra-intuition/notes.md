@@ -6,6 +6,7 @@
 - [30秒抓重點](#30秒抓重點)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
+- [常見地雷](#常見地雷)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [課程結尾理解確認題](#課程結尾理解確認題)
@@ -117,15 +118,25 @@
 
 </details>
 
-#### 常見地雷
+這堂課刻意沒教到、留在 review queue 的:projection(投影)、Gram-Schmidt(正交化)、rank(矩陣的秩)、basis(基底)、row reduction(列運算/高斯消去法)、attention scores 跟內積的關係、LoRA。這些之後遇到再回頭補,不是這堂課的核心。
+
+</details>
+
+## 常見地雷
+
+**內積越大不代表越像**
 
 > 容易誤會成:內積(dot product)本身數值越大,就代表兩個向量越像。
 >
 > 實際上:內積同時被「方向像不像」跟「向量各自的長度」影響,只要其中一個向量長度變大,內積就會跟著放大,即使方向完全沒有變得更像。真正只反映方向的是餘弦相似度(內積除以兩個長度的乘積),比較兩個embedding像不像,要看cosine similarity而不是原始內積。
 
-這堂課刻意沒教到、留在 review queue 的:projection(投影)、Gram-Schmidt(正交化)、rank(矩陣的秩)、basis(基底)、row reduction(列運算/高斯消去法)、attention scores 跟內積的關係、LoRA。這些之後遇到再回頭補,不是這堂課的核心。
+**list comprehension 的順序跟一般迴圈是反的**
 
-</details>
+`[x*2 for x in [1,2,3]]` 得到 `[2,4,6]`。一般迴圈是先講 for 再講要做什麼,comprehension 是先講要算什麼、再講資料從哪來。
+
+**`range(n)` 不包含 n**
+
+`range(n)` 產生 `0, 1, ..., n-1`,不包含 n 本身,對應 C++ 的 `for(i=0;i<n;i++)`。
 
 ## 相關概念(跨堂連結)
 
@@ -218,7 +229,6 @@ class Vector:
 
     def __repr__(self):
         return f"Vector({self.components})"
-
 
 class Matrix:
     def __init__(self, rows):
