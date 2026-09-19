@@ -8,27 +8,12 @@
 - [這堂課的名詞總表](#這堂課的名詞總表)
 - [PCA的fit方法,一步一步拆解](#pca的fit方法一步一步拆解)
 - [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
-  - [名詞總表的「留變異量大的還是小的」](#名詞總表的留變異量大的還是小的)
-  - [np.mean(X, axis=0)到底在算什麼](#npmeanx-axis0到底在算什麼)
-  - [共變異數矩陣](#共變異數矩陣)
-  - [特徵向量/特徵值(eigenvector/eigenvalue)](#特徵向量特徵值eigenvectoreigenvalue)
-  - [argsort重排(2D)](#argsort重排2d)
-  - [「留前k個」跟explained_variance_ratio_是陣列還是單一數字](#留前k個跟explained_variance_ratio_是陣列還是單一數字)
-  - [transform為什麼用fit時存的mean,不是這批新資料自己的mean](#transform為什麼用fit時存的mean不是這批新資料自己的mean)
-  - [還原誤差(reconstruction error)為什麼要平方](#還原誤差reconstruction-error為什麼要平方)
-  - [Kernel PCA:標準PCA為什麼分不開同心圓、Kernel PCA怎麼解決](#kernel-pca標準pca為什麼分不開同心圓kernel-pca怎麼解決)
-  - [降維四種方法對照:PCA vs Kernel PCA vs t-SNE vs UMAP](#降維四種方法對照pca-vs-kernel-pca-vs-t-sne-vs-umap)
-  - [維度詛咒(curse of dimensionality)](#維度詛咒curse-of-dimensionality)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
-  - [`.reshape(-1, 1)`:-1代表「這個維度大小你幫我算」](#reshape-1-1-1代表這個維度大小你幫我算)
-  - [`np.column_stack()`:把多個1D陣列疊成2D矩陣的欄](#npcolumn_stack把多個1d陣列疊成2d矩陣的欄)
-  - [`import ... as ...`:改名字避免命名衝突](#import--as-改名字避免命名衝突)
-  - [`[::-1]`:切片語法的第三個位置是「步伐大小」,負數代表反著走](#-1切片語法的第三個位置是步伐大小負數代表反著走)
 
 ## Learning Objectives 打勾清單
 - [x] 從零實作PCA:置中資料、算共變異數矩陣、特徵分解、投影
@@ -73,7 +58,12 @@
 | UMAP | — | 類似t-SNE但更快、更保留全域結構,常用n_neighbors/min_dist |
 | Manifold | 流形 | 嵌在高維空間裡的低維曲面,例如一張紙揉皺後丟進3D空間,本質還是一個2D曲面 |
 
+<details>
+<summary>PCA vs t-SNE vs UMAP對照</summary>
+
 ![PCA vs t-SNE vs UMAP對照](images/pca_tsne_umap_comparison.png)
+
+</details>
 
 (這張圖是預覽,t-SNE/UMAP的內部演算法細節這堂課還沒有實際帶過,記review-queue,先看視覺對照有個直覺:同一份20維、5群的資料,PCA因為只找線性方向,群跟群還會有點重疊;t-SNE/UMAP保留的是「鄰居關係」,群通常分得更乾淨,但代價是失去了原始距離的絕對意義——t-SNE/UMAP圖上兩個群離多遠,不能直接解讀成「差多少」,只能看「誰跟誰比較像」。)
 
@@ -81,7 +71,12 @@
 
 對照`reference.py`第21-46行。
 
+<details>
+<summary>PCA fit流水線</summary>
+
 ![PCA fit流水線](images/pca_fit_pipeline.png)
+
+</details>
 
 | 步驟 | 程式碼 | 在幹嘛 |
 |---|---|---|
@@ -93,7 +88,8 @@
 
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
-### 名詞總表的「留變異量大的還是小的」
+<details>
+<summary>名詞總表的「留變異量大的還是小的」</summary>
 
 PCA的一句話定義提到「依變異量排序,只留前k個方向」,一開始沒搞清楚留大的還是小的。
 
@@ -101,7 +97,10 @@ PCA的一句話定義提到「依變異量排序,只留前k個方向」,一開�
 
 延伸問題:「留變異量大的,是不是可以相對用比較少的維度?」**答案:對。** 因為變異量大的方向已經濃縮了大部分資訊,不需要留很多維度就能抓住大部分變異量。用demo的數字驗證:原始3維資料,只留2個主成分,就抓住99.93%的變異量,因為當初生成資料時`x3 = 0.5*x1 + 0.3*x2 + noise`,第3維幾乎是前兩維的線性組合,本身沒帶多少獨立資訊。反過來,如果資料的變異量在各方向上很平均(比如互相獨立的雜訊維度),就沒辦法只留少數幾個主成分還保住大部分變異量。**規律:資料維度之間相關性/冗餘越高,前k個主成分能抓住的變異量比例就越高。**
 
-### `np.mean(X, axis=0)`到底在算什麼
+</details>
+
+<details>
+<summary>`np.mean(X, axis=0)`到底在算什麼</summary>
 
 **第一步,`axis`的意思**:假設`X`是身高體重的表格(3人,2特徵):
 
@@ -127,7 +126,10 @@ X = [[1, 10], [3, 20], [5, 30]]
 
 **第五步,`np.mean`整體行為**:不指定`axis`時,把整個矩陣攤平成一串數字全部加總除以總個數;`axis=0`按欄分開算(對應`fit`裡的用法);`axis=1`按列分開算。
 
-### 共變異數矩陣
+</details>
+
+<details>
+<summary>共變異數矩陣</summary>
 
 **共變異數(covariance)的概念**:量化兩個特徵是不是傾向一起變大變小。身高體重這種例子,身高越高體重通常也越重,共變異數是正數;「唸書時數」vs「玩遊戲時數」通常一多一少,是負數;兩個不相關的東西(身高 vs 今天日期)共變異數接近0。`cov`是covariance的縮寫。
 
@@ -139,7 +141,10 @@ X = [[1, 10], [3, 20], [5, 30]]
 
 一開始不知道怎麼判斷「有沒有設反」,後來理解成:不用感覺或用猜的,而是**自己先從「有幾個特徵」推論出共變異數矩陣理論上應該是幾乘幾**(比如3個特徵,矩陣定義上就該是3×3,不管有幾筆樣本),再實際印出`cov_matrix.shape`去對照——一致就是對的,像demo裡如果印出`(500,500)`而不是`(3,3)`,就代表`rowvar`設反了,numpy把500筆樣本誤當成500個變數去配對。這個「先從定義推論出應該長怎樣,再拿實際結果對照」的debug邏輯,跟寫C++時先手算小測資的預期輸出再跑程式比對是同一套方法。
 
-### 特徵向量/特徵值(eigenvector/eigenvalue)
+</details>
+
+<details>
+<summary>特徵向量/特徵值(eigenvector/eigenvalue)</summary>
 
 **直覺理解**:一個矩陣可以把空間裡的點做變換(拉長、壓扁、旋轉),大部分向量被變換後方向會改變。但對某個矩陣來說,存在幾個特殊方向,變換後**方向不變,只有長度變了**(可能拉長、可能壓縮)——這種方向叫特徵向量,它被拉長/壓縮的倍數叫特徵值。
 
@@ -155,7 +160,10 @@ X = [[1, 10], [3, 20], [5, 30]]
 >
 > 實際上:eigenvector的方向本身正負號是任意的(`v`跟`-v`都滿足`Av=λv`,是同一個「方向」的兩種寫法),不同函式庫、不同次執行可能給出正負號相反的主成分,這不代表算錯。另外當兩個相鄰的eigenvalue非常接近時,對應的eigenvector方向會變得對資料裡的微小雜訊很敏感、不穩定,這也是為什麼比較PCA結果時不能直接比對某個主成分的正負號或些微方向差異。
 
-### `argsort`重排(2D)
+</details>
+
+<details>
+<summary>`argsort`重排(2D)</summary>
 
 `eigh`回傳的特徵值預設由小到大排序,但PCA要的是由大到小,所以要自己重排。用小數字例子重講才懂:
 
@@ -172,7 +180,10 @@ eigenvectors = [[0.1, 0.9, 0.4],
 
 `eigenvalues[sorted_idx]`是直接用這個順序去陣列裡挑數字排成新陣列,很直覺。`eigenvectors[:, sorted_idx]`比較繞,因為要挑的是「整欄」而不是單一數字——`[列的選法, 欄的選法]`,`:`代表列全部不動,`sorted_idx`放欄的位置代表欄要照這個順序重排,把整欄(整個方向,3個數字一起)搬到新位置,不能拆散,才能保持「排序後的特徵值」跟「排序後的方向」還是正確配對。
 
-### 「留前k個」跟`explained_variance_ratio_`是陣列還是單一數字
+</details>
+
+<details>
+<summary>「留前k個」跟`explained_variance_ratio_`是陣列還是單一數字</summary>
 
 `explained_variance_ratio_`是**陣列**,不是單一數字——因為每個留下的主成分都對應一個獨立的特徵值(純量),換算成的比例自然也是每個主成分各有一個。留2個主成分,`explained_variance_ratio_`就有2個數字(比如`[0.59, 0.41]`),分別代表第1、第2主成分各自佔總變異量的比例。
 
@@ -180,13 +191,19 @@ eigenvectors = [[0.1, 0.9, 0.4],
 
 「那別人問PCA是多少呢」——這個問法本身不完整:**PCA是一個方法/演算法,不是一個數值**,就像不會問「梯度下降是多少」一樣。真正有數值可以回答的是「這次PCA保留了多少變異量」(explained variance ratio加總,例如99.93%)、「降到幾維」(`n_components`)、「各主成分各自佔多少」(那個陣列本身)。比較完整的講法會是:「原本3維的資料,用PCA降到2維,保留了99.93%的變異量,幾乎沒有損失資訊」——「PCA」是方法,「99.93%」才是這次PCA跑出來的結果數值。
 
-### `transform`為什麼用`fit`時存的mean,不是這批新資料自己的mean
+</details>
+
+<details>
+<summary>`transform`為什麼用`fit`時存的mean,不是這批新資料自己的mean</summary>
 
 情境:先用一批資料(比如500筆)做`fit`,`fit`裡算出的`self.mean`是那500筆資料自己的平均值。之後如果有新的一批資料要做`transform`降維,要拿新資料去減「當初訓練資料算出來的mean」,不能自己重新算新資料的平均值。
 
 原因:`self.components`(留下的k個方向)是根據訓練資料置中後算出來的,那些方向是「訓練資料座標系」下定義的。如果新資料用自己的mean置中,等於站在不同座標系原點上套用訓練資料算出來的方向,會對不齊、結果沒有意義。程式碼裡`transform`完全沒有重新計算mean,固定減掉`self.mean`(fit時存下的那個值),不管吃到的`X`是原本那批還是全新資料。
 
-### 還原誤差(reconstruction error)為什麼要平方
+</details>
+
+<details>
+<summary>還原誤差(reconstruction error)為什麼要平方</summary>
 
 **第一次疑問:還原誤差不是要比較還原後的數字嗎,為什麼要平方?**
 
@@ -198,7 +215,10 @@ eigenvectors = [[0.1, 0.9, 0.4],
 
 ![還原誤差示意圖](images/reconstruction_error_demo.png)
 
-### Kernel PCA:標準PCA為什麼分不開同心圓、Kernel PCA怎麼解決
+</details>
+
+<details>
+<summary>Kernel PCA:標準PCA為什麼分不開同心圓、Kernel PCA怎麼解決</summary>
 
 ![Kernel PCA同心圓對照](images/kernel_pca_circles.png)
 
@@ -208,7 +228,10 @@ Kernel PCA的想法:如果把這些點丟進更高維空間(想像把內圈點�
 
 RBF核函數`exp(-gamma * 距離平方)`:兩點原本離得近,相似度接近1;離得遠,相似度接近0。這個相似度矩陣(核矩陣)取代標準PCA裡的共變異數矩陣,後面特徵分解、留前k個方向做法完全一樣。跑完之後,Kernel PCA把同心圓資料轉到新的2維空間,藍橘兩色可以被一條直線分開,標準PCA做不到這件事。
 
-### 降維四種方法對照:PCA vs Kernel PCA vs t-SNE vs UMAP
+</details>
+
+<details>
+<summary>降維四種方法對照:PCA vs Kernel PCA vs t-SNE vs UMAP</summary>
 
 | | PCA | Kernel PCA | t-SNE | UMAP |
 |---|---|---|---|---|
@@ -221,7 +244,10 @@ RBF核函數`exp(-gamma * 距離平方)`:兩點原本離得近,相似度接近1;
 
 **`gamma`是什麼**:控制「兩個點要多近才算相似」的超參數。`gamma`小,判斷相似的門檻寬鬆(離遠一點還是算相似);`gamma`大,門檻嚴格(稍微離遠相似度就迅速掉到接近0)。可以想成「視野放大鏡倍率」——`gamma`越大只關注非常局部的鄰居關係,越小越看重整體大範圍關係。實務上通常要試幾個值,沒有公式能直接算出正確答案。
 
-### 維度詛咒(curse of dimensionality)
+</details>
+
+<details>
+<summary>維度詛咒(curse of dimensionality)</summary>
 
 **第一次講解(數字直覺)**:在單位立方體裡隨機灑1000個點,量「最遠點」跟「最近點」的距離差距比例,維度越高差距越消失:
 
@@ -240,6 +266,8 @@ RBF核函數`exp(-gamma * 距離平方)`:兩點原本離得近,相似度接近1;
 
 **補充角度(稀疏性/指數樣本需求)**:另一個查證資料(其他AI工具的解釋)補的角度——要在d維空間維持跟1維一樣的「資料密度」,需要的樣本數隨維度指數成長(1維10筆、2維100筆、3維1000筆、100維理論上要10^100筆)。現實中資料筆數不可能跟著指數成長,結果是任何真實資料集在高維空間永遠顯得極度稀疏。這跟「距離趨同」是同一個根本原因的兩種呈現方式:高維空間比想像中大太多太多,資料永遠填不滿它。深度學習裡常見的工程解法是用`nn.Linear`這類可訓練的embedding層,把高維稀疏特徵壓縮成低維密集向量(概念上跟PCA同樣是「高維壓低維」,但PCA是無監督線性代數解法,`nn.Linear`是靠梯度下降學出怎麼壓縮的可訓練參數,屬於之後神經網路階段的內容,這裡先知道這個連結就好)。
 
+</details>
+
 ## 這堂課的總結
 
 這堂課的核心問題是:高維資料裡有很多是雜訊或冗餘,能不能只留下真正重要的方向。PCA的做法是先把資料置中,再用共變異數矩陣抓出「哪些方向變異量大」——變異量大的方向才是資料真正在講的故事,靠特徵分解把這些方向(eigenvector)跟大小(eigenvalue)算出來,由大到小排序後只留前k個,用explained variance ratio跟elbow method判斷k要留多少。但PCA只能找一條直線方向,遇到同心圓這種資料就束手無策;Kernel PCA用kernel trick,不用真的算出高維座標,只靠兩兩資料點的相似度(核矩陣)取代共變異數矩陣,就能把非線性問題轉成隱含高維空間裡的線性問題解掉。
@@ -249,8 +277,8 @@ RBF核函數`exp(-gamma * 距離平方)`:兩點原本離得近,相似度接近1;
 ## 相關概念(跨堂連結)
 
 - **rank(秩)與資料的有效維度是同一個直覺**:PCA能用少數幾個主成分保留大部分變異量,靠的是「資料維度間相關性/冗餘越高,少數主成分就能抓住大部分變異量」 → 這個直覺第一次出現在 [Lesson 1](../01-linear-algebra-intuition/notes.md#這堂課的總結),那邊的rank(矩陣裡線性獨立的方向數)量的是同一件事:矩陣表面維度很大,但冗餘的列不增加真正的維度,LoRA就是利用這個特性省參數,PCA則是用變異量這個更貼近真實資料分佈的判準做同樣的事
-- **Eigenvector/eigenvalue的完整推導**:這堂課直接對共變異數矩陣做特徵分解(`np.linalg.eigh`),eigenvector對應變異方向、eigenvalue對應變異量大小,但沒有重新推導`Av=λv`怎麼來的 → 完整推導在 [Lesson 3](../03-matrix-transformations/notes.md#eigenvalue-完整推導用文字講少符號版),那邊從`Av=λv`一路推到`det(A-λI)=0`再解出特徵值,這堂課PCA用到的整套eigendecomposition機制,數學根源就在那裡
-- **變異數的定義跟共變異數矩陣**:這堂課的共變異數矩陣,對角線就是每個特徵自己的變異數,整個PCA演算法建立在「找變異量最大的方向」這個目標上 → 變異數的原始定義在 [Lesson 6](../06-probability-and-distributions/notes.md#變異數兩種公式是同一個東西),那邊推導了變異數的兩種等價公式(`E[(X-mu)²]`跟`E[X²]-(E[X])²`),是這堂課共變異數矩陣、explained variance ratio所有計算的起點
+- **Eigenvector/eigenvalue的完整推導**:這堂課直接對共變異數矩陣做特徵分解(`np.linalg.eigh`),eigenvector對應變異方向、eigenvalue對應變異量大小,但沒有重新推導`Av=λv`怎麼來的 → 完整推導在 [Lesson 3](../03-matrix-transformations/notes.md#這堂課的名詞總表),那邊從`Av=λv`一路推到`det(A-λI)=0`再解出特徵值,這堂課PCA用到的整套eigendecomposition機制,數學根源就在那裡
+- **變異數的定義跟共變異數矩陣**:這堂課的共變異數矩陣,對角線就是每個特徵自己的變異數,整個PCA演算法建立在「找變異量最大的方向」這個目標上 → 變異數的原始定義在 [Lesson 6](../06-probability-and-distributions/notes.md#這堂課的名詞總表),那邊推導了變異數的兩種等價公式(`E[(X-mu)²]`跟`E[X²]-(E[X])²`),是這堂課共變異數矩陣、explained variance ratio所有計算的起點
 
 ## 面試向問題
 
@@ -330,7 +358,8 @@ t-SNE / UMAP的內部演算法細節、課程的3個Exercises,沒有實際帶過
 
 (下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
 
-### `.reshape(-1, 1)`:-1代表「這個維度大小你幫我算」
+<details>
+<summary>`.reshape(-1, 1)`:-1代表「這個維度大小你幫我算」</summary>
 
 ```python
 np.sum(X1 ** 2, axis=1).reshape(-1, 1)
@@ -338,7 +367,10 @@ np.sum(X1 ** 2, axis=1).reshape(-1, 1)
 
 `reshape` 是在不改變資料本身的前提下,重新指定陣列的形狀。這裡 `np.sum(X1 ** 2, axis=1)` 算出來的是一個1維陣列(形狀`(n,)`),但接下來要跟另一個陣列做broadcasting相減,需要它是「直的」一欄(形狀`(n, 1)`)才能對齊。`reshape(-1, 1)` 裡的 `1` 代表「第二維固定是1」,`-1` 則是告訴numpy「另一維的大小你自己算」——numpy會用「總元素數 ÷ 已知的維度大小」自動推算出來,不用自己先算好`n`是多少再手動填進去。這在C++裡沒有直接對應的東西,通常要自己先呼叫`.size()`拿到長度,再手動決定新形狀。
 
-### `np.column_stack()`:把多個1D陣列疊成2D矩陣的欄
+</details>
+
+<details>
+<summary>`np.column_stack()`:把多個1D陣列疊成2D矩陣的欄</summary>
 
 ```python
 X_synthetic = np.column_stack([x1, x2, x3])
@@ -346,7 +378,10 @@ X_synthetic = np.column_stack([x1, x2, x3])
 
 `x1`、`x2`、`x3` 各是長度500的1維陣列(三個獨立特徵),`np.column_stack` 把它們「直著疊」,變成一個 `(500, 3)` 的2維矩陣,每個原本的1維陣列變成新矩陣的一欄(一個特徵)。跟只是把數字接在一起的 `np.concatenate` 不同,`column_stack` 專門用在「手上有好幾組同長度的1維資料,想拼成一張表格,每組資料各佔一欄」這種情境,是準備`X`(樣本×特徵矩陣)時常見的寫法。
 
-### `import ... as ...`:改名字避免命名衝突
+</details>
+
+<details>
+<summary>`import ... as ...`:改名字避免命名衝突</summary>
 
 ```python
 from sklearn.decomposition import PCA as SklearnPCA
@@ -354,7 +389,10 @@ from sklearn.decomposition import PCA as SklearnPCA
 
 `as` 可以把匯入進來的名字重新命名,只在目前這支程式裡生效。這裡一定要重新命名,因為這支程式自己已經定義了一個叫 `PCA` 的class——如果直接寫 `from sklearn.decomposition import PCA`,sklearn的`PCA`會直接覆蓋掉前面自己寫的`PCA`,後面所有用到`PCA(...)`的地方都會變成在呼叫sklearn的版本而不是自己手刻的版本,而且Python不會對這種覆蓋發出任何警告。這跟開頭常見的 `import numpy as np` 不一樣——那裡的`as np`只是圖打字方便(慣例縮寫),不加也不會出錯;這裡的`as SklearnPCA`是必要的,不加會直接造成命名衝突、程式邏輯跑掉。
 
-### `[::-1]`:切片語法的第三個位置是「步伐大小」,負數代表反著走
+</details>
+
+<details>
+<summary>`[::-1]`:切片語法的第三個位置是「步伐大小」,負數代表反著走</summary>
 
 ```python
 sorted_idx = np.argsort(eigenvalues)[::-1]
@@ -365,3 +403,5 @@ Lesson 1 學過的切片 `[:]` 其實是省略版,完整寫法是 `[起始:結�
 一般切片 `[start:stop]` 省略步伐時預設步伐是 `1`(照順序一個一個往前走);寫成 `[start:stop:step]` 才能自訂步伐,像 `[::2]` 是「每隔一個取一個」(步伐2),`[::-1]` 是「步伐-1,從尾端往回走」,效果等同整個反轉。這招不只能用在 numpy 陣列上,一般的 Python list、字串也都適用,例如 `"hello"[::-1]` 會得到 `"olleh"`。
 
 C++對照:C++沒有這種切片語法,要反轉一個容器通常要呼叫 `std::reverse(v.begin(), v.end())`(會原地修改)或自己手動用 `std::vector<T>(v.rbegin(), v.rend())` 建一份反過來的複本;`[::2]` 這種「跳著取」也沒有直接對應語法,得自己寫迴圈用 `i += 2` 控制。
+
+</details>

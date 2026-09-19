@@ -6,23 +6,11 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [Information Content(驚訝程度)](#information-content驚訝程度)
-  - [Entropy(熵)——整個分布的平均驚訝程度](#entropy熵整個分布的平均驚訝程度)
-  - [Cross-Entropy(交叉熵)——你每天在用的loss function](#cross-entropy交叉熵你每天在用的loss-function)
-  - [KL Divergence(KL散度)——多浪費了多少bit](#kl-divergencekl散度多浪費了多少bit)
-  - [六個概念怎麼串起來(整堂課最關鍵的一張圖)](#六個概念怎麼串起來整堂課最關鍵的一張圖)
-  - [Entropy vs Cross-Entropy vs KL Divergence 對照](#entropy-vs-cross-entropy-vs-kl-divergence-對照)
-  - [Cross-Entropy = Negative Log-Likelihood(MLE推導)](#cross-entropy-negative-log-likelihoodmle推導)
-  - [Mutual Information(互資訊)——知道X能讓你對Y少猜多少](#mutual-information互資訊知道x能讓你對y少猜多少)
-  - [Pearson相關係數 vs 互資訊 對照](#pearson相關係數-vs-互資訊-對照)
-  - [Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」](#perplexity困惑度模型實際上在幾個選項間猶豫)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
-  - [Pearson 跟 Poisson 搞混](#pearson-跟-poisson-搞混)
-  - [one-hot 在cross-entropy簡化公式裡的角色需要補強](#one-hot-在cross-entropy簡化公式裡的角色需要補強)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
 - [Generator expression 加 `if` 篩選條件](#generator-expression-加-if-篩選條件)
@@ -72,7 +60,8 @@
 
 ---
 
-### Information Content(驚訝程度)
+<details>
+<summary>Information Content(驚訝程度)</summary>
 
 ```
 I(x) = -log(p(x))
@@ -89,7 +78,10 @@ I(x) = -log(p(x))
 
 ![Information content長條圖:機率越低,驚訝程度越大](images/information_content_bars.png)
 
-### Entropy(熵)——整個分布的平均驚訝程度
+</details>
+
+<details>
+<summary>Entropy(熵)——整個分布的平均驚訝程度</summary>
 
 ```
 H(P) = -sum( p(x) * log(p(x)) )   對所有x加總
@@ -106,7 +98,10 @@ H(P) = -sum( p(x) * log(p(x)) )   對所有x加總
 
 **規律**:分布越平(所有結果機率接近),熵越高;分布越集中(某個結果幾乎壟斷),熵越低。選項數越多,熵的上限也越高(6面骰子熵上限是log2(6)=2.58,比銅板的log2(2)=1還高)。熵衡量的是一個分布「本質上有多少不確定性」,是壓不掉的下限。
 
-### Cross-Entropy(交叉熵)——你每天在用的loss function
+</details>
+
+<details>
+<summary>Cross-Entropy(交叉熵)——你每天在用的loss function</summary>
 
 ```
 H(P, Q) = -sum( p(x) * log(q(x)) )
@@ -134,7 +129,10 @@ H(P, Q) = -log(q(true_class))
 
 上圖:好模型(橘色跟藍色柱子接近) → 交叉熵低(1.19 bits);壞模型(橘色跟藍色差很多) → 交叉熵高(3.02 bits)。**柱子越接近,交叉熵越低,代表模型猜得越準。**
 
-### KL Divergence(KL散度)——多浪費了多少bit
+</details>
+
+<details>
+<summary>KL Divergence(KL散度)——多浪費了多少bit</summary>
 
 ```
 D_KL(P || Q) = H(P, Q) - H(P)
@@ -160,13 +158,19 @@ KL(true || good) = 1.1896 - 1.1568 = 0.0328 bits   ← 猜得準,浪費很少
 
 **訓練時的意義**:H(P)在訓練過程中是常數(標籤資料不變)。想成「總成本 = 固定成本 + 變動成本」——固定成本(H(P))不變,想壓低總成本(H(P,Q))就只能壓變動成本(KL)。所以「最小化交叉熵」跟「最小化KL散度」是同一個優化問題,本質上是把模型的Q推向真實的P。
 
-### 六個概念怎麼串起來(整堂課最關鍵的一張圖)
+</details>
+
+<details>
+<summary>六個概念怎麼串起來(整堂課最關鍵的一張圖)</summary>
 
 ![Information theory概念串連圖](images/info_theory_summary.png)
 
 `H(P)`(理論下限) → `H(P,Q)`(用Q實際要付出的成本) → 兩者差是`D_KL(P‖Q)`(猜不準浪費掉的部分) → 因為H(P)是常數,最小化交叉熵=最小化KL散度 → `Perplexity`是把交叉熵換算成更直覺的「困惑程度」數字。互資訊`I(X;Y)`是獨立的一支,不在這條鏈上。
 
-### Entropy vs Cross-Entropy vs KL Divergence 對照
+</details>
+
+<details>
+<summary>Entropy vs Cross-Entropy vs KL Divergence 對照</summary>
 
 三個名字很像、公式也長得像,放在一起看差在哪:
 
@@ -180,7 +184,10 @@ KL(true || good) = 1.1896 - 1.1568 = 0.0328 bits   ← 猜得準,浪費很少
 | 是不是對稱 | 只有1個分布,無所謂對稱 | 不對稱,`H(P,Q)≠H(Q,P)` | 不對稱,`D_KL(P\|\|Q)≠D_KL(Q\|\|P)`,不是真正的距離 |
 | 在訓練裡對應什麼 | 標籤的熵,訓練時是常數 | 就是每天在用的分類loss function | 訓練時想壓低的「變動成本」,最小化它等於最小化cross-entropy |
 
-### Cross-Entropy = Negative Log-Likelihood(MLE推導)
+</details>
+
+<details>
+<summary>Cross-Entropy = Negative Log-Likelihood(MLE推導)</summary>
 
 對N筆訓練樣本(真實類別y_i),假設樣本間獨立:
 
@@ -201,7 +208,10 @@ Difference:               0.00e+00   ← 完全相同
 
 ![Cross-entropy與Negative log-likelihood:兩條不同來源的公式算出完全相同的數字](images/ce_nll_equality.png)
 
-### Mutual Information(互資訊)——知道X能讓你對Y少猜多少
+</details>
+
+<details>
+<summary>Mutual Information(互資訊)——知道X能讓你對Y少猜多少</summary>
 
 ```
 I(X;Y) = H(X) - H(X|Y)
@@ -223,7 +233,10 @@ Dependent:     MI = 0.5310 bits
 
 **跟Pearson相關係數的差別**:Pearson(-1到1)只抓得到「線性關係」,遇到非線性(比如U型)關係會誤判成無關;互資訊能抓到任何形式的統計關聯,不管線性非線性都算得出來。在特徵選擇上,MI分數越高代表這個特徵越有預測力,MI趨近0代表基本上是雜訊。
 
-### Pearson相關係數 vs 互資訊 對照
+</details>
+
+<details>
+<summary>Pearson相關係數 vs 互資訊 對照</summary>
 
 兩個都是拿來量「兩個變數有沒有關聯」的指標,常常放在一起被拿來選特徵:
 
@@ -236,7 +249,10 @@ Dependent:     MI = 0.5310 bits
 | 計算成本 | 低,公式簡單 | 較高,要先估計出entropy/條件entropy |
 | 什麼時候用 | 快速篩選、關係大致是線性時 | 不確定關係形式、或懷疑有非線性關聯時 |
 
-### Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」
+</details>
+
+<details>
+<summary>Perplexity(困惑度)——模型「實際上在幾個選項間猶豫」</summary>
 
 ```
 Perplexity = e^(交叉熵)   (nats)   或   2^(交叉熵)   (bits)
@@ -250,13 +266,15 @@ demo:未訓練的隨機模型,vocab_size=50,實際跑出來perplexity=81.23(比5
 
 ![Perplexity對照:未訓練模型比隨機亂猜還爛,訓練好的模型才會遠低於vocab_size](images/perplexity_comparison.png)
 
+</details>
+
 ## 這堂課的總結
 
 資訊理論的六個概念,其實是同一套邏輯的不同切面:Information content量單一事件的驚訝程度,Entropy把它平均成整個分布的不確定性下限,Cross-entropy是「用不完美的模型去猜」實際要付出的成本(=loss function),KL divergence是這中間多浪費的部分,Perplexity把交叉熵換算成更直覺的「困惑選項數」。因為標籤的熵H(P)訓練時是常數,最小化交叉熵、最小化KL散度、最大化log-likelihood,三件事在數學上是同一個優化問題。Mutual information是獨立的一支,量兩個變數共享了多少資訊,在特徵選擇上比Pearson相關係數更全面(抓得到非線性關係)。
 
 ## 相關概念(跨堂連結)
 
-- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題 → 實作面在 [Lesson 6](../06-probability-and-distributions/notes.md#cross-entropy-loss-的直覺),那邊教的是cross-entropy loss怎麼從softmax輸出算出來、以及softmax/log_softmax的數值穩定技巧,這堂課補的是理論後盾,兩堂課合起來才是完整的「cross-entropy是什麼、為什麼長這樣、怎麼算」
+- **Cross-entropy loss從「怎麼算」到「為什麼這樣算」**:這堂課把cross-entropy放進entropy/KL divergence/NLL的完整資訊理論框架裡,證明「最小化cross-entropy=最小化KL散度=最大化log-likelihood」是同一個優化問題 → 實作面在 [Lesson 6](../06-probability-and-distributions/notes.md#這堂課的名詞總表),那邊教的是cross-entropy loss怎麼從softmax輸出算出來、以及softmax/log_softmax的數值穩定技巧,這堂課補的是理論後盾,兩堂課合起來才是完整的「cross-entropy是什麼、為什麼長這樣、怎麼算」
 - **log機率避免下溢與MLE/NLL的連結**:這堂課的information content(`-log(p(x))`)跟entropy整套資訊理論的量都建立在log機率上,而且明確推導「最大化log-likelihood=最小化negative log-likelihood=最小化cross-entropy」 → 對應到 [Lesson 7](../07-bayes-theorem/notes.md#naive-bayes分類器邏輯),那邊的Naive Bayes分類器用log機率相加取代連乘避免下溢,以及MLE(最大似然估計)選一組參數讓資料發生機率最大,是同一套log機率技巧跟同一個MLE/NLL等價關係,從貝氏統計的角度先出現過一次
 
 ## 面試向問題
@@ -307,7 +325,8 @@ KL divergence的定義是`D_KL(P||Q) = H(P,Q) - H(P)`,cross-entropy `H(P,Q)`跟e
 
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
-### Pearson 跟 Poisson 搞混
+<details>
+<summary>Pearson 跟 Poisson 搞混</summary>
 
 這兩個字長得很像(都是P開頭、音節數也接近),測驗時把「Pearson correlation coefficient(皮爾森相關係數)」跟「Poisson distribution(卜瓦松分布)」搞混了一次,但兩者是完全不相關的兩個概念,分屬機率論裡不同的類別:
 
@@ -317,13 +336,18 @@ KL divergence的定義是`D_KL(P||Q) = H(P,Q) - H(P)`,cross-entropy `H(P,Q)`跟e
 
 **怎麼避免以後又搞混:** 記法上可以把「-son結尾」跟「用途」綁在一起想——Pearson 的用途是「兩個變數的關係」(**關係型**),Poisson 的用途是「一個變數的次數分布」(**計數型**)。判斷題目在問哪一個,先問自己「這題在問的是『兩個東西有沒有關聯』,還是『一件事發生幾次的機率』」,問的是前者才是Pearson,問的是後者才是Poisson。
 
-### one-hot 在cross-entropy簡化公式裡的角色需要補強
+</details>
+
+<details>
+<summary>one-hot 在cross-entropy簡化公式裡的角色需要補強</summary>
 
 Cross-entropy的完整定義是 `H(P,Q) = -sum(p(x)*log(q(x)))`,對所有可能的類別x都要算一項再加總。但分類問題裡,程式碼跟公式常常直接寫成 `H(P,Q) = -log(q(true_class))`,只有一項,一開始不清楚這個簡化是怎麼跳出來的。
 
 **答案在於「真實分布P」在分類問題裡,本身就是one-hot向量(獨熱編碼)**——真實類別的位置機率是1,其他所有類別的位置機率都是0。把這個特性代回完整公式:`sum(p(x)*log(q(x)))` 這個加總裡,除了「真實類別」那一項的`p(x)=1`,其餘所有項的`p(x)`都是0,而0乘上任何數字(包括`log(q(x))`)都是0,那些項直接整個消失,加總裡只剩下真實類別那一項:`1 * log(q(true_class))`,前面補上負號就是 `-log(q(true_class))`。所以「分類問題的cross-entropy只需要看模型對正確答案給的機率」這個簡化,不是額外發明的捷徑公式,而是完整定義套用在「P是one-hot」這個特殊狀況下,數學上自動化簡出來的結果——換一個問題,如果真實分布P不是one-hot(比如label smoothing之後,正確類別是0.9、其他類別平分剩下0.1),就不能再套用這個簡化版,要老實地把完整的加總公式算完。
 
 ![One-hot:真實類別=1其他=0,代回公式後只剩正確答案那一項](images/onehot_encoding.png)
+
+</details>
 
 ## 我自己手打的部分
 

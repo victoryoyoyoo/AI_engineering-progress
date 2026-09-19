@@ -6,14 +6,6 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [梯度下降(Gradient Descent)](#梯度下降gradient-descent)
-  - [Momentum(動量)——解決什麼問題](#momentum動量解決什麼問題)
-  - [SGD——解決什麼問題](#sgd解決什麼問題)
-  - [Adam——momentum + 自適應學習率](#adammomentum-自適應學習率)
-  - [三種optimizer對照:梯度下降 vs Momentum vs Adam](#三種optimizer對照梯度下降-vs-momentum-vs-adam)
-  - [凸(Convex) vs 非凸(Non-convex)](#凸convex-vs-非凸non-convex)
-  - [鞍點(Saddle Point)——為什麼比局部最小值更麻煩](#鞍點saddle-point為什麼比局部最小值更麻煩)
-  - [學習率排程(Learning Rate Schedule)](#學習率排程learning-rate-schedule)
 - [PyTorch對應](#pytorch對應)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
@@ -21,10 +13,6 @@
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天評分](#今天評分)
-  - [`params[:]`:切片複製一份 list,避免共用同一個物件](#params切片複製一份-list避免共用同一個物件)
-  - [負數索引 `[-1]`:從尾端數](#負數索引-1從尾端數)
-  - [`for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構](#for-name-history-in--對一串-tuple-做迴圈解構)
-  - [`is None`:判斷「是不是還沒被賦值」,不是用 `==`](#is-none判斷是不是還沒被賦值不是用-)
 
 ## Learning Objectives 打勾清單
 - [x] 從零實作梯度下降、SGD with momentum、Adam ⚠️(`GradientDescent`真的看過對照公式;`SGDMomentum`、`Adam`寫在reference.py+跑過demo,沒有實際逐行帶著看,記進review-queue)
@@ -75,7 +63,8 @@
 
 （以下為詳細教學內容,教學過程中補上）
 
-### 梯度下降(Gradient Descent)
+<details>
+<summary>梯度下降(Gradient Descent)</summary>
 
 ```
 w = w - lr * gradient
@@ -83,7 +72,10 @@ w = w - lr * gradient
 
 一行公式,對照Lesson 4手打過的1D梯度下降,邏輯完全一樣,差別是這裡同時處理多個參數(一個列表)。
 
-### Momentum(動量)——解決什麼問題
+</details>
+
+<details>
+<summary>Momentum(動量)——解決什麼問題</summary>
 
 梯度下降只看「現在」的梯度,如果遇到窄山谷,會左右震盪(之字形彈牆),浪費很多步在原地打轉。Momentum解決的正是這個**震盪**問題,不只是單純步子太小。
 
@@ -94,7 +86,10 @@ w = w - lr * v
 
 `beta`(通常0.9)代表這一步的方向,90%來自過去累積的速度、10%來自現在的梯度。比喻:像鐵球滾下山,遇到小凹凸不會停下重新出發,因為慣性把它帶過去了——左右互相抵消的力道會互相消掉,前後方向一致的力道會累積加速。
 
-### SGD——解決什麼問題
+</details>
+
+<details>
+<summary>SGD——解決什麼問題</summary>
 
 梯度下降(GD)每走一步都要看過「全部」訓練資料才能走,資料量一大(百萬筆)會慢到不能用,而且記憶體塞不下。SGD的解法:只用一小批資料(mini-batch,32~256筆)估計一個大概的方向就走,犧牲一點準確度換取速度跟記憶體。這是機器學習能訓練巨型資料集的關鍵。
 
@@ -108,7 +103,10 @@ w = w - lr * v
 
 ![Batch GD vs Mini-batch SGD:雜訊換來跳出平坦區/淺谷的機會](images/sgd_noise.png)
 
-### Adam——momentum + 自適應學習率
+</details>
+
+<details>
+<summary>Adam——momentum + 自適應學習率</summary>
 
 Adam = momentum(記住過去方向)+ 每個權重自己專屬的學習率(根據這個權重梯度通常多大來調整步伐)。
 
@@ -139,7 +137,10 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 
 ![GD vs SGD+Momentum vs Adam:同一個Rosenbrock地形,3000步後的真實軌跡對照(Adam幾乎走完全程,GD/SGD還卡在半路)](images/optimizer_comparison_rosenbrock.png)
 
-### 三種optimizer對照:梯度下降 vs Momentum vs Adam
+</details>
+
+<details>
+<summary>三種optimizer對照:梯度下降 vs Momentum vs Adam</summary>
 
 | | 梯度下降 GD | Momentum | Adam |
 |---|---|---|---|
@@ -157,7 +158,10 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 >
 > 實際上:Adam收斂快、對超參數不敏感,訓練loss下降速度上通常贏;但不少研究觀察到SGD with momentum調好參數後,最終在測試集上的泛化效果有時反而更好,這也是為什麼很多電腦視覺的SOTA模型還是用SGD+momentum而不是Adam的原因之一——選optimizer要看場景,不是單純「越新越好」。
 
-### 凸(Convex) vs 非凸(Non-convex)
+</details>
+
+<details>
+<summary>凸(Convex) vs 非凸(Non-convex)</summary>
 
 凸函數只有一個最小值,梯度下降一定找得到,像`f(x)=x²`。神經網路的loss是非凸的,有很多局部最小值、鞍點、平坦區域。實務上高維度神經網路的局部最小值,loss通常都跟全域最小值差不多低,不是大問題。
 
@@ -169,7 +173,10 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 >
 > 實際上:這件事只有在loss函數是凸函數(convex)時才成立。神經網路的loss地形是非凸的,有大量局部最小值、鞍點跟平坦區域,學習率再小,梯度下降也只能保證走到附近梯度為0的地方,不保證那是全域最低點——夠小的學習率只保證每一步不會讓loss上升太多,跟「一定找到全域最小值」是兩回事。
 
-### 鞍點(Saddle Point)——為什麼比局部最小值更麻煩
+</details>
+
+<details>
+<summary>鞍點(Saddle Point)——為什麼比局部最小值更麻煩</summary>
 
 **局部最小值**:真的是山谷谷底,四面八方都是上坡,卡在這裡是「真的」卡住了。
 
@@ -179,7 +186,10 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 
 **為什麼鞍點更常見更麻煩**:局部最小值要求「所有方向都是山谷」,維度很多(神經網路動輒上萬個參數)時,這種「每個方向都剛好是谷底」的機率很低。相反地,「一部分方向是谷、一部分方向是山頂」(鞍點)在高維度空間裡反而超級常見。訓練神經網路時,卡住變慢最常見的原因不是局部最小值,而是鞍點——梯度在鞍點附近會變得很小很小,導致訓練停滯不前。Momentum跟mini-batch的雜訊都有助於衝出鞍點。
 
-### 學習率排程(Learning Rate Schedule)
+</details>
+
+<details>
+<summary>學習率排程(Learning Rate Schedule)</summary>
 
 固定學習率是妥協——訓練初期想要大步快跑,後期想要小步精修。
 
@@ -191,6 +201,8 @@ Adam   -> loss=0.00000000   ← 幾乎完全收斂
 | Warmup + decay | 先線性拉升,再遞減,大模型防止一開始訓練不穩定 |
 
 ![三種學習率排程曲線:Step decay、Cosine annealing、Warmup+decay](images/lr_schedules.png)
+
+</details>
 
 ## PyTorch對應
 
@@ -281,7 +293,8 @@ Adam收斂快、對超參數不太敏感,訓練loss下降的速度上通常有�
 
 (下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。)
 
-### `params[:]`:切片複製一份 list,避免共用同一個物件
+<details>
+<summary>`params[:]`:切片複製一份 list,避免共用同一個物件</summary>
 
 ```python
 history = [params[:]]
@@ -292,7 +305,10 @@ history.append(params[:])
 
 C++ 對照:這就是「值傳遞(拷貝)」跟「參照/指標」的差別。Python 的變數賦值(`a = b`)永遠只是複製「參照」,不是複製資料本身;list 這種可變(mutable)物件如果要真的複製一份獨立的資料,要像這裡一樣明寫 `a[:]`(或 `list(a)`、`copy.copy(a)`)。這堂課的 `step()` 方法本身用 list comprehension 回傳全新的 list,所以這裡其實不會真的發生資料互相污染的 bug,但 `params[:]` 是防禦性寫法——養成看到「要把目前狀態存起來,之後還要繼續改動原本那個變數」的情境就主動切片複製的習慣,可以避免掉很多這類難抓的 bug。
 
-### 負數索引 `[-1]`:從尾端數
+</details>
+
+<details>
+<summary>負數索引 `[-1]`:從尾端數</summary>
 
 ```python
 final = history[-1]
@@ -300,7 +316,10 @@ final = history[-1]
 
 Python 的索引可以用負數,`-1` 代表「最後一個」、`-2` 代表「倒數第二個」,以此類推,不用像 C++ 那樣自己算 `v[v.size()-1]` 或呼叫 `v.back()`。正數索引從 `0` 開始往後數,負數索引從 `-1` 開始往前數,兩種可以混用在同一個 list 上。
 
-### `for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構
+</details>
+
+<details>
+<summary>`for name, history in [(...), (...)]:` 對一串 tuple 做迴圈解構</summary>
 
 ```python
 for name, history in [("GD", gd_history), ("SGD+M", sgd_history), ("Adam", adam_history)]:
@@ -308,7 +327,10 @@ for name, history in [("GD", gd_history), ("SGD+M", sgd_history), ("Adam", adam_
 
 這裡直接寫一個 list,裡面裝三個 tuple(每個 tuple 是「名字, 資料」這一對),`for name, history in ...` 一次把每個 tuple 拆成兩個變數,寫法上是把 Lesson 3 學過的「解構賦值」跟 for 迴圈結合在一起,不用先建 `names` 跟 `histories` 兩個獨立的 list 再配合 `zip()` 才能一起走訪——資料本身內容不多、只是暫時要湊起來印出來比較的時候,直接寫成一串 tuple 的 list 更直覺。
 
-### `is None`:判斷「是不是還沒被賦值」,不是用 `==`
+</details>
+
+<details>
+<summary>`is None`:判斷「是不是還沒被賦值」,不是用 `==`</summary>
 
 ```python
 def __init__(self, lr=0.001, momentum=0.9):
@@ -324,3 +346,5 @@ def step(self, params, grads):
 判斷是不是 `None`,慣例上要用 `is None`(或 `is not None`),而不是 `== None`。原因是 `is` 比較的是「兩個東西是不是記憶體裡同一個物件」(身分比較,identity),`==` 比較的是「值是否相等」(可以被自訂物件重新定義,像這堂課 Lesson1 學過的 `__add__` 那樣,理論上也能自訂 `__eq__` 讓 `==` 的行為變得不可預期)。`None` 在整個程式運作期間全域只有唯一一份,不會有第二個「另外一個 None」存在,所以用「是不是同一個物件」(`is`)來判斷比「值相不相等」(`==`)更精確、也更快(不用呼叫任何比較邏輯),這是 Python 社群公認的慣例寫法。
 
 C++對照:C++沒有完全對應 `None` 的東西,情境類似的有 `nullptr`(指標沒有指向任何東西)或 `std::optional` 的 `std::nullopt`(代表「這個值目前是空的」),比較時通常就用 `==`(`ptr == nullptr`),因為C++的 `==` 對指標本來就是比較位址、C++沒有Python這種「`==` 可能被自訂物件覆寫成完全不是比較位址」的疑慮。
+
+</details>

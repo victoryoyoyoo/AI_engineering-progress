@@ -17,12 +17,6 @@
 - [面試向問題](#面試向問題)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [今天評分](#今天評分)
-  - [defaultdict 跟巢狀 defaultdict](#defaultdict-跟巢狀-defaultdict)
-  - [set() 集合,用來存不重複的詞彙表](#set-集合用來存不重複的詞彙表)
-  - [float("-inf") 負無窮大](#float-inf-負無窮大)
-  - [dict.get(key, 預設值)](#dictgetkey-預設值)
-  - [字串方法串接 .lower().split()](#字串方法串接-lowersplit)
-  - [直接對 dict 做 for 迴圈,拿到的是 key;.values() 拿所有 value](#直接對-dict-做-for-迴圈拿到的是-keyvalues-拿所有-value)
 
 ## Learning Objectives 打勾清單
 - [x] 從先驗、似然、證據算出後驗機率(貝氏定理本身)
@@ -90,7 +84,12 @@ P(A|B) = P(B|A) · P(A) / P(B)
 
 這就是貝氏定理。
 
+<details>
+<summary>貝氏定理:Prior × Likelihood ÷ Evidence = Posterior</summary>
+
 ![貝氏定理:Prior × Likelihood ÷ Evidence = Posterior](images/bayes_theorem_flow.png)
+
+</details>
 
 四個量各自的意義:
 
@@ -130,7 +129,12 @@ P(B) = P(B|A)·P(A) + P(B|not A)·P(not A)
 
 跟用貝氏公式直接算的`P(sick|positive)=0.0098`完全一致。
 
+<details>
+<summary>10,000人的基本比率謬誤拆解:健康人口基數太大,1%誤判的絕對人數還是遠遠超過真正的病人數</summary>
+
 ![10,000人的基本比率謬誤拆解:健康人口基數太大,1%誤判的絕對人數還是遠遠超過真正的病人數](images/base_rate_fallacy_breakdown.png)
+
+</details>
 
 **關鍵直覺**:健康人口基數(9,999)遠遠大於病人基數(1),就算只有1%的健康人被誤判,絕對人數(約100人)還是遠遠超過真正的病人數(1人)。不是99%的準確率不準,是**分母(健康人口)太大,1%乘上一個巨大數字,結果依然很大**。這叫「base rate fallacy(基本比率謬誤)」——只看準確率,忽略了「這個病本身有多罕見」這個前提,是人類直覺很容易踩的統計陷阱。實務上這也是為什麼醫生看到單次陽性不會馬上下結論,而是要求做第二次確認測試(用第一次的後驗當第二次的先驗,兩次一起算,準確度才會夠高)。
 
@@ -157,7 +161,12 @@ P(詞|類別) = (count(詞,類別) + smoothing) / (total_words_in_類別 + smoot
 
 `smoothing`通常設1(所以也叫add-one smoothing),保證任何詞的機率都不會是0,但當這個詞出現次數夠多時,平滑的影響會被稀釋到可以忽略。
 
+<details>
+<summary>Laplace smoothing:未出現詞的機率從0變成一個很小的非零值</summary>
+
 ![Laplace smoothing:未出現詞的機率從0變成一個很小的非零值](images/laplace_smoothing.png)
+
+</details>
 
 ## MLE vs MAP
 
@@ -170,7 +179,12 @@ P(詞|類別) = (count(詞,類別) + smoothing) / (total_words_in_類別 + smoot
 | MLE | P(資料\|參數) | 沒有正則化的訓練 |
 | MAP | P(資料\|參數) × P(參數) | L2/L1正則化 |
 
+<details>
+<summary>MLE vs MAP:MAP被先驗往0.5拉回一點,資料量越大先驗影響越小</summary>
+
 ![MLE vs MAP:MAP被先驗往0.5拉回一點,資料量越大先驗影響越小](images/mle_vs_map.png)
+
+</details>
 
 ## 為什麼「L2正則化本質上是貝氏統計」——完整推導
 
@@ -203,7 +217,12 @@ P(w) = (1 / √(2π·σ²)) · exp(-w² / (2σ²))
 
 講的是同一件事,只是切入角度不同。這也是為什麼很多深度學習裡看似「工程技巧」的正則化方法,拆開數學推導後,背後都藏著一個隱含的貝氏假設——這條連結是這整堂課想教的「Bayesian thinking matters for ML」最具體的一個例子。
 
+<details>
+<summary>L2正則化=高斯先驗:統計語言(高斯密度)vs工程語言(取負log後的懲罰項),同一條公式</summary>
+
 ![L2正則化=高斯先驗:統計語言(高斯密度)vs工程語言(取負log後的懲罰項),同一條公式](images/l2_regularization_as_gaussian_prior.png)
+
+</details>
 
 ## 共軛先驗(Conjugate Prior)跟Beta分布
 
@@ -223,7 +242,12 @@ Day 2 後驗: Beta(8,4),均值=0.6667        ← 觀察到7正3反,往正面偏
 Day 3 後驗: Beta(13,9),均值=0.5909       ← 再觀察5正5反,被拉回中間一點
 ```
 
+<details>
+<summary>Beta分布隨著觀察到更多資料,從均勻分布逐漸收斂變尖:Day1→Day2→Day3</summary>
+
 ![Beta分布隨著觀察到更多資料,從均勻分布逐漸收斂變尖:Day1→Day2→Day3](images/beta_distribution_sequential_update.png)
+
+</details>
 
 **這個機制在工程上最值錢的地方**:因為後驗永遠是同一個分布家族,你完全不需要保留原始的觀察資料——只要記住兩個數字(alpha、beta),新資料進來時直接加上去就是新的後驗。這是「線上學習(online learning)」的數學基礎:今天的後驗變成明天的先驗,模型可以不斷用新資料更新,不需要每次都拿全部歷史資料重新訓練一遍。Thompson sampling(bandit演算法)、串流異常偵測、A/B測試的貝氏版本,都是這個模式的應用。
 
@@ -239,8 +263,8 @@ Day 3 後驗: Beta(13,9),均值=0.5909       ← 再觀察5正5反,被拉回中�
 
 ## 相關概念(跨堂連結)
 
-- **用log機率避免連乘下溢,是同一個技巧的兩種用途**:這堂課的Naive Bayes分類器用log機率相加取代連乘,避免幾十個小機率連乘造成浮點數下溢(明確對照Lesson 6的log-softmax同一個問題) → 也出現在 [Lesson 9](../09-information-theory/notes.md#information-content驚訝程度),那邊的information content(`-log(p(x))`)、entropy、cross-entropy整套資訊理論的量,全部都建立在log機率上,是同一個「取log把連乘變連加、避免數值下溢」的技巧,被推廣成一整套衡量不確定性的數學語言
-- **MLE(最大似然估計)跟negative log-likelihood是同一件事的兩種講法**:這堂課從貝氏統計的角度講MLE(選一組參數讓觀察到的資料發生機率最大) → 也出現在 [Lesson 9](../09-information-theory/notes.md#cross-entropy交叉熵你每天在用的loss-function),那邊從資訊理論的角度推導出「最大化log-likelihood」等於「最小化negative log-likelihood」等於「最小化cross-entropy」,兩堂課從統計跟資訊理論兩個不同起點,推到同一個結論
+- **用log機率避免連乘下溢,是同一個技巧的兩種用途**:這堂課的Naive Bayes分類器用log機率相加取代連乘,避免幾十個小機率連乘造成浮點數下溢(明確對照Lesson 6的log-softmax同一個問題) → 也出現在 [Lesson 9](../09-information-theory/notes.md#這堂課的名詞總表),那邊的information content(`-log(p(x))`)、entropy、cross-entropy整套資訊理論的量,全部都建立在log機率上,是同一個「取log把連乘變連加、避免數值下溢」的技巧,被推廣成一整套衡量不確定性的數學語言
+- **MLE(最大似然估計)跟negative log-likelihood是同一件事的兩種講法**:這堂課從貝氏統計的角度講MLE(選一組參數讓觀察到的資料發生機率最大) → 也出現在 [Lesson 9](../09-information-theory/notes.md#這堂課的名詞總表),那邊從資訊理論的角度推導出「最大化log-likelihood」等於「最小化negative log-likelihood」等於「最小化cross-entropy」,兩堂課從統計跟資訊理論兩個不同起點,推到同一個結論
 
 ## 面試向問題
 
@@ -308,7 +332,8 @@ MAP估計要最大化的目標是`P(資料|w)·P(w)`,取負log後等於最小化
 
 （下面不重複講數學/AI概念,只整理「程式語法」本身,之後忘記可以回來查。）
 
-### `defaultdict` 跟巢狀 `defaultdict`
+<details>
+<summary>`defaultdict` 跟巢狀 `defaultdict`</summary>
 
 ```python
 from collections import defaultdict
@@ -322,7 +347,10 @@ self.word_counts = defaultdict(lambda: defaultdict(int))
 
 C++對照:類似`std::unordered_map`,但C++預設查詢不存在的key會自動建立並用該型別的預設建構子初始化(`int`預設是0),某種程度上C++的`std::map`/`std::unordered_map`天生就有`defaultdict`的行為,不需要額外包一層。
 
-### `set()` 集合,用來存不重複的詞彙表
+</details>
+
+<details>
+<summary>`set()` 集合,用來存不重複的詞彙表</summary>
 
 ```python
 self.vocab = set()
@@ -333,7 +361,10 @@ self.vocab.add(word)
 
 C++對照:對應`std::set`或`std::unordered_set`,`.insert()`對應Python的`.add()`。
 
-### `float("-inf")` 負無窮大
+</details>
+
+<details>
+<summary>`float("-inf")` 負無窮大</summary>
 
 ```python
 best_score = float("-inf")
@@ -343,7 +374,10 @@ Python用`float("-inf")`表示負無窮大,拿來當「目前找到的最大值�
 
 C++對照:對應`-std::numeric_limits<double>::infinity()`或早期常見的`-DBL_MAX`寫法。
 
-### `dict.get(key, 預設值)`
+</details>
+
+<details>
+<summary>`dict.get(key, 預設值)`</summary>
 
 ```python
 count = self.word_counts[cls].get(word, 0)
@@ -351,7 +385,10 @@ count = self.word_counts[cls].get(word, 0)
 
 跟直接用`self.word_counts[cls][word]`不同,`.get(word, 0)`如果`word`不存在,不會自動新增這個key,只是回傳預設值`0`,字典本身不會被修改。這裡故意用`.get()`而不是直接查詢,是因為`predict()`階段只是「讀取」,不應該因為查了一個沒看過的詞就把它意外加進詞彙表裡。
 
-### 字串方法串接 `.lower().split()`
+</details>
+
+<details>
+<summary>字串方法串接 `.lower().split()`</summary>
 
 ```python
 words = doc.lower().split()
@@ -361,7 +398,10 @@ words = doc.lower().split()
 
 C++對照:C++字串沒有內建`.lower()`,通常要自己寫迴圈套用`std::tolower`逐字元轉換;`.split()`也沒有內建對應函式,常見做法是用`std::istringstream`配合`>>`運算子,或自己寫迴圈找空白位置手動切割,遠不如Python這樣兩個方法串起來一行解決。
 
-### 直接對 dict 做 `for` 迴圈,拿到的是 key;`.values()` 拿所有 value
+</details>
+
+<details>
+<summary>直接對 dict 做 `for` 迴圈,拿到的是 key;`.values()` 拿所有 value</summary>
 
 ```python
 for cls in self.class_counts:
@@ -373,3 +413,5 @@ total_docs = sum(self.class_counts.values())
 `for x in 某個dict:`預設走訪的是這個dict的**所有key**(不是value、也不是key-value配對),`for cls in self.class_counts:`實際上是「把每個類別的名字(key)一個一個拿出來」,要拿對應的value要另外用`self.class_counts[cls]`查。如果想直接拿到所有value,用`.values()`(回傳所有值,不含key),這裡`sum(self.class_counts.values())`就是「把每個類別各自的文件數全部加起來」算出訓練集總文件數。類似地,`.keys()`可以明確拿所有key(效果跟直接`for x in dict`一樣,只是寫法更明確)、`.items()`可以同時拿到key跟value配對(`for k, v in d.items():`)。
 
 C++對照:對應`std::map`的迭代——C++走訪`map`時每次拿到的是`std::pair<key, value>`(要用`.first`/`.second`取值,或C++17後可以用結構化綁定`for (auto& [k, v] : m)`直接拆開),不像Python預設只給key、要value得額外呼叫`.values()`或`.items()`。
+
+</details>

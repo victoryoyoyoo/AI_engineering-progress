@@ -6,21 +6,15 @@
 - [30秒抓重點(複習只看這裡就能想起整堂課在幹嘛)](#30秒抓重點複習只看這裡就能想起整堂課在幹嘛)
 - [公式速查表](#公式速查表)
 - [這堂課的名詞總表](#這堂課的名詞總表)
-  - [數值法 vs 解析法(算導數的兩種方式)對照](#數值法-vs-解析法算導數的兩種方式對照)
-  - [梯度下降 vs 牛頓法 對照](#梯度下降-vs-牛頓法-對照)
 - [這堂課的總結](#這堂課的總結)
 - [相關概念(跨堂連結)](#相關概念跨堂連結)
 - [面試向問題](#面試向問題)
 - [這堂課我卡住/搞混的地方(完整問答記錄,給複習用)](#這堂課我卡住搞混的地方完整問答記錄給複習用)
-  - [把「變數數量不同」跟「一階/二階導數不同」這兩件事搞混](#把變數數量不同跟一階二階導數不同這兩件事搞混)
 - [我自己手打的部分](#我自己手打的部分)
 - [今天花的時間](#今天花的時間)
 - [課程結尾理解確認題(先自己想過一遍,再點開看答案,這樣才是真的在複習)](#課程結尾理解確認題先自己想過一遍再點開看答案這樣才是真的在複習)
 - [今天評分](#今天評分)
 - [List comprehension + zip:數值梯度更新那行](#list-comprehension-zip數值梯度更新那行)
-  - [對應的數學公式](#對應的數學公式)
-  - [完整追蹤一次(用具體數字)](#完整追蹤一次用具體數字)
-  - [展開版(不用 list comprehension 的寫法)](#展開版不用-list-comprehension-的寫法)
 - [numerical_gradient 函式對應的公式(中央差分法)](#numerical_gradient-函式對應的公式中央差分法)
 - [f-string 格式化複習](#f-string-格式化複習)
 - [`lambda`:寫在一行裡的匿名函式](#lambda寫在一行裡的匿名函式)
@@ -63,29 +57,64 @@
 |---|---|---|
 | Derivative | 導數 | 函數在某點的變化速度/斜率,幾何上是切線斜率;x稍微變動一點,y大概變多少 |
 
+<details>
+<summary>導數就是某一點切線的斜率</summary>
+
 ![導數就是某一點切線的斜率](images/tangent_line_slope.png)
+
+</details>
+
 | Partial Derivative | 偏導數 | 只動一個變數,其他變數固定不動,算出的變化率;神經網路裡每個權重各自的偏導數,分開算才知道各自該怎麼調 |
 | Gradient | 梯度 | 把每個變數的偏導數收集成一個向量,指向「往上爬最快」的方向;要下降就走它的反方向 |
 
+<details>
+<summary>2D梯度方向:垂直於等高線,指向數值增加最快的方向,梯度下降走反方向</summary>
+
 ![2D梯度方向:垂直於等高線,指向數值增加最快的方向,梯度下降走反方向](images/gradient_direction_2d.png)
+
+</details>
+
 | Gradient Descent | 梯度下降 | 更新規則:新值=舊值−學習率×梯度,只需要一階導數,重複很多次就能逼近函數最低點 |
 
+<details>
+<summary>梯度下降在1D曲線上,一步一步逼近最低點的路徑</summary>
+
 ![梯度下降在1D曲線上,一步一步逼近最低點的路徑](images/gradient_descent_1d_path.png)
+
+</details>
+
 | Learning Rate | 學習率 | 控制每一步跨多大,太大會讓局部線性逼近失效、甚至發散;太小收斂很慢 |
 | Numerical Derivative | 數值法 | 動一點點、看輸出差多少,逼近導數定義本身,`[f(x+h)-f(x-h)]/(2h)`,任何函數都能用,但是逼近值有極小誤差 |
 | Analytical Derivative | 解析法 | 手推公式,精確算出導數,快、準,但要先會推導這個函數的公式 |
 | Hessian | Hessian矩陣 | 二階偏導數湊成的矩陣,告訴你「地形彎的程度」;eigenvalue全正=真的最低點,全負=最高點,有正有負=鞍點(假的最低點) |
 | Saddle Point | 鞍點 | 梯度=0但不是真正最低點的地方,前後平、左右也平,但其實旁邊還有更深的地方,靠Hessian的eigenvalue戳破 |
 
+<details>
+<summary>真正最低點 vs 鞍點:Hessian的eigenvalue全正 vs 有正有負</summary>
+
 ![真正最低點 vs 鞍點:Hessian的eigenvalue全正 vs 有正有負](images/saddle_point_vs_minimum.png)
+
+</details>
+
 | Newton's Method | 牛頓法 | 用梯度+Hessian一起算更新方向,理論上一步跳到谷底,但Hessian太大(N²),深度學習用不起 |
 | Taylor Series | 泰勒展開 | 用多項式局部逼近任何函數,一階近似=梯度下降在做的事;二階近似=牛頓法在做的事 |
 
+<details>
+<summary>泰勒展開:x0附近近似很準,離越遠誤差越大,一階vs二階近似對照</summary>
+
 ![泰勒展開:x0附近近似很準,離越遠誤差越大,一階vs二階近似對照](images/taylor_series_approximation.png)
+
+</details>
+
+<details>
+<summary>牛頓法vs梯度下降:多用二階資訊(Hessian)收斂更快</summary>
 
 ![牛頓法vs梯度下降:多用二階資訊(Hessian)收斂更快](images/newtons_method_vs_gd.png)
 
-### 數值法 vs 解析法(算導數的兩種方式)對照
+</details>
+
+<details>
+<summary>數值法 vs 解析法(算導數的兩種方式)對照</summary>
 
 | | 數值法 Numerical | 解析法 Analytical |
 |---|---|---|
@@ -95,7 +124,10 @@
 | 要先做什麼 | 什麼都不用先推,任何函數都能套 | 要先會推導這個函數的公式 |
 | 什麼時候用 | 驗證解析法算出來的梯度對不對(gradient checking),或函數複雜到懶得手推時先抓個大概 | 訓練模型時實際在用的方式,因為要重複算幾百萬次,精確又快 |
 
-### 梯度下降 vs 牛頓法 對照
+</details>
+
+<details>
+<summary>梯度下降 vs 牛頓法 對照</summary>
 
 | | 梯度下降 Gradient Descent | 牛頓法 Newton's Method |
 |---|---|---|
@@ -119,6 +151,8 @@
 | Jacobian | 雅可比矩陣 | 輸入輸出都是向量時,把所有輸出對所有輸入的偏導數排成矩陣,可以想成「向量版的梯度」,描述整個輸出向量怎麼隨輸入向量變化 |
 | Backpropagation | 反向傳播 | 從輸出往輸入方向,一層一層用連鎖律算梯度,神經網路實際「學習」時用的演算法,本質就是連鎖律的系統化應用 |
 | Integral | 積分 | 曲線下的面積,是「累積量」,機器學習裡機率分布、期望值、KL散度的定義都要靠積分 |
+
+</details>
 
 ## 這堂課的總結
 
@@ -150,7 +184,7 @@ Hessian eigenvalue判斷:  全正=最低點,全負=最高點,有正有負=鞍點
 
 ## 相關概念(跨堂連結)
 
-- **梯度下降更新規則的起點**:這堂課手推並手打了最原始的梯度下降(`新值=舊值−學習率×梯度`),從1個變數練到2個變數、再到線性迴歸的w、b → 也出現在 [Lesson 8](../08-optimization/notes.md#梯度下降gradient-descent),那邊把同一條規則直接拿來當起點,疊加momentum(記住過去方向解決震盪)跟Adam(momentum+每個權重自己的步伐大小),三個optimizer是同一問題的三種答案,底層規則沒變,只是越疊越複雜
+- **梯度下降更新規則的起點**:這堂課手推並手打了最原始的梯度下降(`新值=舊值−學習率×梯度`),從1個變數練到2個變數、再到線性迴歸的w、b → 也出現在 [Lesson 8](../08-optimization/notes.md#這堂課的名詞總表),那邊把同一條規則直接拿來當起點,疊加momentum(記住過去方向解決震盪)跟Adam(momentum+每個權重自己的步伐大小),三個optimizer是同一問題的三種答案,底層規則沒變,只是越疊越複雜
 
 ## 面試向問題
 
@@ -177,7 +211,8 @@ Hessian eigenvalue判斷:  全正=最低點,全負=最高點,有正有負=鞍點
 
 ## 這堂課我卡住/搞混的地方(完整問答記錄,給複習用)
 
-### 把「變數數量不同」跟「一階/二階導數不同」這兩件事搞混
+<details>
+<summary>把「變數數量不同」跟「一階/二階導數不同」這兩件事搞混</summary>
 
 這堂課從1個變數(x²)一路練到2個變數(x,y)、再練到Hessian矩陣,中途容易把「這次同時處理幾個變數」跟「這次算的是第幾階導數」這兩個完全獨立的維度混在一起,誤以為「變多了」都是同一種變多。實際上這是兩條互相垂直、互不影響的軸線,要分開看:
 
@@ -207,6 +242,8 @@ Hessian矩陣的每一格,是「先對一個變數微分、再對另一個變數
 | 2個變數 | `[∂f/∂x, ∂f/∂y]`(2個數字的梯度向量) | `[[∂²f/∂x², ∂²f/∂x∂y],[∂²f/∂y∂x, ∂²f/∂y²]]`(2×2的Hessian矩陣) |
 
 表格裡「往右走」(一階→二階)是軸線二在變;「往下走」(1個變數→2個變數)是軸線一在變。兩個方向完全獨立,不會因為多了一個變數,就自動被算成二階,也不會因為算了二階導數,就代表變數變多了。之所以容易搞混,是因為2個變數+一階導數(梯度,一個向量)跟2個變數+二階導數(Hessian,一個矩陣)兩者都「看起來比1個數字複雜」,但複雜的原因其實不一樣——梯度變複雜是因為維度(軸線一)變多,Hessian變複雜是因為階數(軸線二)也往上走了一層,兩件事疊加在一起才會讓Hessian矩陣的格數等於「變數數量的平方」(n個變數,Hessian就是n×n),不是單純的n個。
+
+</details>
 
 ## 我自己手打的部分
 
@@ -280,7 +317,8 @@ f'(x) = [(1+e^(-x)) - 1] / (1+e^(-x))^2
 point = [p - lr * g for p, g in zip(point, grad)]
 ```
 
-### 對應的數學公式
+<details>
+<summary>對應的數學公式</summary>
 
 梯度下降更新規則:`新位置 = 舊位置 − 學習率 × 梯度`,對每個變數(x、y)各自套用:
 
@@ -291,7 +329,10 @@ point = [p - lr * g for p, g in zip(point, grad)]
 
 `point` 跟 `grad` 是分開存放的兩個 list,`zip` 負責把它們按位置配對起來(x配x的梯度、y配y的梯度),確保不會配錯對。
 
-### 完整追蹤一次(用具體數字)
+</details>
+
+<details>
+<summary>完整追蹤一次(用具體數字)</summary>
 
 起始:`point = [4.0, 3.0]`,`grad = [8.0, 6.0]`,`lr = 0.1`
 
@@ -305,7 +346,10 @@ point = [p - lr * g for p, g in zip(point, grad)]
 
 跟實際跑出來的輸出一致:`step 0  point=(3.2000, 2.4000)`。
 
-### 展開版(不用 list comprehension 的寫法)
+</details>
+
+<details>
+<summary>展開版(不用 list comprehension 的寫法)</summary>
 
 ```python
 new_point = []
@@ -318,6 +362,8 @@ point = new_point
 跟濃縮版做的事完全一樣,只是拆開成「宣告空list → 跑迴圈 → 每次append」三個動作。Python 工程師平常習慣用濃縮版(list comprehension),但意思上 100% 等價。
 
 對照 C++:等同於 `vector<double> new_point; for(int i=0;i<point.size();i++) new_point.push_back(point[i]-lr*grad[i]); point=new_point;`。`zip` 相當於幫你把「同一個 index 的東西自動湊一對」做掉,不用自己管 index。
+
+</details>
 
 ## `numerical_gradient` 函式對應的公式(中央差分法)
 
