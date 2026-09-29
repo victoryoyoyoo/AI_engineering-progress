@@ -337,7 +337,7 @@ Clip by value逐個數字檢查,超過上限就直接換成上限值,各元素�
 
 ## 我自己手打的部分
 
-- `practice.py`:這堂由Claude直接把講解時用到的程式碼複製進`practice.py`(依使用者09-29的指示,不再要求手打),包含`softmax_naive`、`softmax_stable`、`logsumexp_naive`、`logsumexp_stable`四個函式,以及對照小logits/大logits的實際輸出
+- `practice.py`:這堂改成直接複製講解時用到的程式碼進`practice.py`(依09-29起的新規則,不再要求手打),包含`softmax_naive`、`softmax_stable`、`logsumexp_naive`、`logsumexp_stable`四個函式,以及對照小logits/大logits的實際輸出
 
 ## 今天評分
 
