@@ -16,3 +16,4 @@
 | 10 | Dimensionality Reduction | PCA的fit流程:置中資料→算共變異數矩陣→特徵分解→由大到小排序→留變異量最大的前k個方向 | [notes.md](01-math-foundations/10-dimensionality-reduction/notes.md) |
 | 11 | Singular Value Decomposition | 任何矩陣不管形狀,都可以拆成「旋轉→縮放→旋轉」三個動作:A = U × Σ × Vᵀ | [notes.md](01-math-foundations/11-singular-value-decomposition/notes.md) |
 | 12 | Tensor Operations | Tensor就是維度不限的陣列,寫深度學習最常見的bug是shape對不上,這堂練的是看shape的眼力:reshape、transpose、broadcasting | [notes.md](01-math-foundations/12-tensor-operations/notes.md) |
+| 13 | Numerical Stability | 電腦的小數是有限位數的近似值,凡是可能讓中間值不必要地大或接近的操作,都要換一個數學等價但更安全的寫法:softmax減最大值、log-sum-exp、clip by norm、layer norm | [notes.md](01-math-foundations/13-numerical-stability/notes.md) |
