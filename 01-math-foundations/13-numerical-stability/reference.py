@@ -278,12 +278,15 @@ def log_softmax_stable(logits):
 
 def cross_entropy_naive(true_class, logits):
     """naive版:先softmax得到機率,再取真實類別機率的-log。機率下溢成0時log(0)出錯。"""
+    # 先算出整組機率分布,只取真實類別那一項
     probs = softmax_naive(logits)
+    # 機率越接近0,-log(機率)越大,代表loss越高(預測越離譜)
     return -math.log(probs[true_class])
 
 
 def cross_entropy_stable(true_class, logits):
     """穩定版:交叉熵 = -log_softmax[真實類別]。PyTorch的F.cross_entropy就是這個做法。"""
+    # 直接在log空間算,不用先做除法得到機率、再取log
     log_probs = log_softmax_stable(logits)
     return -log_probs[true_class]
 
@@ -294,6 +297,7 @@ def demo_cross_entropy():
     print("DEMO 6: Stable Cross-Entropy Loss")
     print("=" * 60)
 
+    # 安全範圍的logits,兩種寫法應該算出一樣的loss
     logits = [2.0, 5.0, 1.0]
     true_class = 1
 
@@ -317,6 +321,7 @@ def demo_cross_entropy():
         print("  Naive:  OVERFLOW or NaN")
 
     # 非常自信且答對:真實類別2的機率接近1,loss接近0
+    # 第三個logit遠比其他兩個大,模型幾乎100%確定答案是類別2
     confident_logits = [0.0, 0.0, 50.0]
     true_class = 2
     ce = cross_entropy_stable(true_class, confident_logits)
@@ -354,6 +359,7 @@ def numerical_gradient(f, x, h=1e-5):
 def check_gradient(analytical, numerical, tolerance=1e-5):
     """比較解析梯度(反向傳播算的)與數值梯度,用相對誤差判斷。回傳是否全部通過。
         經驗值:相對誤差<1e-7很好,<1e-5可接受,>1e-3多半有bug。"""
+    # 假設全部通過,只要有一個失敗就改成False
     all_ok = True
     for i, (a, n) in enumerate(zip(analytical, numerical)):
         # 分母取兩者絕對值較大者;1e-8避免兩個梯度都接近0時除以0
@@ -387,6 +393,7 @@ def demo_gradient_checking():
         return [2 * x + 3 * y, 3 * x + 3 * y ** 2]
 
     point = [2.0, 1.0]
+    # analytical是手推的公式算出來的,numerical是用中央差分算出來的,兩者應該幾乎相等
     analytical = f1_grad(point)
     numerical = numerical_gradient(f1, point)
     print(f"  Point: {point}")
@@ -394,6 +401,7 @@ def demo_gradient_checking():
 
     print("\n  Test 2: f(x) = softmax cross-entropy")
 
+    # 固定真實類別是0,測試softmax+cross-entropy這個常見組合的梯度
     def f2(logits):
         return cross_entropy_stable(0, logits)
 
@@ -408,6 +416,7 @@ def demo_gradient_checking():
     print("\n  Test 3: Deliberately wrong gradient (should FAIL)")
 
     def f3(params):
+        # 一個很簡單的函式,方便手算出正確梯度做對照
         x, y = params
         return x ** 2 + y ** 2
 
@@ -425,6 +434,7 @@ def check_tensor(name, values):
     # any(...):只要有一個為真就是True;math.isnan檢查是不是NaN(NaN不能用==比較,因為nan == nan 也是False)
     has_nan = any(math.isnan(v) for v in values)
     has_inf = any(math.isinf(v) for v in values)
+    # 順便算出各有幾個,方便印在警告訊息裡
     n_nan = sum(1 for v in values if math.isnan(v))
     n_inf = sum(1 for v in values if math.isinf(v))
     if has_nan or has_inf:
@@ -466,8 +476,11 @@ def demo_nan_inf():
     print(f"  mean   = {sum(values) / len(values)}")
 
     print("\n  Tensor health checks:")
+    # 正常的權重,應該回傳OK
     check_tensor("weights", [0.1, -0.3, 0.5, 0.2])
+    # 混進一個inf,模擬logits溢位的情況
     check_tensor("logits_bad", [1.0, float('inf'), -2.0])
+    # 混進一個nan,模擬梯度壞掉的情況
     check_tensor("grads_bad", [0.01, float('nan'), -0.03])
     check_tensor("activations", [0.0, 0.5, 1.0, 0.3])
     print()
@@ -496,6 +509,7 @@ def demo_gradient_clipping():
     print("DEMO 10: Gradient Clipping")
     print("=" * 60)
 
+    # 這組梯度故意設成差距很大,方便看出兩種裁剪方式的差別
     grads = [10.0, 20.0, 30.0]
     norm = math.sqrt(sum(g ** 2 for g in grads))
 
@@ -507,17 +521,20 @@ def demo_gradient_clipping():
     clipped_norm = clip_by_norm(grads, max_norm=5.0)
 
     print(f"\n  Clip by value (max=15.0): {clipped_val}")
+    # 用每個元素除以第一個元素,比較裁剪前後的比例(方向)有沒有變
     print(f"  Clip by value changes direction: "
           f"{[g/grads[0] for g in grads]} vs {[g/clipped_val[0] for g in clipped_val]}")
 
     print(f"\n  Clip by norm (max=5.0): {[f'{g:.4f}' for g in clipped_norm]}")
     clipped_norm_val = math.sqrt(sum(g ** 2 for g in clipped_norm))
     print(f"  Clipped norm: {clipped_norm_val:.4f}")
+    # 同樣算比例,clip by norm應該讓這兩組比例完全一致(方向不變)
     print(f"  Direction preserved: "
           f"{[round(g/grads[0], 4) for g in grads]} == "
           f"{[round(g/clipped_norm[0], 4) for g in clipped_norm]}")
 
     print("\n  Gradient explosion simulation:")
+    # 從1.0開始,模擬梯度一步步指數成長
     grad_val = 1.0
     max_norm = 1.0
     # 模擬梯度爆炸:每一步梯度乘3.5(指數成長),沒有裁剪的話很快變成天文數字
@@ -569,6 +586,7 @@ def demo_mixed_precision():
     for v in test_values:
         f16 = simulate_float16(v)
         bf16 = simulate_bfloat16(v)
+        # 超出範圍時顯示"inf"字樣,不然是印出實際轉換後的數值
         f16_str = f"{f16:.4f}" if not math.isinf(f16) else "inf"
         bf16_str = f"{bf16:.4f}" if not math.isinf(bf16) else "inf"
         print(f"  {v:>12.4f}  {f16_str:>12s}  {bf16_str:>12s}")
@@ -647,6 +665,7 @@ def demo_format_comparison():
     print("  Precision test (representing pi):")
     # pi的例子:float16尾數10位、bfloat16尾數7位,pi=3.14159...在這兩種格式下剛好都被表示成3.140625,誤差約0.00097;
     # 尾數位數越少,能表示的數字越稀疏,一般情況下誤差會更大
+    # 把同一個pi分別轉成float16、bfloat16,比較兩者的精度損失
     pi = math.pi
     f16_pi = simulate_float16(pi)
     bf16_pi = simulate_bfloat16(pi)
@@ -659,6 +678,7 @@ def demo_format_comparison():
     for val in [100.0, 1000.0, 10000.0, 65504.0, 100000.0]:
         f16 = simulate_float16(val)
         bf16 = simulate_bfloat16(val)
+        # isinf判斷這個數字是不是已經被迫變成無限大(代表原本的值存不下)
         f16_ok = "ok" if not math.isinf(f16) else "INF"
         bf16_ok = "ok" if not math.isinf(bf16) else "INF"
         print(f"  {val:>10.0f}  float16={f16_ok:>4s}  bfloat16={bf16_ok:>4s}")
@@ -669,6 +689,7 @@ def demo_format_comparison():
 
 def sigmoid_naive(x):
     """直接照定義:1/(1+exp(-x))。x很負時exp(-x)溢位。"""
+    # x是很負的數時,-x變得很正,exp(-x)會溢位
     return 1.0 / (1.0 + math.exp(-x))
 
 
@@ -687,6 +708,7 @@ def sigmoid_stable(x):
 
 def binary_cross_entropy_naive(y_true, y_pred):
     """naive版二元交叉熵:先有機率y_pred,再取log。y_pred=0或1時log(0)出錯。"""
+    # y_true只會是0或1,兩項裡永遠有一項乘上0被消掉,但另一項的log還是要先算出來,才會出事
     return -(y_true * math.log(y_pred) + (1 - y_true) * math.log(1 - y_pred))
 
 
@@ -705,6 +727,7 @@ def demo_sigmoid_stability():
     print("DEMO 7: Stable Sigmoid")
     print("=" * 60)
 
+    # 涵蓋正常範圍(0、±1、±10)到會讓naive版溢位的極端值(±500、±710)
     test_values = [0.0, 1.0, -1.0, 10.0, -10.0, 100.0, -100.0, 500.0, -500.0, 710.0, -710.0]
     print(f"\n  {'x':>8s}  {'naive':>14s}  {'stable':>14s}")
     print(f"  {'-'*8}  {'-'*14}  {'-'*14}")
@@ -712,6 +735,7 @@ def demo_sigmoid_stability():
         try:
             naive = sigmoid_naive(x)
             naive_str = f"{naive:.10f}"
+        # x很負時math.exp(-x)會丟OverflowError,naive版直接失敗
         except OverflowError:
             naive_str = "OVERFLOW"
         stable = sigmoid_stable(x)
@@ -721,6 +745,7 @@ def demo_sigmoid_stability():
 
 def kahan_sum(values):
     """Kahan補償加總:用compensation記住每次加法被捨掉的低位,下一次補回去,降低長序列累加的誤差。"""
+    # total是目前的累加總和,compensation是目前記住的誤差補償量
     total = 0.0
     compensation = 0.0
     for v in values:
@@ -757,8 +782,10 @@ def welford_variance(values):
 def variance_naive(values):
     """naive公式 E[x^2] - E[x]^2。平均值很大時兩項都很大且幾乎相等,相減發生災難性抵銷。"""
     n = len(values)
+    # 這兩項在平均值很大時(比如1億)都會變成約10^16的大數字
     mean_x = sum(values) / n
     mean_x2 = sum(v ** 2 for v in values) / n
+    # 兩個接近的大數相減,有效位數被吃光,答案可能整個算錯
     return mean_x2 - mean_x ** 2
 
 
@@ -789,9 +816,11 @@ def demo_layer_norm():
             print(f"  Layer {layer:>2d}: max={max_val:>12.2f}  values={[f'{v:.2f}' for v in values[:3]]}...")
 
     print("\n  With layer normalization (values stay bounded):")
+    # 起始值跟上面完全一樣,唯一差別是每層多做一次layer_norm
     values = [1.0, 0.5, -0.3, 0.8, -0.1]
     for layer in range(10):
         values = [max(0, v * 2.5 + 0.1) for v in values]
+        # 每層結束後強制拉回「平均0、標準差1」的範圍,不讓數值往上疊加
         values = layer_norm(values)
         max_val = max(abs(v) for v in values)
         if layer % 2 == 0:
@@ -808,6 +837,7 @@ def demo_common_bugs():
     print("\n  Bug 1: log(0) from confident wrong prediction")
     # Bug 1:模型非常自信且答錯,真實類別的機率下溢成0,log(0) = -inf;穩定版交叉熵直接在log空間算,不會出事
     logits = [100.0, -100.0, -100.0]
+    # 第一個logit遠比其他兩個大,所以正確類別(1)的機率會下溢成0
     probs = softmax_stable(logits)
     print(f"  Softmax: {[f'{p:.2e}' for p in probs]}")
     print(f"  If true class is 1: log({probs[1]:.2e}) = ", end="")
@@ -815,6 +845,7 @@ def demo_common_bugs():
         print("log(0) = -inf (CRASH)")
     else:
         print(f"{math.log(probs[1]):.2f}")
+    # 穩定版直接在log空間算,不會先經過機率=0這一步
     print(f"  Stable cross-entropy handles this: {cross_entropy_stable(1, logits):.4f}")
 
     print("\n  Bug 2: exp() overflow in naive softmax")
@@ -823,8 +854,10 @@ def demo_common_bugs():
     try:
         naive = softmax_naive(logits)
         print(f"  Naive softmax: {naive}")
+    # exp(800)遠超過float64能存的範圍,直接丟例外
     except OverflowError:
         print("  Naive softmax: OverflowError (exp(800) is too large)")
+    # 同樣的輸入,stable版本先減最大值,完全不會踩到這個問題
     stable = softmax_stable(logits)
     print(f"  Stable softmax: {[f'{p:.6f}' for p in stable]}")
 
@@ -832,6 +865,7 @@ def demo_common_bugs():
     # Bug 3:平均值約1億、變異數只有2,naive公式的大數相減誤差變得顯著;1e8是科學記號,等於100000000
     data = [1e8 + 1, 1e8 + 2, 1e8 + 3, 1e8 + 4, 1e8 + 5]
     var_naive = variance_naive(data)
+    # Welford算法一次處理一個數,不會出現大數相減
     var_welford = welford_variance(data)
     true_var = 2.0
     print(f"  Data: [{data[0]:.0f}, ..., {data[-1]:.0f}]")
@@ -841,6 +875,7 @@ def demo_common_bugs():
 
     print("\n  Bug 4: Float comparison in training loop")
     # Bug 4:累加10次0.1不會剛好等於1.0,不要用==比較浮點數
+    # 每次+=0.1都帶著存不準的浮點誤差,累加10次後誤差會顯現出來
     loss = 0.0
     for _ in range(10):
         loss += 0.1
@@ -850,6 +885,7 @@ def demo_common_bugs():
 
     print("\n  Bug 5: NaN from 0/0 in normalization")
     # Bug 5:所有值相同時變異數為0,標準化要除以sqrt(0);解法是分母加epsilon
+    # 四個值完全相同,變異數必然是0
     values = [5.0, 5.0, 5.0, 5.0]
     mean = sum(values) / len(values)
     var = sum((v - mean) ** 2 for v in values) / len(values)
@@ -859,8 +895,10 @@ def demo_common_bugs():
     try:
         result = 1.0 / math.sqrt(var)
         print(f"{result}")
+    # 除以0在Python會丟這個例外(不是變成inf)
     except ZeroDivisionError:
         print("ZeroDivisionError")
+    # 分母加epsilon,永遠不會真的除以0
     safe = 1.0 / math.sqrt(var + 1e-5)
     print(f"  1/sqrt(var + 1e-5) = {safe:.2f} (safe with epsilon)")
     print()
