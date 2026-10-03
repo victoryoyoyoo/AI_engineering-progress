@@ -17,7 +17,7 @@
 
 ## Learning Objectives 打勾清單
 
-- [~] 從零實作 L1、L2、cosine、Mahalanobis、Jaccard、edit distance ⚠️(L1/L2/L∞/cosine/內積/Jaccard/編輯距離/KL/搬土距離都用小數字手算過、對照過reference.py,並放進practice.py;Mahalanobis只看圖和數字結果,沒看程式碼)
+- [~] 從零實作 L1、L2、cosine、Mahalanobis、Jaccard、edit distance ⚠️(L1/L2/L∞/cosine/內積/Jaccard/編輯距離/KL/搬土距離的算法都用小數字手算過;但這堂沒有逐行看程式碼,完整版在reference.py;Mahalanobis只看圖和數字結果)
 - [x] 針對任務選合適的距離,並說明其他選項為什麼不適用(整理過選擇表;結尾題答出cosine看方向、Mahalanobis看資料形狀)
 - [~] 把L1/L2跟Lasso/Ridge正則化及幾何限制區域連起來 ⚠️(用10個權重逐步模擬,懂L1固定減會歸0、L2按比例減不會歸0;菱形角落的幾何解釋只看圖簡單帶過)
 - [x] 示範同一份資料在不同距離下最近鄰居不同(同一組資料,P6在cosine排第2、在L2排最後;課程demo的第一名四種距離其實一致,差別在排名)
@@ -423,7 +423,7 @@ L1 = 4+9+2 = 15。L2 = √(16+81+4) = √101 ≈ 10.05。L∞ = max(4,9,2) = 9�
 
 ## 我自己手打的部分
 
-- `practice.py`:依09-29起的新規則,不要求手打,直接複製講解時算過的函式進去:L1/L2/Lp/L∞範數與距離、內積、cosine相似度與距離、縮成長度1、Jaccard、編輯距離、KL散度、一維搬土距離,結尾附上這堂手算過的數字對照。Mahalanobis(含求反矩陣、共變異數)沒看過程式碼,所以沒放進去。
+- 這堂課沒有程式碼練習。講解都是用手算的數字和圖,沒有在課堂上逐行看過程式碼,所以`practice.py`刻意留空(沒看過的程式不放)。完整程式在`reference.py`,之後有逐行看過再補進來。
 
 ## 今天評分
 
@@ -436,16 +436,6 @@ L1 = 4+9+2 = 15。L2 = √(16+81+4) = √101 ≈ 10.05。L∞ = max(4,9,2) = 9�
 <details>
 <summary>展開:程式語法筆記</summary>
 
-| 語法 | 意思 |
-|---|---|
-| `abs(x)` | 絕對值 |
-| `sum(abs(xi) for xi in x)` | generator expression,邊走邊加總,不必先建立list |
-| `zip(a, b)` | 把兩個list同位置的元素配成一對,一次走一維 |
-| `float('inf')` | 無限大;`p == float('inf')` 用來特別處理L∞ |
-| `x ** p`、`** (1 / p)` | p次方、開p次方根 |
-| `set_a & set_b`、`set_a \| set_b` | 集合的交集、聯集 |
-| `[[0] * (n + 1) for _ in range(m + 1)]` | 建立(m+1)×(n+1)的二維表,編輯距離填表用 |
-| `min(a, b, c)` | 取三個數的最小值 |
-| `max(abs(ai - bi) for ...)` | 取最大值,L∞用 |
+這堂課沒有逐行看程式碼,課堂上沒有講解新的語法,所以這裡沒有記錄。`reference.py`裡用到的語法(`zip`、generator expression、`float('inf')`、集合的`&`與`|`、二維串列填表)等之後真的逐行看過,再補進來。
 
 </details>
