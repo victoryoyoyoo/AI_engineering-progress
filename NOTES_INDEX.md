@@ -17,3 +17,4 @@
 | 11 | Singular Value Decomposition | 任何矩陣不管形狀,都可以拆成「旋轉→縮放→旋轉」三個動作:A = U × Σ × Vᵀ | [notes.md](01-math-foundations/11-singular-value-decomposition/notes.md) |
 | 12 | Tensor Operations | Tensor就是維度不限的陣列,寫深度學習最常見的bug是shape對不上,這堂練的是看shape的眼力:reshape、transpose、broadcasting | [notes.md](01-math-foundations/12-tensor-operations/notes.md) |
 | 13 | Numerical Stability | 電腦的小數是有限位數的近似值,凡是可能讓中間值不必要地大或接近的操作,都要換一個數學等價但更安全的寫法:softmax減最大值、log-sum-exp、clip by norm、layer norm | [notes.md](01-math-foundations/13-numerical-stability/notes.md) |
+| 14 | Norms and Distances | 距離 = 兩點相減後量差的長度,選哪種量長度的方法就決定「像」的意思:L1走格子、L2直線、cosine只看方向、Mahalanobis看資料形狀,另有L1/L2正則化與MAE/MSE | [notes.md](01-math-foundations/14-norms-and-distances/notes.md) |
