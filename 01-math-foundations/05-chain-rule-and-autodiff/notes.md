@@ -518,7 +518,7 @@ gradient checking的做法是對每一個輸入變數,拿autodiff算出的梯度
 
 ## 我自己手打的部分
 
-`Value` class 的核心:`__init__`、`__repr__`、`__add__`、`__mul__`、`relu`、`backward` 這幾段親手打過並驗證(中間卡了很多輪反向傳播原理跟VS Code Copilot設定問題)。Step4補充運算(`__neg__`/`__sub__`/`__pow__`/`__truediv__`/`exp`/`log`/`tanh`)跟Neuron/Layer/MLP/XOR訓練迴圈,看邏輯+追蹤具體數字,沒有逐行手打,完整版在`reference.py`。
+`Value` class 的核心:`__init__`、`__repr__`、`__add__`、`__mul__`、`relu`、`backward` 這幾段親手打過並驗證(中間卡了很多輪反向傳播原理跟VS Code Copilot設定問題)。Step4補充運算(`__neg__`/`__sub__`/`__radd__`/`__rmul__`/`__rsub__`/`__pow__`/`__truediv__`/`exp`/`log`/`tanh`)看過程式碼、用具體數字追蹤過邏輯、有懂,但不是自己手打的,所以也放在`practice.py`裡(看過理解過就可以放);Neuron/Layer/MLP/XOR訓練迴圈同樣是看邏輯+追蹤具體數字,但沒有放進`practice.py`,完整版在`reference.py`。
 
 ## 今天評分
 
