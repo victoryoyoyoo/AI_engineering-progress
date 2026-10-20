@@ -2,7 +2,7 @@
 # CUDA基底映像檔,裝好Python 3.12跟AI開發常用套件(PyTorch+CUDA、
 # numpy/pandas/scikit-learn/transformers等)
 
-FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
+FROM --platform=linux/amd64 nvidia/cuda:12.4.1-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
