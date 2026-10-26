@@ -1,7 +1,7 @@
 """
-Lesson 14: Norms and Distances(範數與距離)——完整參考版
+Lesson 14: Norms and Distances(範數與距離) 參考版
 
-這份檔案是「課程原版程式碼 + 詳細中文註解」,依重要程度由上到下排列:
+這份檔案整理了課程程式碼與註解,依重要程度由上到下排列:
     🔴 核心:L1/L2/Lp/L-inf範數與距離、內積、cosine相似度、向量正規化
     🟡 理解層:Mahalanobis、Jaccard、edit distance、KL、Wasserstein、embedding搜尋、KNN
     🟢 之後有空再補:矩陣求逆與共變異數的實作細節、找前k名、L1/L2正則化模擬
@@ -391,7 +391,7 @@ def edit_distance(s1, s2):
 
 
 def kl_divergence(p, q):
-    """KL散度:用Q來近似P會損失多少資訊。不對稱(KL(P||Q) != KL(Q||P)),所以不算真正的距離。(Lesson 9教過)"""
+    """KL散度:用Q來近似P會損失多少資訊。不對稱(KL(P||Q) != KL(Q||P)),所以不算真正的距離。(Lesson 9學過)"""
     # 累加每一格的 p × log(p ÷ q)
     total = 0.0
     for pi, qi in zip(p, q):

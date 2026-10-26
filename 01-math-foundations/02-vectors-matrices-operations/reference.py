@@ -1,8 +1,7 @@
 import random  # 標準函式庫:Matrix.random 用它產生隨機小數,random.seed 用來固定結果
 
-# 這是這堂課(Vectors, Matrices & Operations)官方課程的完整參考程式碼。
-# 逐段講解過邏輯,但依 Top-Down 策略沒有手打進 practice.py,只手打了
-# numpy_version.py 裡那一行核心邏輯。
+# 這是這堂課(Vectors, Matrices & Operations)官方課程的參考程式碼。
+# 先看懂邏輯,依 Top-Down 策略只手打了 numpy_version.py 裡那一行核心邏輯。
 #
 # 檔案結構:
 #   Matrix class : 純 Python 實作矩陣(matmul、加減、逐項乘、轉置、行列式、逆矩陣、單位矩陣)

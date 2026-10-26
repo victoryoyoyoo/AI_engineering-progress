@@ -1,8 +1,7 @@
 import math  # 標準函式庫:cos、sin、pi 用來建立旋轉矩陣
 
-# 這是這堂課(Matrix Transformations)官方課程的完整參考程式碼。
-# Top-Down 策略:看懂邏輯、逐段講解過,不強制手刻。
-# 這份檔案會被 git 追蹤、推上 GitHub。
+# 這是這堂課(Matrix Transformations)官方課程的參考程式碼。
+# Top-Down 策略:先看懂邏輯,不強制手刻。
 #
 # 檔案結構(依重要程度排序):
 #   🔴 特徵值/特徵向量  : 這堂課真正的核心,推導過一次並用程式驗證 A@v == λ*v

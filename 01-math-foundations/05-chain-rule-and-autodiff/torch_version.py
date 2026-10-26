@@ -24,7 +24,7 @@ print("跟 practice.py 的 Value class(自己手刻的自動微分)算出的 dy/
 
 
 def numerical_gradient_check(f, x1, x2, h=1e-7):
-    """用Lesson4教過的中央差分公式,獨立驗證上面PyTorch算出來的梯度對不對"""
+    """用Lesson4學過的中央差分公式,獨立驗證上面PyTorch算出來的梯度對不對"""
     # 每次只動一個變數(另一個固定),看輸出變化除以 2h,就是對該變數的偏導數
     df_dx1 = (f(x1 + h, x2) - f(x1 - h, x2)) / (2 * h)
     df_dx2 = (f(x1, x2 + h) - f(x1, x2 - h)) / (2 * h)
