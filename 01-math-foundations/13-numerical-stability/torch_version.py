@@ -1,5 +1,5 @@
 """
-Lesson 13: Numerical Stability——PyTorch對照
+Lesson 13: Numerical Stability,PyTorch對照
 用純Python手寫的穩定版softmax、log-sum-exp、交叉熵、gradient checking、gradient clipping,
 在PyTorch裡都有內建函式,而且內部已經套用同樣的數值穩定技巧。
 """

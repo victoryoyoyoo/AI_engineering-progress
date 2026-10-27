@@ -1,14 +1,13 @@
 """
 Forward mode vs reverse mode示意圖:種子放在哪裡、往哪個方向傳
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.3))

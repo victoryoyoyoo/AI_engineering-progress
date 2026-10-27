@@ -1,14 +1,13 @@
 """
 Joint / Marginal分布示意圖:聯合機率表格,每一列/每一欄加總變成marginal
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 joint = np.array([[0.10, 0.05, 0.05],

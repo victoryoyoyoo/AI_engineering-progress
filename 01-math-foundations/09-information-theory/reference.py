@@ -1,6 +1,6 @@
 """
 Lesson 9: Information Theory
-熵、交叉熵、KL散度、互資訊——loss function底層的數學語言
+熵、交叉熵、KL散度、互資訊,loss function底層的數學語言
 
 檔案結構:
     🔴 單一事件資訊量、熵、交叉熵、KL散度、互資訊、softmax、分類用的交叉熵損失、困惑度
@@ -110,7 +110,7 @@ def softmax(logits):
 
 def cross_entropy_loss(true_class, logits):
     """分類任務的交叉熵損失: P是one-hot(真實類別機率=1,其他=0)
-    公式簡化成: H(P,Q) = -log(q(true_class)) —— 只看模型給真實類別的機率
+    公式簡化成: H(P,Q) = -log(q(true_class)),只看模型給真實類別的機率
     """
     # 先用softmax把模型輸出的logits變成機率分布Q
     probs = softmax(logits)
@@ -134,7 +134,7 @@ def perplexity(avg_cross_entropy, base="e"):
 
 # === 🟡 ===
 def negative_log_likelihood(labels, all_logits):
-    """負對數概似(NLL)——跟cross_entropy_loss取平均後數學上完全相同"""
+    """負對數概似(NLL),跟cross_entropy_loss取平均後數學上完全相同"""
     # labels[k]是第k筆資料的真實類別,all_logits[k]是模型對第k筆的輸出
     # 每筆算一次cross_entropy_loss,加總後除以筆數 = 平均損失
     # 最小化平均交叉熵 = 最大化資料的概似(likelihood),兩種說法是同一件事
@@ -476,7 +476,7 @@ if __name__ == "__main__":
     # H(X):把每一列加總得到X的邊際分布,再算熵
     hx_dep = entropy([sum(row) for row in joint_dep])
     print(f"    H(X):                     {hx_dep:.4f} bits")
-    # 連鎖法則驗證:H(X,Y) = H(X) + H(Y|X)
+    # 連鎖律驗證:H(X,Y) = H(X) + H(Y|X)
     print(f"    Verify: H(X,Y) = H(X) + H(Y|X) = {hx_dep:.4f} + {conditional_entropy(joint_dep):.4f} = {hx_dep + conditional_entropy(joint_dep):.4f}")
 
     print(f"\n  Independent joint distribution: {joint_indep}")

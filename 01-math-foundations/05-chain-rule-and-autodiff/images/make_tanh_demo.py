@@ -1,14 +1,13 @@
 """
 tanh(雙曲正切)示意圖:把任何數字壓縮成-1到1之間的S形曲線,MLP裡的激活函數
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 x = np.linspace(-4, 4, 400)

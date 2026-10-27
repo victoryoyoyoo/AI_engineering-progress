@@ -1,13 +1,12 @@
 """
 矩陣乘向量示意圖:矩陣的每一列分別跟輸入向量做一次內積,收集成輸出向量
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 W = [[0.1, -0.2, 0.3], [0.4, 0.5, -0.1]]

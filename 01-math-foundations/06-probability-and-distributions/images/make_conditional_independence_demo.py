@@ -3,14 +3,13 @@ sample space/event/conditional probability/independence 示意圖:
 左圖用文氏圖畫出樣本空間、事件A、事件B,P(A|B)=A∩B的面積佔B的比例
 右圖對照獨立事件(A的圓完全不受B是否發生影響)
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, axes = plt.subplots(1, 2, figsize=(10.5, 5))

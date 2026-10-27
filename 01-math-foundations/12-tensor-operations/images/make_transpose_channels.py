@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY
 
 import numpy as np
@@ -45,5 +45,5 @@ for k in range(3):
             ax.text(x0 + c * 0.8 + 0.4, 2.6 - r * 0.9 + 0.45, str(img[r, c, k]),
                     ha="center", va="center", fontsize=11)
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "transpose_channels.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "transpose_channels.png"), bbox_inches="tight")
 print("saved")

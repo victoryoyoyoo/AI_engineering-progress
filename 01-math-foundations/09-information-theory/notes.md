@@ -6,15 +6,15 @@
 | 名詞 | 意思 |
 |---|---|
 | Information content（資訊量/驚訝程度） | 單一事件的驚訝程度:-log(p(x)) |
-| Entropy（熵） | 整個分布的平均驚訝程度,不確定性的下限 |
-| Cross-entropy（交叉熵） | 用模型猜的Q去描述真實分布P,平均要花多少bit(=分類loss) |
-| KL divergence（KL散度） | 用Q取代P多浪費的bit數,不對稱,不是真正的距離 |
-| Mutual information（互資訊） | 知道一個變數,能讓你對另一個變數的不確定性減少多少 |
-| One-hot（獨熱編碼） | 正確答案位置是1,其他全部是0的向量表示法 |
-| Perplexity（困惑度） | 交叉熵取指數,模型平均像在幾個選項間猶豫 |
-| Softmax（—） | 把任意實數向量轉成合法機率分布(總和=1) |
+| Entropy（熵） | 整個分布的平均驚訝程度，就是不確定性本身，也是平均編碼長度的下限 |
+| Cross-entropy（交叉熵） | 用模型猜的Q去描述真實分布P，平均要花多少bit(=分類loss) |
+| KL divergence（KL散度） | 用Q取代P多浪費的bit數，不對稱，不是真正的距離 |
+| Mutual information（互資訊） | 知道一個變數，能讓你對另一個變數的不確定性減少多少 |
+| One-hot（獨熱編碼） | 正確答案位置是1，其他全部是0的向量表示法 |
+| Perplexity（困惑度） | 交叉熵取指數，模型平均像在幾個選項間猶豫 |
+| Softmax | 把任意實數向量轉成合法機率分布(總和=1) |
 | Negative log-likelihood（負對數概似） | 跟cross-entropy loss數學上完全相同 |
-| Bits / Nats（—） | log base 2 / log base e 的單位差別,PyTorch預設用nats |
+| Bits / Nats | log base 2 / log base e 的單位差別，PyTorch預設用nats |
 
 ![](images/information_content_bars.png)
 ![](images/entropy_demo.png)
@@ -23,7 +23,7 @@
 | 概念 | 我的理解 |
 |---|---|
 | Information Content | 單一事件的驚訝程度，定義為 `-log(p)`。發生機率越低的事件，發生時帶來的資訊量越大。 |
-| Entropy | 整個分布的平均驚訝程度，代表系統本質的不確定性下限，分布越均勻熵越高。 |
+| Entropy | 整個分布的平均驚訝程度，代表分布本身的不確定性，也是平均編碼長度的下限，分布越均勻熵越高。 |
 | Cross-Entropy | 用模型分布 Q 去逼近真實分布 P 時平均所需的編碼長度，即神經網路分類任務常用的損失函數。 |
 | KL Divergence | `D_KL(P \|\| Q) = H(P, Q) - H(P)`，代表用 Q 取代 P 所額外浪費的成本。KL 散度不具對稱性，不是嚴格的幾何距離。 |
 | Mutual Information | 衡量兩個變數共享的資訊量，能捕捉非線性關聯，比僅限線性關係的 Pearson 相關係數更具表達力。 |

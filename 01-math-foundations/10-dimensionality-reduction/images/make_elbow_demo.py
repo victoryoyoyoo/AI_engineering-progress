@@ -1,18 +1,16 @@
 """
 Elbow method示意圖:explained variance ratio隨主成分數量遞減,找斷崖點決定留幾維
 """
+import os
 import sys
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import PCA
 
 np.random.seed(7)

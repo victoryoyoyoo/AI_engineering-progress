@@ -1,6 +1,5 @@
 # Phase 1 / Lesson 1: Linear Algebra Intuition
 # 參考版本，對照官方教材 docs/en.md + code/vectors.py
-# 先讀懂、跑起來看結果，之後憑印象重打
 #
 # 整份檔案的結構:
 #   Vector class : 用純 Python list 實作向量(加減、純量乘、內積、長度、正規化、餘弦相似度、投影)
@@ -72,7 +71,6 @@ class Vector:
     def angle_between(self, other):
         # 算兩個向量的夾角（度數）。cosine_similarity 算出來的是 cos(角度)，
         # 這裡用 acos（反餘弦）把 cos 值換算回實際角度，degrees 再把弧度轉成度數。
-        # ⚠️ 這一項這堂課只帶著跑過計算結果，沒真的講清楚為什麼 cos_theta 能換算成角度。
         cos_theta = self.cosine_similarity(other)
         # min/max 夾擠:浮點數運算會有微小誤差,cos 可能算成 1.0000000000000002,
         # acos 收到超出 [-1, 1] 的值會直接丟 ValueError,所以先壓回合法範圍
@@ -86,7 +84,6 @@ class Vector:
         # 這條線上的影子有多長、指向哪。scalar 算的是「影子佔 other 長度的比例」，
         # 乘回 other 的每個分量就是影子這個向量本身。
         # 例:self=[3,4], other=[1,0] → scalar = (3*1+4*0)/(1*1+0*0) = 3 → 影子 = [3,0]
-        # ⚠️ 這堂課只講過怎麼算、沒有真的講清楚幾何上「影子」這個直覺，是 Gram-Schmidt 的內部工具。
         scalar = self.dot(other) / other.dot(other)
         return Vector([scalar * x for x in other.components])
 
@@ -132,7 +129,6 @@ class Matrix:
         return Matrix(rows)
 
     # === 🟢 ===
-    # transpose(矩陣轉置),Matrix class簡化時整個拿掉,完全沒教
     def transpose(self):
         # 轉置：行列互換,原本的第 i 列第 j 欄搬到第 j 列第 i 欄
         # [[1,2],[3,4]] 轉置後是 [[1,3],[2,4]];shape (m, n) 變成 (n, m)
@@ -143,13 +139,11 @@ class Matrix:
         ])
 
     # === 🟢 ===
-    # rank(矩陣的秩),只提過名詞、測驗答錯,LoRA會用到,優先度不低
     def rank(self):
         # 矩陣的秩(rank):矩陣裡「真正獨立」的列數量，也就是把每一列當向量，
-        # 有幾個是線性獨立的(邏輯跟上面的 is_independent 一樣，用列運算算)。
+        # 有幾個是線性獨立的(邏輯跟下面的 is_independent 一樣，用列運算算)。
         # rank 越低代表列跟列之間重複、有共線的資訊越多。
-        # ⚠️ 這堂課測驗答錯的就是這題，講得不夠清楚；這個概念之後LoRA會用到
-        # (LoRA用低rank矩陣去逼近一個大矩陣，減少要訓練的參數量)，優先度不低，值得回頭補。
+        # LoRA 用低 rank 矩陣去逼近一個大矩陣，減少要訓練的參數量。
         #
         # 演算法是高斯消去法(Gaussian elimination):
         #   逐欄尋找「主元(pivot)」→ 把主元列換到目前位置 → 主元列縮成 1 →
@@ -190,7 +184,6 @@ def is_independent(vectors):
     # 乘個倍數湊出來(例如 [2,1,0] = 2*[1,0,0] + [0,1,0]，這樣就不獨立)。
     # 做法是列運算(高斯消去法):把向量當矩陣的列，一路消去，最後還剩幾個
     # 「非零列」(rank，矩陣的秩)，如果 rank 等於向量的數量，就是線性獨立。
-    # ⚠️ 這堂課只提過名詞，沒有帶著手算過列運算的過程，測驗這題也答錯過。
     n = len(vectors)  # n:向量個數,rank 必須等於它才算獨立
     if n == 0:
         # 空集合視為獨立(數學慣例)
@@ -225,7 +218,7 @@ def gram_schmidt(vectors):
     # 長度都是1(歸一)。做法是一個一個處理，每個新向量都先扣掉它在前面
     # 已處理好的向量方向上的投影(project_onto)，扣掉之後剩下的部分保證
     # 跟前面的都垂直，再正規化(normalize)成長度1。
-    # ⚠️ 這堂課只理解邏輯、沒手打，用途是數值方法/QR分解，不是日常AI開發常直接手刻的東西。
+    # 用途是數值方法/QR分解，不是日常AI開發常直接手刻的東西。
     orthonormal = []  # 已經處理好的正交歸一向量,會一路累積
     for v in vectors:
         w = v

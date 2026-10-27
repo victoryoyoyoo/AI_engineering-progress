@@ -2,14 +2,13 @@
 One-hot(獨熱編碼)示意圖:正確類別位置是1,其他全部是0,
 代回cross-entropy完整公式後,0乘任何數字都是0,只剩下正確類別那一項
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 classes = ["貓", "狗", "鳥", "魚"]

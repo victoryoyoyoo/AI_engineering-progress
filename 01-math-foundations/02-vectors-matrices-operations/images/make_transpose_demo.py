@@ -1,14 +1,13 @@
 """
 transpose(轉置)示意圖:矩陣的行跟列互換,[i][j] 轉置後變成 [j][i]
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 A = np.array([[1, 2, 3], [4, 5, 6]])

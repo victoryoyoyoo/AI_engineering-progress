@@ -1,14 +1,13 @@
 """
 凸函數 vs 非凸函數示意圖:凸函數只有一個最小值,非凸函數有局部最小值/鞍點/平坦區域
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 x = np.linspace(-3, 3, 300)

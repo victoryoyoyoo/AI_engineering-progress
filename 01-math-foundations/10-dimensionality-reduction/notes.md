@@ -5,19 +5,19 @@
 ## 名詞
 | 名詞 | 意思 |
 |---|---|
-| Dimensionality reduction（降維） | 把高維資料壓縮成低維,同時盡量保留有用資訊 |
-| Curse of dimensionality（維度詛咒） | 維度越高,資料點之間的距離越趨於相同,「近」失去意義 |
-| PCA (Principal Component Analysis)（主成分分析） | 找出資料變異最大的方向,依變異量排序,只留前k個方向 |
-| Eigenvector / Eigenvalue（特徵向量/特徵值） | 特徵向量是矩陣變換後方向不變的特殊方向,特徵值是那個方向被拉長/壓縮的倍數;PCA裡特徵向量=變異方向,特徵值=那個方向的變異量大小 |
-| Covariance（共變異數） | 量化兩個特徵是不是傾向一起變大變小(正相關)、一個大一個小(負相關),還是無關(接近0) |
-| Covariance matrix（共變異數矩陣） | 每對特徵之間共變異數排成的表格,一定是對稱矩陣(cov(i,j)=cov(j,i)),對角線是各特徵自己的變異數 |
-| Explained variance ratio（解釋變異比例） | 每個主成分佔總變異量的比例,判斷保留k個維度夠不夠 |
-| Reconstruction error（還原誤差） | 降維後再還原回原始維度,跟原始資料差多少(MSE) |
-| Kernel trick（核技巧） | 不用真的算出高維座標,只算兩兩資料點的相似度(核矩陣)就能做到等效的高維運算 |
-| Kernel PCA（核PCA） | 用kernel trick在隱含的高維空間做PCA,能處理非線性資料(如同心圓) |
-| t-SNE（—） | 保留「鄰居關係」的非線性降維法,常用來畫圖視覺化,有perplexity參數(跟Lesson 9的困惑度只是同名,概念不同) |
-| UMAP（—） | 類似t-SNE但更快、更保留全域結構,常用n_neighbors/min_dist |
-| Manifold（流形） | 嵌在高維空間裡的低維曲面,例如一張紙揉皺後丟進3D空間,本質還是一個2D曲面 |
+| Dimensionality reduction（降維） | 把高維資料壓縮成低維，同時盡量保留有用資訊 |
+| Curse of dimensionality（維度詛咒） | 維度越高，資料點之間的距離越趨於相同，「近」失去意義 |
+| PCA (Principal Component Analysis)（主成分分析） | 找出資料變異最大的方向，依變異量排序，只留前k個方向 |
+| Eigenvector / Eigenvalue（特徵向量/特徵值） | 特徵向量是矩陣變換後方向不變的特殊方向，特徵值是那個方向被拉長/壓縮的倍數;PCA裡特徵向量=變異方向，特徵值=那個方向的變異量大小 |
+| Covariance（共變異數） | 量化兩個特徵是不是傾向一起變大變小(正相關)、一個大一個小(負相關)，還是無關(接近0) |
+| Covariance matrix（共變異數矩陣） | 每對特徵之間共變異數排成的表格，一定是對稱矩陣(cov(i,j)=cov(j,i))，對角線是各特徵自己的變異數 |
+| Explained variance ratio（解釋變異比例） | 每個主成分佔總變異量的比例，判斷保留k個維度夠不夠 |
+| Reconstruction error（還原誤差） | 降維後再還原回原始維度，跟原始資料差多少(MSE) |
+| Kernel trick（核技巧） | 不用真的算出高維座標，只算兩兩資料點的相似度(核矩陣)就能做到等效的高維運算 |
+| Kernel PCA（核PCA） | 用kernel trick在隱含的高維空間做PCA，能處理非線性資料(如同心圓) |
+| t-SNE | 保留「鄰居關係」的非線性降維法，常用來畫圖視覺化，有perplexity參數(跟Lesson 9的困惑度只是同名，概念不同) |
+| UMAP | 類似t-SNE但更快、更保留全域結構，常用n_neighbors/min_dist |
+| Manifold（流形） | 嵌在高維空間裡的低維曲面，例如一張紙揉皺後丟進3D空間，本質還是一個2D曲面 |
 
 ![](images/pca_tsne_umap_comparison.png)
 ![](images/covariance_demo.png)

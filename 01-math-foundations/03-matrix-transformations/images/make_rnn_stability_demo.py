@@ -2,14 +2,13 @@
 RNN穩定性示意圖:eigenvalue反覆相乘(對應RNN反覆套用同一個權重矩陣),
 |eigenvalue|>1 指數爆炸、<1 指數消失、=1 保持穩定
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 t = np.arange(0, 21)

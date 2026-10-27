@@ -189,7 +189,7 @@ def accuracy(centroids: dict[int, list[float]], pairs: Sequence[tuple[Sequence[f
     return sum(predict(centroids, row) == label for row, label in pairs) / len(pairs)
 
 
-# 內積;strict=True讓長度不同時直接報錯,不會默默少算
+# 內積(索引迴圈版);長度不同時不會報錯
 def dot_index_loop(a: Sequence[float], b: Sequence[float]) -> float:
     total = 0.0
     for i in range(len(a)):
@@ -197,7 +197,7 @@ def dot_index_loop(a: Sequence[float], b: Sequence[float]) -> float:
     return total
 
 
-# 內積;strict=True讓長度不同時直接報錯,不會默默少算
+# 內積(map 版);長度不同時只算到較短的那個
 def dot_map(a: Sequence[float], b: Sequence[float]) -> float:
     return sum(map(operator.mul, a, b))
 

@@ -1,14 +1,12 @@
 """
 PCA / t-SNE / UMAP 三種降維法對照:同一份多群資料,各自降到2維後的樣子
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 from sklearn.datasets import make_blobs

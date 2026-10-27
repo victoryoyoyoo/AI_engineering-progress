@@ -2,8 +2,6 @@ import math    # 標準函式庫:sin、cos、exp 用來測試各種函數的導�
 import random  # 標準函式庫:給線性迴歸的權重做隨機初始化(gauss = 常態分布)
 
 # Lesson 4:Calculus for ML(微積分)
-# 這堂課是 Top-Down + JIT 策略,課程本身標記 Type: Learn(不是 Build 型的課)
-# 這份 reference.py 是完整程式碼 + 逐段中文解釋,practice.py 只記錄實際手打的部分
 #
 # 整份檔案的主軸:機器學習訓練 = 反覆「看損失函數往哪個方向會變小,然後往那個方向走一小步」。
 #   導數(derivative)  : 單變數函數在某一點的斜率,說明「輸入動一點點,輸出變多少」
@@ -86,7 +84,7 @@ def demo_gradient_descent_2d():
 
 
 # ---------------------------------------------------------------------------
-# Step 8: 完整示範——用梯度下降訓練一個最簡單的線性迴歸 y = wx + b
+# Step 8: 完整示範,用梯度下降訓練一個最簡單的線性迴歸 y = wx + b
 # ---------------------------------------------------------------------------
 def demo_linear_regression():
     """
@@ -130,7 +128,7 @@ def demo_linear_regression():
         if epoch % 40 == 0 or epoch == 199:
             print(f"epoch {epoch:3d}  w={w:.4f}  b={b:.4f}  loss={total_loss:.6f}")
 
-    # 訓練結束後 w 應該接近 2、b 接近 1
+    # 固定種子下 200 輪後約 w=2.08、b=0.73:w 已接近 2,b 還在往 1 靠近,loss 已很小
     print(f"\nLearned: y = {w:.2f}x + {b:.2f}")
     print(f"Actual:  y = 2x + 1")
 
@@ -246,7 +244,7 @@ def demo_hessian():
 
 
 # ---------------------------------------------------------------------------
-# Step 7: 泰勒展開(Taylor series)——用多項式局部逼近一個函數
+# Step 7: 泰勒展開(Taylor series),用多項式局部逼近一個函數
 # ---------------------------------------------------------------------------
 def taylor_approx(f, f_prime, f_double_prime, x0, h, order=2):
     """

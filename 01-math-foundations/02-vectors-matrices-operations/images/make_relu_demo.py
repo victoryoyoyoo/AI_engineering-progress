@@ -1,14 +1,13 @@
 """
 relu 示意圖: max(0, x),負數全部砍成0、正數維持原樣,是 relu(W@x+b) 這一層裡的非線性來源
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 x = np.linspace(-4, 4, 400)

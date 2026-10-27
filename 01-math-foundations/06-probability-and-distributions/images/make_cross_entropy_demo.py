@@ -2,14 +2,13 @@
 Cross-entropy loss曲線: loss = -log(模型對正確答案給的機率)
 機率越接近1,loss越接近0;機率越接近0,loss趨近無窮大
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 p = np.linspace(0.01, 1, 300)

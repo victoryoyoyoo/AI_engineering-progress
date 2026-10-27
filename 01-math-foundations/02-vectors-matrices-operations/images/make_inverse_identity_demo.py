@@ -2,14 +2,13 @@
 inverse(逆矩陣) 與 identity matrix(單位矩陣) 示意圖:
 A 把 X 搬到 Y,A_inv 把 Y 搬回 X,A @ A_inv = identity(不改變任何東西的矩陣)
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 A = np.array([[2.0, 0.5], [0.3, 1.5]])

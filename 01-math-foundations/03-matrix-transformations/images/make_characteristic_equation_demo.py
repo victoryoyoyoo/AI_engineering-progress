@@ -1,18 +1,17 @@
 """
 characteristic equation示意圖: det(A-λI) 是關於 λ 的一元二次函式,它的根就是 eigenvalue
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 import sys
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import eigenvalues_2x2  # noqa: E402
 
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 A = np.array([[2, 1], [1, 2]])

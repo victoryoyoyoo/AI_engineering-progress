@@ -1,17 +1,16 @@
 """
 MLE vs MAP對照圖:丟10次硬幣7次正面,MLE直接算比例,MAP被先驗拉回0.5一點
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
-labels = ["先驗信念\nBeta(2,2)均值", "MLE估計\n(只看資料)\n7/10", "MAP估計\n(資料+先驗)\n(2+7)/(2+2+10)"]
-values = [0.5, 0.7, 9 / 14]
+labels = ["先驗信念\nBeta(2,2)均值", "MLE估計\n(只看資料)\n7/10", "MAP估計\n(資料+先驗)\n(2+7-1)/(2+2+10-2)"]
+values = [0.5, 0.7, 8 / 12]
 colors = ["#8172B2", "#C44E52", "#4C72B0"]
 
 fig, ax = plt.subplots(figsize=(7.5, 5.2))

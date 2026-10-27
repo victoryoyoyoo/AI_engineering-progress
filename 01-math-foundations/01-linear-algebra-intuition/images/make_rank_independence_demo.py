@@ -2,14 +2,13 @@
 linear independence(線性獨立) 與 rank(秩) 示意圖:
 左邊三個向量互相獨立(撐出滿滿的2維空間) vs 右邊第三個向量是前兩個的線性組合(冗餘,不增加維度)
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, axes = plt.subplots(1, 2, figsize=(11, 5.5))

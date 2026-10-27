@@ -1,8 +1,8 @@
 """
 Lesson 5: Chain Rule & Automatic Differentiation
-自動微分引擎(micrograd 風格)——PyTorch/TensorFlow 底層機制的迷你版
+自動微分引擎(micrograd 風格),PyTorch/TensorFlow 底層機制的迷你版
 
-核心公式(鏈鎖法則 Chain Rule):
+核心公式(連鎖律 Chain Rule):
     y = f(g(x))  =>  dy/dx = f'(g(x)) * g'(x)
     每多一層合成函數,就多乘一個「局部導數」
 
@@ -26,13 +26,13 @@ import random  # 標準函式庫:初始化神經元權重、固定亂數種子
 
 # === 🔴 ===
 # ============================================================
-# Step 1-4: Value class —— 自動微分引擎本體
+# Step 1-4: Value class,自動微分引擎本體
 # ============================================================
 class Value:
     """
     包住一個數字,順便記錄:
     - data: 這個數字本身的值
-    - grad: dLoss/d(這個數字) —— 反向傳播算完才會有值,預設是0
+    - grad: dLoss/d(這個數字),反向傳播算完才會有值,預設是0
     - _prev: 這個數字是由哪些 Value 算出來的(小孩節點)
     - _backward: 「如果我知道自己的 grad,要怎麼把 grad 傳給我的小孩」這個動作
     """
@@ -79,7 +79,7 @@ class Value:
         out = Value(self.data * other.data, (self, other), '*')
 
         def _backward():
-            # 連鎖法則:局部導數(另一個數的值)× 上游梯度(out.grad)
+            # 連鎖律:局部導數(另一個數的值)× 上游梯度(out.grad)
             self.grad += other.data * out.grad
             other.grad += self.data * out.grad
         out._backward = _backward
@@ -184,7 +184,7 @@ class Value:
 
 # === 🟡 ===
 # ============================================================
-# Step 5: 用 Value 蓋神經網路 —— Neuron / Layer / MLP
+# Step 5: 用 Value 蓋神經網路,Neuron / Layer / MLP
 # ============================================================
 class Neuron:
     """一個神經元 = tanh(w1*x1 + w2*x2 + ... + b),w跟b都是可訓練的Value"""
@@ -261,8 +261,8 @@ def demo_train_xor():
         # 1. 前向傳播:對每筆資料算出預測(Value,已經帶著計算圖)
         preds = [model(x) for x in xs]
         # 2. 損失:每筆的 (預測 - 目標)² 加總
-        # 這裡是誤差平方的加總(沒有除以筆數),對訓練效果沒有差別,只差一個固定倍數
-        loss = sum((p - y) ** 2 for p, y in zip(preds, ys))  # MSE(均方誤差)
+        # 這裡是誤差平方的加總(SSE,沒有除以筆數,所以不叫 MSE),對訓練效果沒有差別,只差一個固定倍數
+        loss = sum((p - y) ** 2 for p, y in zip(preds, ys))  # SSE(誤差平方和)
 
         # 3. 反向傳播前,先把所有參數的梯度清零
         for p in model.parameters():
@@ -288,7 +288,7 @@ def demo_train_xor():
 
 
 # ============================================================
-# Step 6: 梯度檢查(Gradient Checking)—— 驗證 autodiff 正不正確
+# Step 6: 梯度檢查(Gradient Checking),驗證 autodiff 正不正確
 # ============================================================
 def gradient_check(build_expr, x_val, h=1e-7):
     """
@@ -346,7 +346,7 @@ def demo_manual_verify():
     print(f"dy/dx1 = {x1.grad}")      # 3.0 (= x2的值)
     print(f"dy/dx2 = {x2.grad}")      # 2.0 (= x1的值)
     print("手動推導:y = relu(x1*x2+1),因為輸入>0,relu是identity")
-    print("         dy/dx1 = x2 = 3, dy/dx2 = x1 = 2 —— 跟程式算出來一致\n")
+    print("         dy/dx1 = x2 = 3, dy/dx2 = x1 = 2,跟程式算出來一致\n")
 
 
 def demo_more_complex():
@@ -368,7 +368,7 @@ def demo_more_complex():
     print("  x1 = torch.tensor(2.0, requires_grad=True)")
     print("  x2 = torch.tensor(3.0, requires_grad=True)")
     print("  y = torch.relu(x1 * x2 + 1)")
-    print("  y.backward()  # x1.grad=3.0, x2.grad=2.0 —— 跟上面Value引擎算出的結果一致")
+    print("  y.backward()  # x1.grad=3.0, x2.grad=2.0,跟上面Value引擎算出的結果一致")
     print()
 
 

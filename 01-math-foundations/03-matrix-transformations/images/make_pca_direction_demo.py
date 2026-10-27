@@ -1,14 +1,13 @@
 """
 PCA示意圖:協方差矩陣最大eigenvalue對應的eigenvector,就是資料變異量最大的方向(第一主成分)
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 rng = np.random.default_rng(7)

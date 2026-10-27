@@ -2,14 +2,13 @@
 SGD/mini-batch的「雜訊」示意圖:Batch GD走的路徑平滑精確,
 SGD/mini-batch因為每步用估計梯度,路徑吵雜,但這個雜訊有機會把optimizer推出淺的局部最小值
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 rng = np.random.default_rng(3)

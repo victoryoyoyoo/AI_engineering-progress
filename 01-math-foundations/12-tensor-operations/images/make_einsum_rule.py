@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, GRAY, GOLD
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN, GOLD
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
@@ -35,5 +35,5 @@ for n, (expr, name, why, ex, color) in enumerate(rows):
     ax.text(3.3, y - 0.2, why, fontsize=10, va="center")
     ax.text(9.0, y, ex, fontsize=10, va="center")
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "einsum_rules.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "einsum_rules.png"), bbox_inches="tight")
 print("saved")

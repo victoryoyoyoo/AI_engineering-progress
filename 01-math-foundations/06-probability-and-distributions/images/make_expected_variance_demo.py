@@ -2,17 +2,16 @@
 Expected value(期望值)與 Variance(變異數) 示意圖:骰子範例,用reference.py同一組數字
 E[X]=3.5是機率加權平均(不一定要是骰子能擲出的值),Var(X)是每個結果離E[X]有多分散
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
+import os
 import sys
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import expected_value, variance  # noqa: E402
 
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 die_values = [1, 2, 3, 4, 5, 6]

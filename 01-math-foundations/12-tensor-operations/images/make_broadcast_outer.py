@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -49,5 +49,5 @@ ax.text(7.9, 3.0, "=", fontsize=22, ha="center")
 ax.text(10.4, 4.25, "結果 shape (3, 4)", ha="center", fontsize=11, fontweight="bold")
 draw(9.1, 3.5, R, GREEN)
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "broadcast_outer.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "broadcast_outer.png"), bbox_inches="tight")
 print("saved")

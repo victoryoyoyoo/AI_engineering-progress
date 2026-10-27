@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, GRAY, GOLD
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN, GRAY
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
@@ -39,5 +39,5 @@ ax.text(10.2, 2.95, "a.T  shape (3, 2)\nstrides (1, 3)", ha="center", fontsize=1
 small_grid(9.5, 2.0, 3, 2, [[1, 4], [2, 5], [3, 6]], GREEN)
 ax.text(10.2, 0.0, "往下一列 = 跳 1 格\n往右一欄 = 跳 3 格", ha="center", fontsize=10)
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "strides.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "strides.png"), bbox_inches="tight")
 print("saved")

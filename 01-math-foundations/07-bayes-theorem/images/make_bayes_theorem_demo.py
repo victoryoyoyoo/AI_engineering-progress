@@ -2,13 +2,12 @@
 貝氏定理示意圖:Prior(先驗)乘上Likelihood(似然)、除以Evidence(證據),得到Posterior(後驗)
 用flow示意四個量各自扮演的角色
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, ax = plt.subplots(figsize=(9.5, 4))

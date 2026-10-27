@@ -1,13 +1,12 @@
 """
 MLP架構示意圖:Neuron -> Layer -> MLP,對應reference.py裡MLP([2,4,1])的結構
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, ax = plt.subplots(figsize=(8, 5.5))

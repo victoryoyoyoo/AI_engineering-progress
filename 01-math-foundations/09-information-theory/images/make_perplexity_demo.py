@@ -2,18 +2,16 @@
 Perplexity示意圖:把交叉熵換算成「像在幾個選項間猶豫」的直覺數字,
 對照vocab_size,perplexity<vocab_size才代表比隨機亂猜好
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 vocab_size = 50
-random_model_perplexity = 81.23   # 課堂demo實際跑出來的數字(未訓練模型)
+random_model_perplexity = 81.23   # 未訓練模型實際跑出來的數字
 good_model_perplexity = 8.0        # 示意:訓練好的模型應該遠低於vocab_size
 
 labels = ["隨機亂猜\n(vocab_size)", "未訓練模型\n(demo實際結果)", "訓練好的模型\n(示意)"]

@@ -1,7 +1,6 @@
 import random  # 標準函式庫:Matrix.random 用它產生隨機小數,random.seed 用來固定結果
 
-# 這是這堂課(Vectors, Matrices & Operations)官方課程的參考程式碼。
-# 先看懂邏輯,依 Top-Down 策略只手打了 numpy_version.py 裡那一行核心邏輯。
+# Vectors, Matrices & Operations 的參考程式碼。
 #
 # 檔案結構:
 #   Matrix class : 純 Python 實作矩陣(matmul、加減、逐項乘、轉置、行列式、逆矩陣、單位矩陣)
@@ -27,7 +26,7 @@ class Matrix:
     def matmul(self, other):
         # 矩陣乘法(真正的matrix multiply,不是逐項相乘)
         # 形狀規則:(m,n) @ (n,p) = (m,p),中間的n要對上
-        # 對照C++三層迴圈:i是外層列、j是中層行、k是內層做內積加總
+        # 三層迴圈:i是外層列、j是中層行、k是內層做內積加總
         # for(i) for(j) { sum=0; for(k) sum += A[i][k]*B[k][j]; result[i][j]=sum; }
         # 結果第 (i,j) 格 = 左矩陣第 i 列 與 右矩陣第 j 行 的內積
         # 例:[[1,2],[3,4]] @ [[5,6],[7,8]] 的第 (0,0) 格 = 1*5 + 2*7 = 19
@@ -99,7 +98,7 @@ class Matrix:
                     [self.data[i][j] + other.data[i][0] for j in range(self.cols)]
                     for i in range(self.rows)
                 ])
-        # 形狀對不上、也不能 broadcasting,就主動丟出錯誤(raise,對照C++的throw)
+        # 形狀對不上、也不能 broadcasting,就主動丟出錯誤(raise)
         raise ValueError(f"Cannot add shapes {self.shape} and {other.shape}")
 
     def __sub__(self, other):
@@ -119,7 +118,7 @@ class Matrix:
 
     def element_wise_multiply(self, other):
         # 逐項相乘(element-wise):同位置的數字互乘,形狀不變。
-        # 跟下面的 matmul 是完全不同的運算,不要搞混
+        # 跟上面的 matmul 是完全不同的運算,不要搞混
         # 例:[[1,2],[3,4]] 逐項乘 [[5,6],[7,8]] = [[5,12],[21,32]];matmul 則是 [[19,22],[43,50]]
         return Matrix([
             [self.data[i][j] * other.data[i][j] for j in range(self.cols)]
@@ -180,9 +179,9 @@ class Matrix:
 
     @staticmethod
     def identity(n):
-        # 單位矩陣:對角線是1、其餘是0,乘上任何東西都不改變它。
+        # 單位矩陣:對角線是1、其餘是0,任何(尺寸相容的)矩陣乘上它都不變。
         # @staticmethod 代表這個方法不需要「先有一個矩陣物件」才能呼叫,
-        # 直接用 Matrix.identity(3) 就能建出一個新矩陣,跟C++的static method概念一樣
+        # 直接用 Matrix.identity(3) 就能建出一個新矩陣
         # 條件運算式 `1 if i == j else 0`:行列編號相同(對角線)放 1,否則放 0
         return Matrix([
             [1 if i == j else 0 for j in range(n)]
@@ -242,7 +241,7 @@ class Vector:
         return sum(x ** 2 for x in self.data) ** 0.5
 
     def normalize(self):
-        # 正規化:除以自己的長度,變成長度=1、方向不變的向量(這課沒手打的項目)
+        # 正規化:除以自己的長度,變成長度=1、方向不變的向量
         # [3,4] / 5 = [0.6, 0.8]
         mag = self.magnitude()
         return Vector([x / mag for x in self.data])
@@ -251,7 +250,7 @@ class Vector:
 # === 🟡 ===
 def relu_matrix(m):
     # ReLU 激活函數:負數變0、正數維持原樣,逐元素進行。
-    # 跟 numpy_version.py 裡手打的 np.maximum(0, x) 是同一件事,只是這裡是純Python版本
+    # 跟 numpy_version.py 裡的 np.maximum(0, x) 是同一件事,只是這裡是純Python版本
     # max(0, val):val 是負數時回傳 0,否則回傳 val 本身;巢狀 list comprehension 逐列逐格處理
     # 為什麼需要 ReLU:沒有它,多層矩陣相乘等價於一層矩陣,網路學不到非線性關係
     return Matrix([[max(0, val) for val in row] for row in m.data])
@@ -403,7 +402,7 @@ def demo_vectors():
 
 
 def demo_weight_matrix_intuition():
-    # 示範:weight matrix 的每一列在做什麼——這裡刻意設計成
+    # 示範:weight matrix 的每一列在做什麼,這裡刻意設計成
     # 第0列複製輸入特徵0、第1列複製輸入特徵1、第2列取兩者平均,
     # 用來直觀感受「一列 = 一種從輸入抽取資訊的方式」
     print("\n" + "=" * 60)
@@ -435,7 +434,7 @@ def demo_weight_matrix_intuition():
 
 
 if __name__ == "__main__":
-    # 依序跑過每個demo,__main__ 判斷是C++裡沒有的東西:
+    # 依序跑每個demo,__main__ 判斷是讓檔案能被直接執行、被 import 時不會自動跑:
     # 這個檔案被直接執行時這段才會跑,被別的檔案import進去時不會跑
     demo_vectors()
     demo_basic_operations()

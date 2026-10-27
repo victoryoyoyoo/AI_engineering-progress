@@ -2,15 +2,14 @@
 鞍點示意圖:3D曲面對照,鞍點某個方向往下彎、另一個方向往上彎,
 梯度=0但不是真正最低點
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d import Axes3D  # noqa
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 X, Y = np.meshgrid(np.linspace(-2, 2, 80), np.linspace(-2, 2, 80))

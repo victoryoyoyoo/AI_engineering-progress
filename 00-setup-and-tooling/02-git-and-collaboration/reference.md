@@ -1,6 +1,6 @@
 # Phase 0 Lesson 2: Git and Collaboration
 
-Git工作流程參考,這堂課沒有獨立的程式碼檔案,重點是指令本身。
+Git工作流程參考,沒有獨立的程式碼檔案,重點是指令本身。
 
 ## 基本設定
 
@@ -42,7 +42,7 @@ git checkout -b my-progress
 git push origin my-progress
 ```
 
-## 這堂課只需要這幾個指令
+## 常用指令
 
 | 指令 | 用途 |
 |---|---|

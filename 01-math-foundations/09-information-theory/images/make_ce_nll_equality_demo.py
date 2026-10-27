@@ -2,19 +2,18 @@
 Cross-entropy = Negative log-likelihood示意圖:用reference.py同一組1000筆隨機樣本demo,
 兩條完全不同的公式算出一模一樣的數字
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import math
 import random
+import os
 import sys
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import negative_log_likelihood, softmax  # noqa: E402
 
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 random.seed(42)

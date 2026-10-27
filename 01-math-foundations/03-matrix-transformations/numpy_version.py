@@ -48,7 +48,7 @@ print(f"Original:\n{B}")
 print(f"Reconstructed:\n{reconstructed}")
 
 # === 🟢 ===
-# 3D旋轉(這堂課本體只教了2D，這裡順便看一下3D長怎樣)
+# 3D旋轉
 # 3D 旋轉要指定「繞哪個軸」,被繞的軸那一格是 1、其餘位置放 2D 旋轉的 cos/sin
 def rotation_3d_z(theta):
     # 繞 z 軸旋轉:z 座標不變(最後一列、最後一欄是 [0,0,1]),x-y 平面照 2D 旋轉

@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,5 +51,5 @@ ax.text(11.5, 2.7, "=", fontsize=22, ha="center")
 ax.text(12.0, 4.0, "結果 (2, 3)", ha="center", fontsize=11, fontweight="bold")
 draw(10.55, 2.6, R, GREEN, cell=0.62)
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "broadcast_bias.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "broadcast_bias.png"), bbox_inches="tight")
 print("saved")

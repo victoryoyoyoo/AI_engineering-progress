@@ -1,18 +1,15 @@
 """
 Kernel PCA示意圖:同心圓資料,標準PCA分不開,Kernel PCA可以
 """
+import os
 import sys
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-import numpy as np
 
-import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import PCA, KernelPCA
 from sklearn.datasets import make_circles
 

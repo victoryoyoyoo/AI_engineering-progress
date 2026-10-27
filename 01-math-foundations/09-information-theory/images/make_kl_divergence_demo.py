@@ -2,17 +2,15 @@
 KL divergence示意圖: H(P)是理論下限,H(P,Q)是實際成本,兩者的差就是KL divergence(浪費掉的部分)
 用reference.py真實算出來的數值(true分布 vs good模型)
 """
+import os
 import sys
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
-import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import entropy, cross_entropy, kl_divergence
 
 true_dist = [0.7, 0.2, 0.1]

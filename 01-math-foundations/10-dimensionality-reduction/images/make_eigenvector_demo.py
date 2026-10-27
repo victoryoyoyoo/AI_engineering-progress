@@ -1,14 +1,13 @@
 """
 特徵向量/特徵值示意圖:矩陣變換下,方向不變、只被拉伸的特殊方向
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 M = np.array([[2.0, 0.5], [0.5, 1.5]])

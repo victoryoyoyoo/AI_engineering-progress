@@ -4,7 +4,6 @@ Lesson 14: Norms and Distances(範數與距離) 參考版
 這份檔案整理了課程程式碼與註解,依重要程度由上到下排列:
     🔴 核心:L1/L2/Lp/L-inf範數與距離、內積、cosine相似度、向量正規化
     🟡 理解層:Mahalanobis、Jaccard、edit distance、KL、Wasserstein、embedding搜尋、KNN
-    🟢 之後有空再補:矩陣求逆與共變異數的實作細節、找前k名、L1/L2正則化模擬
 
 一句話主軸:「距離函式決定了什麼叫『相似』」。
     d(a, b) = ||a - b||,所有距離都是「兩個向量相減之後,量那個差的大小」,

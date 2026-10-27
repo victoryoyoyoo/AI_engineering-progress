@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY
 
 import numpy as np
@@ -41,7 +41,7 @@ for ax, title, pts, color in zip(axes, titles, data, colors):
 
 fig.suptitle("SVD幾何意義:A = U × Σ × Vᵀ 做的事是「旋轉 → 縮放 → 旋轉」", fontsize=13, fontweight="bold")
 plt.tight_layout()
-plt.savefig(os.path.join(os.path.dirname(__file__), "rotate_scale_rotate.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rotate_scale_rotate.png"), bbox_inches="tight")
 
 fig2, ax2 = plt.subplots(figsize=(6, 6))
 ax2.plot(circle[0], circle[1], color=GRAY, linewidth=1.5, linestyle="--", label="原始單位圓(輸入空間)")
@@ -55,6 +55,6 @@ lim2 = max(np.abs(after_u).max() * 1.3, 1.5)
 ax2.set_xlim(-lim2, lim2)
 ax2.set_ylim(-lim2, lim2)
 plt.tight_layout()
-plt.savefig(os.path.join(os.path.dirname(__file__), "svd_final_ellipse.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "svd_final_ellipse.png"), bbox_inches="tight")
 
 print("saved rotate_scale_rotate.png and svd_final_ellipse.png")

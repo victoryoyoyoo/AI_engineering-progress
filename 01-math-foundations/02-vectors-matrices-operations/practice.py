@@ -1,6 +1,3 @@
-output = np.maximum(0, weights @ inputs + bias)
-
-
 class Matrix:
     def __init__(self, data):
         self.data = [list(row) for row in data]

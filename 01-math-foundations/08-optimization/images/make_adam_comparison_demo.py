@@ -2,18 +2,16 @@
 GD vs SGD+Momentum vs Adam在Rosenbrock函數上的真實軌跡對照,
 直接呼叫reference.py裡的demo_compare_optimizers用到的class,拉真實跑出來的history
 """
+import os
 import sys
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
-import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import GradientDescent, SGDMomentum, Adam, rosenbrock, rosenbrock_gradient, optimize
 
 start = [-1.0, 1.0]

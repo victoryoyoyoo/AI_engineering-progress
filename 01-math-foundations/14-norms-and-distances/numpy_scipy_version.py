@@ -1,5 +1,5 @@
 """
-Lesson 14: Norms and Distances——NumPy與SciPy對照
+Lesson 14: Norms and Distances,NumPy與SciPy對照
 同樣的範數、距離、cosine相似度,用套件一行寫完,並跟手刻版本對答案。
     NumPy  np.linalg.norm(x, ord=...)   算各種範數
     SciPy  scipy.spatial.distance        內建各種距離(cityblock=L1、euclidean=L2、cosine=cosine距離...)

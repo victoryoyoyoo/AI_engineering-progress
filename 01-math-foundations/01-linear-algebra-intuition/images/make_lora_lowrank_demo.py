@@ -2,14 +2,13 @@
 LoRA(Low-Rank Adaptation) 示意圖:把一個大的更新矩陣 ΔW(m x n) 拆成兩個小矩陣 B(m x r)、A(r x n) 相乘
 只訓練 B、A,參數量從 m*n 大幅降到 (m+n)*r
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 m, n, r = 6, 6, 1.2  # r 畫得很窄,強調「低秩」

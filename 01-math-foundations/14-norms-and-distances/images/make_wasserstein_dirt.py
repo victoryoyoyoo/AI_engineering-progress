@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, GRAY, DPI
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN, DPI
 
 import matplotlib.pyplot as plt
 
@@ -31,4 +31,4 @@ ax1.text(0.9, 0.62, "每堆搬 0.5,距離 2\n工 = 0.5 × 2 = 1", color=GREEN, f
 ax2.set_xlabel("位置")
 fig.suptitle("搬土距離:把 P 的土堆搬成 Q,總共要花 1 + 1 = 2", fontsize=13.5, fontweight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.95))
-fig.savefig(os.path.join(os.path.dirname(__file__), "wasserstein_dirt.png"), dpi=DPI)
+fig.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "wasserstein_dirt.png"), dpi=DPI)

@@ -2,13 +2,12 @@
 Adam bias correction示意圖:m一開始是0,前幾步的原始估計值會被拉低(偏小),
 除以(1-beta1^t)做偏差修正後,才是不偏誤的估計
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 beta1 = 0.9

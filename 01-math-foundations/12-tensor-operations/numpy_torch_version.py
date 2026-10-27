@@ -1,5 +1,5 @@
 """
-Lesson 12: Tensor Operations——NumPy與PyTorch對照
+Lesson 12: Tensor Operations,NumPy與PyTorch對照
 同樣的shape、stride、view、broadcasting、einsum概念,在兩個套件裡的寫法與差異。
 重點差異:
     NumPy   strides單位是「位元組」,轉置後通常自動處理非連續記憶體

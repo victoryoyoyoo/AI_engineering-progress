@@ -1,14 +1,13 @@
 """
 element-wise multiply vs matrix multiply對照圖:同樣兩個矩陣,兩種完全不同的運算方式
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 A = np.array([[1, 2], [3, 4]])

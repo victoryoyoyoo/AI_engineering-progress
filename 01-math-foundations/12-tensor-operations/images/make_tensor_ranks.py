@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, GREEN, PURPLE, GOLD, GRAY
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
@@ -40,5 +40,5 @@ for k in range(3, -1, -1):
 ax.text(11.0, 1.2, "維度 = 3\nshape = (4, 3, 3)\n= 4 張 3×3 疊起來", ha="center", fontsize=10)
 
 fig.suptitle("Tensor 就是「維度不限的陣列」:維度 = 有幾個座標軸(axis)", fontsize=13, fontweight="bold")
-plt.savefig(os.path.join(os.path.dirname(__file__), "tensor_ranks.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "tensor_ranks.png"), bbox_inches="tight")
 print("saved")

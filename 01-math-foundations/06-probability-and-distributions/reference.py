@@ -1,10 +1,10 @@
 """
 Lesson 6: Probability and Distributions
-機率與分布——涵蓋機率公理、PMF/PDF、期望值/變異數、抽樣、
+機率與分布,涵蓋機率公理、PMF/PDF、期望值/變異數、抽樣、
 softmax/log-softmax/cross-entropy、中央極限定理(CLT) demo
 
-核心主軸:AI系統本質上都在跟不確定性打交道——分類模型輸出的是機率
-(softmax),訓練用的loss是機率的期望值(cross-entropy),權重初始化
+核心主軸:AI系統本質上都在跟不確定性打交道,分類模型輸出的是機率
+(softmax),訓練用的loss是負對數機率的期望值(cross-entropy),權重初始化
 靠機率分布(normal),這支程式從機率論最底層的公理開始,一路連到
 訓練神經網路每一步實際在做的事。
 
@@ -93,7 +93,7 @@ def combinations(n, k):
 
 
 def conditional_probability(p_a_and_b, p_b):
-    """P(A|B) = P(A且B) / P(B) —— 已知B發生的前提下,A發生的機率"""
+    """P(A|B) = P(A且B) / P(B),已知B發生的前提下,A發生的機率"""
     # 直覺:把宇宙縮小到「B 已發生」的範圍,看 A 佔其中多少比例
     return p_a_and_b / p_b
 

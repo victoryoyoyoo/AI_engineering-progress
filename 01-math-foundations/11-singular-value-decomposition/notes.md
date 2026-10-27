@@ -5,27 +5,27 @@
 ## 名詞
 | 名詞 | 意思 |
 |---|---|
-| SVD (Singular Value Decomposition)（奇異值分解） | 把任何形狀、任何矩陣拆成 `U × Σ × Vᵀ`,沒有條件限制 |
-| Singular value（奇異值） | Σ對角線上的數字,代表矩陣沿某方向拉伸/壓縮的倍數,非負、由大到小排序 |
-| Left singular vector（左奇異向量） | U的每一欄,輸出空間的方向 |
-| Right singular vector（右奇異向量） | V的每一欄,輸入空間的方向 |
-| Truncated SVD（截斷SVD） | 只留前k個奇異值/向量,數學上證明過的最佳rank-k近似 |
-| Rank（秩） | 非零奇異值的個數,矩陣真正用到的獨立方向數量 |
-| Pseudoinverse（偽逆矩陣） | `A⁺ = V Σ⁺ Uᵀ`,對任何矩陣都能算,解最小平方法問題 |
-| Condition number（條件數） | `σ_max/σ_min`,越大代表對誤差越敏感 |
-| Latent factor（潛在因子） | SVD找出的低維空間裡的隱藏變數,例如推薦系統裡的類型偏好 |
-| Frobenius norm（Frobenius範數） | 矩陣所有元素平方和開根號,等於所有奇異值平方和開根號 |
-| Eckart-Young theorem（Eckart-Young定理） | 截斷SVD是給定rank-k裡誤差最小的近似,證明過的最佳解 |
-| Power iteration（冪迭代法） | 反覆乘矩陣+normalize,收斂到最大特徵值方向 |
-| Orthogonal matrix（正交矩陣） | 每一欄互相垂直、長度都是1的矩陣;乘上它只旋轉,長度不變 |
-| Outer product（外積） | 兩個向量相乘變成一個矩陣(跟內積相反,內積是變成一個數字) |
-| Deflation（降階/扣除） | 找到一個主要方向後從矩陣扣掉,讓下一輪找到次要方向 |
+| SVD (Singular Value Decomposition)（奇異值分解） | 把任何形狀、任何矩陣拆成 `U × Σ × Vᵀ`，沒有條件限制 |
+| Singular value（奇異值） | Σ對角線上的數字，代表矩陣沿某方向拉伸/壓縮的倍數，非負、由大到小排序 |
+| Left singular vector（左奇異向量） | U的每一欄，輸出空間的方向 |
+| Right singular vector（右奇異向量） | V的每一欄，輸入空間的方向 |
+| Truncated SVD（截斷SVD） | 只留前k個奇異值/向量，數學上證明過的最佳rank-k近似 |
+| Rank（秩） | 非零奇異值的個數，矩陣真正用到的獨立方向數量 |
+| Pseudoinverse（偽逆矩陣） | `A⁺ = V Σ⁺ Uᵀ`，對任何矩陣都能算，解最小平方法問題 |
+| Condition number（條件數） | `σ_max/σ_min`，越大代表對誤差越敏感 |
+| Latent factor（潛在因子） | SVD找出的低維空間裡的隱藏變數，例如推薦系統裡的類型偏好 |
+| Frobenius norm（Frobenius範數） | 矩陣所有元素平方和開根號，等於所有奇異值平方和開根號 |
+| Eckart-Young theorem（Eckart-Young定理） | 截斷SVD是給定rank-k裡誤差最小的近似，證明過的最佳解 |
+| Power iteration（冪迭代法） | 反覆乘矩陣+normalize，收斂到最大特徵值方向 |
+| Orthogonal matrix（正交矩陣） | 每一欄互相垂直、長度都是1的矩陣;乘上它只旋轉，長度不變 |
+| Outer product（外積） | 兩個向量相乘變成一個矩陣(跟內積相反，內積是變成一個數字) |
+| Deflation（降階/扣除） | 找到一個主要方向後從矩陣扣掉，讓下一輪找到次要方向 |
 | Residual（殘餘矩陣） | 還沒被目前找到的方向解釋掉的剩餘部分 |
-| Eigenvector（特徵向量） | 被矩陣乘完只變長或變短、方向不變的特殊方向,倍數叫特徵值(Eigenvalue) |
-| Main diagonal（主對角線） | 矩陣從左上到右下那條斜線,奇異值就放在Σ的主對角線上 |
-| Diagonal matrix（對角矩陣） | 只有主對角線有數字、其他位置全是0的矩陣,效果是各方向各自縮放、互不影響 |
-| Trace（跡） | 主對角線上的數字加總,寫成tr(A) |
-| Norm（範數） | 「長度/大小」的正式數學名稱,預設(L2 norm)就是Lesson 1的向量長度 |
+| Eigenvector（特徵向量） | 被矩陣乘完只變長或變短、方向不變的特殊方向，倍數叫特徵值(Eigenvalue) |
+| Main diagonal（主對角線） | 矩陣從左上到右下那條斜線，奇異值就放在Σ的主對角線上 |
+| Diagonal matrix（對角矩陣） | 只有主對角線有數字、其他位置全是0的矩陣，效果是各方向各自縮放、互不影響 |
+| Trace（跡） | 主對角線上的數字加總，寫成tr(A) |
+| Norm（範數） | 「長度/大小」的正式數學名稱，預設(L2 norm)就是Lesson 1的向量長度 |
 
 ![](images/rotate_scale_rotate.png)
 ![](images/svd_final_ellipse.png)

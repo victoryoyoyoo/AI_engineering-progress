@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY
 
 import numpy as np
@@ -60,7 +60,7 @@ ax.set_title("Power iteration：v0 → v1 → ... → 收斂到最大特徵值�
 ax.legend(loc="lower left", fontsize=9)
 
 plt.tight_layout()
-plt.savefig(os.path.join(os.path.dirname(__file__), "power_iteration.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "power_iteration.png"), bbox_inches="tight")
 print("saved power_iteration.png")
 print("history:")
 for i, vec in enumerate(history):

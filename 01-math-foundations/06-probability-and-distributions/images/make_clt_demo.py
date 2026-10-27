@@ -2,18 +2,17 @@
 中央極限定理(CLT)示意圖:原始分布是均勻分布(一點都不像鐘形),
 但把很多組樣本各自取平均之後,平均值的分布趨近常態分布
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import random
+import os
 import sys
 
-sys.path.insert(0, "..")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from reference import demonstrate_clt  # noqa: E402
 
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 random.seed(42)

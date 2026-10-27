@@ -3,7 +3,7 @@ import os
 import math
 import random
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY, DPI
 
 import numpy as np
@@ -53,4 +53,4 @@ ax.grid(True, color="#e3e3e3")
 ax.set_title("藍色虛線圓:直線距離相同的點\n紅色橢圓:Mahalanobis 距離相同的點")
 ax.legend(loc="lower right", fontsize=9)
 fig.tight_layout()
-fig.savefig(os.path.join(os.path.dirname(__file__), "mahalanobis_ellipse.png"), dpi=DPI)
+fig.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mahalanobis_ellipse.png"), dpi=DPI)

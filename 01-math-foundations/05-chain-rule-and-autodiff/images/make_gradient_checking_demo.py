@@ -2,14 +2,12 @@
 gradient checking示意圖:autodiff算出的梯度 vs 數值法(有限差分)算出的梯度,幾乎完全重合,
 差異(3.66e-10)遠小於1e-5門檻,證明反向傳播寫對了
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
-import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, axes = plt.subplots(1, 2, figsize=(9.5, 4.3))

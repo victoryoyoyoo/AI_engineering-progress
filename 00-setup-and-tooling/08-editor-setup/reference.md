@@ -1,6 +1,6 @@
 # Phase 0 Lesson 8: Editor Setup
 
-VS Code設定參考,這堂課沒有獨立的程式碼檔案,重點是設定本身。
+VS Code設定參考,沒有獨立的程式碼檔案,重點是設定本身。
 
 ## 安裝VS Code
 

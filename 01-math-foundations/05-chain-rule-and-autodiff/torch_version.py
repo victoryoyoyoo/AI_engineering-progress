@@ -1,5 +1,5 @@
 """
-Lesson 5「Use It」對應版本:這堂課的「正式函式庫」是PyTorch(torch.autograd)
+Lesson 5 的 PyTorch 版本(torch.autograd)
 reference.py 手刻的 Value 引擎,在 PyTorch 裡就是 tensor 加上 requires_grad=True,
 呼叫 .backward() 之後每個 tensor 的 .grad 屬性就是梯度。
 """
@@ -20,7 +20,7 @@ y.backward()
 # .grad 是 tensor,.item() 把單一元素的 tensor 轉成一般 Python 數字才好印
 # 預期 dy/dx1 = x2 = 3.0,dy/dx2 = x1 = 2.0
 print(f"PyTorch autograd算出的梯度: dy/dx1={x1.grad.item()}, dy/dx2={x2.grad.item()}")
-print("跟 practice.py 的 Value class(自己手刻的自動微分)算出的 dy/dx1=3.0, dy/dx2=2.0 一致")
+print("跟 reference.py 的 Value class(手刻的自動微分)算出的 dy/dx1=3.0, dy/dx2=2.0 一致")
 
 
 def numerical_gradient_check(f, x1, x2, h=1e-7):

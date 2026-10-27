@@ -1,14 +1,13 @@
 """
 singular matrix(奇異矩陣)示意圖:det=0,單位正方形被壓扁成一條線,面積歸零、資訊遺失、不可逆
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 import numpy as np
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 unit_square = np.array([[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]])

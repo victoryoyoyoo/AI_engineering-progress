@@ -2,13 +2,12 @@
 拓撲排序示意圖:計算圖a=x1*x2, b=a+1, y=relu(b),排序規則是「小孩一定排在爸媽前面」
 下方數字是topo list裡的順序位置
 """
-import matplotlib
-import matplotlib.font_manager as fm
 import matplotlib.pyplot as plt
 
+import os
 import sys
-sys.path.insert(0, "../../_shared")
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GOLD, GRAY
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style
 setup_style()
 
 fig, ax = plt.subplots(figsize=(9, 4.2))

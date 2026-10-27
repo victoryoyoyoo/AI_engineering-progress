@@ -8,8 +8,8 @@ SVD 的一句話:任何矩陣 A(不管形狀)都能拆成 A = U × Σ × Vᵀ,
 只留前 k 個最大的奇異值,就是最佳的 rank-k 近似(截斷 SVD),壓縮、去噪都靠這招。
 
 本檔案的結構:
-    🔴 power_iteration     : 反覆乘矩陣,找出最大特徵值與對應方向(手打過)
-    🔴 svd_from_scratch    : 用 power_iteration + deflation 湊出完整 SVD(理解層,沒手打)
+    🔴 power_iteration     : 反覆乘矩陣,找出最大特徵值與對應方向
+    🔴 svd_from_scratch    : 用 power_iteration + deflation 湊出完整 SVD
     🟡 compress/denoise/pseudoinverse : 直接呼叫 np.linalg.svd 的三個應用
     __main__               : 驗證手刻版與 NumPy 一致,並跑三個 demo
 """
@@ -113,10 +113,6 @@ def pseudoinverse_via_svd(A):
     S_inv = np.diag(1.0 / S)
     # Vt.T 轉回 V;shape (n,r)@(r,r)@(r,m) = (n,m),跟 A 的 shape (m,n) 相反,符合「反矩陣」的形狀
     return Vt.T @ S_inv @ U.T
-
-
-# === 🟢:之後有空再補,推薦系統(latent factors，user-movie ratings矩陣的低秩補全) ===
-# === 🟢:之後有空再補,LSA(term-document矩陣用SVD做語意分群) ===
 
 
 if __name__ == "__main__":

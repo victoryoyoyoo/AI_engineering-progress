@@ -8,18 +8,18 @@
 | Sample space (S)（樣本空間） | 一件事所有可能結果的集合 |
 | Event（事件） | 樣本空間裡的一個子集合 |
 | PMF (Probability Mass Function)（機率質量函數） | 給離散變數每個結果的確切機率 |
-| PDF (Probability Density Function)（機率密度函數） | 給連續變數的密度函數,要積分才能得到機率 |
-| Conditional probability（條件機率） | P(A\|B),已知B發生的前提下A發生的機率 |
+| PDF (Probability Density Function)（機率密度函數） | 給連續變數的密度函數，要積分才能得到機率 |
+| Conditional probability（條件機率） | P(A\|B)，已知B發生的前提下A發生的機率 |
 | Independence（獨立事件） | 知道一件事發生不會改變另一件事發生的機率 |
 | Expected value（期望值） | 用機率加權平均後的「平均結果」 |
 | Variance（變異數） | 結果離期望值有多分散 |
-| Normal distribution（常態分布(高斯分布)） | 鐘形曲線,由平均值跟變異數決定形狀 |
-| Central Limit Theorem (CLT)（中央極限定理） | 同分布、變異數有限的獨立隨機變數,樣本平均值經過中心化並乘上√n縮放後,分布會趨近常態分布(原始分布長什麼樣都可以,只要變異數有限) |
-| Joint distribution（聯合分布） | P(X,Y),描述X和Y每一種組合一起發生的機率 |
-| Marginal distribution（邊際分布） | P(X)=Σ_y P(X,Y),把另一個變數加總消掉,還原出單一變數的分布 |
-| Log probability（對數機率） | 取log後的機率,把連乘變連加,避免數值下溢 |
-| Softmax（—） | 把模型的原始分數(logits)轉成合法的機率分布 |
-| Logits（—） | 模型softmax之前吐出來的原始分數 |
+| Normal distribution（常態分布(高斯分布)） | 鐘形曲線，由平均值跟變異數決定形狀 |
+| Central Limit Theorem (CLT)（中央極限定理） | 同分布、變異數有限的獨立隨機變數，樣本平均值經過中心化並乘上√n縮放後，分布會趨近常態分布(原始分布長什麼樣都可以，只要變異數有限) |
+| Joint distribution（聯合分布） | P(X,Y)，描述X和Y每一種組合一起發生的機率 |
+| Marginal distribution（邊際分布） | P(X)=Σ_y P(X,Y)，把另一個變數加總消掉，還原出單一變數的分布 |
+| Log probability（對數機率） | 取log後的機率，把連乘變連加，避免數值下溢 |
+| Softmax | 把模型的原始分數(logits)轉成合法的機率分布 |
+| Logits | 模型softmax之前吐出來的原始分數 |
 | Cross-entropy（交叉熵） | 衡量兩個機率分布差多少的損失函數 |
 | Sampling（抽樣） | 依照機率分布規則隨機抽出一個值 |
 

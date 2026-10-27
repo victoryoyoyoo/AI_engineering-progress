@@ -1,10 +1,9 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY, DPI
 
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.patches import Arc
 
@@ -42,4 +41,4 @@ ax.text(1.05, 0.95, "45°", fontsize=11.5)
 
 ax.set_title("A 和 B 方向完全一樣(夾角 0°)  →  方向相似度 = 1\nA 和 C 夾角 45°  →  方向相似度 ≈ 0.71")
 fig.tight_layout()
-fig.savefig(os.path.join(os.path.dirname(__file__), "cosine_direction.png"), dpi=DPI)
+fig.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "cosine_direction.png"), dpi=DPI)

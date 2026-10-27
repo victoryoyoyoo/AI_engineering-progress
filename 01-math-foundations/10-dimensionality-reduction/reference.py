@@ -201,5 +201,3 @@ if __name__ == "__main__":
     print(f"Standard PCA explained variance on circles: {linear_pca.explained_variance_ratio_}")
     # 標準PCA對同心圓幾乎沒用(兩個方向變異量差不多,因為圓形資料沒有明顯的線性主軸)
 
-    # === 🟢 ===
-    # t-SNE / UMAP demo,課程3個Exercises尚未做

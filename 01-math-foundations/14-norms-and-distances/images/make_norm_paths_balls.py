@@ -1,8 +1,8 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
-from plot_style import setup_style, BLUE, RED, GREEN, PURPLE, GRAY, DPI
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
+from plot_style import setup_style, BLUE, RED, GREEN, DPI
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -50,4 +50,4 @@ ax.legend(loc="lower center", bbox_to_anchor=(0.5, -0.02))
 
 fig.suptitle("L1 / L2 / L-inf:同一組點,量法不同,「遠近」就不同", fontsize=13.5, fontweight="bold")
 fig.tight_layout(rect=(0, 0, 1, 0.94))
-fig.savefig(os.path.join(os.path.dirname(__file__), "norm_paths_balls.png"), dpi=DPI)
+fig.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "norm_paths_balls.png"), dpi=DPI)

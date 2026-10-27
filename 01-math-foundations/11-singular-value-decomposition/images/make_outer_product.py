@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY
 
 import numpy as np
@@ -46,5 +46,5 @@ fig.text(0.5, -0.02,
           ha="center", fontsize=10, color=GRAY)
 
 plt.tight_layout()
-plt.savefig(os.path.join(os.path.dirname(__file__), "outer_product.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "outer_product.png"), bbox_inches="tight")
 print("saved outer_product.png")

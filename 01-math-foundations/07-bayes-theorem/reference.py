@@ -1,6 +1,6 @@
 """
 Lesson 7: Bayes' Theorem
-貝氏定理——從條件機率推出貝氏定理,實作Naive Bayes文字分類器(含Laplace
+貝氏定理,從條件機率推出貝氏定理,實作Naive Bayes文字分類器(含Laplace
 平滑跟log機率),比較MLE跟MAP估計,示範Beta-Binomial共軛先驗的序列更新。
 
 核心主軸:機率不只是「預測」,貝氏定理教的是「看到新證據後怎麼更新信念」。
@@ -29,7 +29,7 @@ def bayes(prior, likelihood, false_positive_rate):
     false_positive_rate: P(B|not A),假設不成立時仍看到證據的機率(健康卻篩檢陽性)
     用全機率公式展開分母:P(B) = P(B|A)*P(A) + P(B|not A)*P(not A)
     """
-    # 分母 evidence:「陽性」有兩種來源——真的得病而陽性、沒病卻誤判陽性,兩者相加
+    # 分母 evidence:「陽性」有兩種來源,真的得病而陽性、沒病卻誤判陽性,兩者相加
     # (1 - prior) 是「沒得病」的機率
     evidence = likelihood * prior + false_positive_rate * (1 - prior)
     # 分子只算「真的得病而且陽性」這一種來源,除以所有陽性的來源,就是「陽性時真的得病」的機率
@@ -43,7 +43,7 @@ def bayes(prior, likelihood, false_positive_rate):
 
 class NaiveBayes:
     """樸素貝氏分類器:假設每個詞出現的機率,在已知類別的條件下互相獨立
-    (這個假設其實不成立——例如"New"跟"York"明顯相關——但實務上效果依然很好,
+    (這個假設其實不成立,例如"New"跟"York"明顯相關,但實務上效果依然很好,
     因為分類只需要「排序哪個類別分數最高」,不需要機率本身校準得很準)"""
 
     def __init__(self, smoothing=1.0):
@@ -105,19 +105,20 @@ def mle_estimate(successes, trials):
 
 
 def map_estimate(successes, trials, prior_alpha, prior_beta):
-    """最大後驗估計:用Beta(alpha, beta)當先驗,後驗均值 = (alpha+successes) / (alpha+beta+trials)
+    """最大後驗估計:用Beta(alpha, beta)當先驗,MAP是後驗分布的眾數(最高點)
+    = (alpha+successes-1) / (alpha+beta+trials-2)
+    (後驗均值 (alpha+successes)/(alpha+beta+trials) 是另一個東西,和眾數不同)
     先驗係數越大,代表越相信參數應該在prior_alpha/(prior_alpha+prior_beta)附近,
-    資料量越小時,先驗的影響力越大——這就是為什麼MAP等於加了正則化的MLE。"""
-    # 可以想成:先「假裝」已經看過 alpha 次成功、beta 次失敗,再加上真實資料
-    # Beta(2,2):假裝已看過 2 正 2 反,7 正 3 反 → (2+7)/(2+2+10) = 9/14 ≈ 0.643,比 MLE 的 0.7 更靠近 0.5
-    return (prior_alpha + successes) / (prior_alpha + prior_beta + trials)
+    資料量越小時,先驗的影響力越大,這就是為什麼MAP等於加了正則化的MLE。"""
+    # Beta(2,2):7 正 3 反 → (2+7-1)/(2+2+10-2) = 8/12 ≈ 0.667,比 MLE 的 0.7 更靠近 0.5
+    return (prior_alpha + successes - 1) / (prior_alpha + prior_beta + trials - 2)
 
 
 # ---------- Step 4: Beta-Binomial 共軛先驗、序列更新 ----------
 
 def beta_update(alpha, beta, successes, failures):
     """Beta分布是Bernoulli/Binomial的共軛先驗:後驗還是Beta分布,
-    更新規則簡單到不可思議——直接把成功/失敗次數加到alpha/beta上,不用做任何積分"""
+    更新規則簡單到不可思議,直接把成功/失敗次數加到alpha/beta上,不用做任何積分"""
     # 「共軛」的意思:先驗跟後驗是同一個分布家族,所以可以一天一天連續更新
     # 回傳 tuple (新 alpha, 新 beta),呼叫端用兩個變數同時接
     return alpha + successes, beta + failures

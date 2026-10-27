@@ -1,7 +1,7 @@
 import sys
 import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "_shared"))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "_shared"))
 from plot_style import setup_style, BLUE, RED, GREEN, GRAY, GOLD, PURPLE
 
 import matplotlib.pyplot as plt
@@ -38,5 +38,5 @@ for n, (name, sym, num, note, color, op) in enumerate(steps):
     if n < len(steps) - 1 and op:
         ax.text(1.55, y - 0.38, "↓ " + op, ha="center", va="center", fontsize=8, color=GRAY)
 
-plt.savefig(os.path.join(os.path.dirname(__file__), "attention_shapes.png"), bbox_inches="tight")
+plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "attention_shapes.png"), bbox_inches="tight")
 print("saved")
